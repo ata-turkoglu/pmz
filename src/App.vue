@@ -3,6 +3,15 @@
   <router-view />
 </template>
 
+<script>
+export default {
+  data: () => ({}),
+  created() {
+    this.$store.dispatch("getAllFacilities");
+  },
+};
+</script>
+
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;

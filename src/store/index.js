@@ -1,4 +1,6 @@
 import { createStore } from "vuex";
+import axios from "axios";
+const api = process.env.VUE_APP_BACKEND;
 
 export default createStore({
   state: {
@@ -6,7 +8,7 @@ export default createStore({
       {
         id: 1,
         name: "Agrega",
-        disabled: false,
+        disabled: true,
       },
       {
         id: 2,
@@ -39,9 +41,37 @@ export default createStore({
         disabled: true,
       },
     ],
+    shifts: [
+      {
+        id: 1,
+        name: "Gece",
+      },
+      {
+        id: 2,
+        name: "Gündüz",
+      },
+      {
+        id: 3,
+        name: "Akşam",
+      },
+    ],
   },
-  getters: {},
+  getters: {
+    getFacilities: (state) => {
+      return state.facilities.filter((itm) => {
+        return !itm.disabled;
+      });
+    },
+  },
   mutations: {},
-  actions: {},
+  actions: {
+    getAllFacilities({ commit }) {
+      return axios
+        .get("http://localhost:3000" + "/facilities/getAll")
+        .then((result) => {
+          console.log("result", result);
+        });
+    },
+  },
   modules: {},
 });

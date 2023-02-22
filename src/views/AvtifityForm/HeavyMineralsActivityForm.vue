@@ -1,17 +1,12 @@
 <template>
   <div class="container">
     <div class="selections">
-      <v-select
-        label="Tesis"
-        :items="selectableFacilities"
-        item-title="name"
-        item-value="id"
+      <v-text-field
+        value="Ağır Mineraller"
         variant="solo"
+        readonly
         class="inputs"
-        :active="true"
-        v-model="selectedFacility"
-        @update:model-value="selectFacility"
-      ></v-select>
+      ></v-text-field>
       <v-text-field
         class="inputs"
         label="Tarih"
@@ -21,7 +16,7 @@
       ></v-text-field>
       <v-select
         label="Vardiya"
-        :items="shifts"
+        :items="$store.state.shifts"
         item-title="name"
         item-value="id"
         variant="solo"
@@ -94,7 +89,7 @@ export default {
   props: ["data", "date", "facility", "shift"],
   data: () => ({
     selectedDate: null,
-    selectedFacility: null,
+    selectedFacility: 2,
     selectedShift: null,
     dryerKilnTimer: null,
     reductionKilnTimer: null,
@@ -102,20 +97,6 @@ export default {
     productsText: null,
     malfunctionsText: null,
     otherActivities: null,
-    shifts: [
-      {
-        id: 1,
-        name: "Gece",
-      },
-      {
-        id: 2,
-        name: "Gündüz",
-      },
-      {
-        id: 3,
-        name: "Akşam",
-      },
-    ],
   }),
   methods: {
     reset() {
@@ -128,9 +109,9 @@ export default {
     },
     save() {
       console.log({
-        date: this.data.date,
-        facility: this.data.facility,
-        shift: this.data.shift,
+        date: this.date,
+        facility: this.facility,
+        shift: this.shift,
         dryerKilnTimer: this.dryerKilnTimer,
         reductionKilnTimer: this.reductionKilnTimer,
         cngTimer: this.cngTimer,

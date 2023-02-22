@@ -1,20 +1,22 @@
 <template>
   <div class="container">
-    <v-tabs v-model="selectedTab" bg-color="primary">
-      <v-tab value="1">Agrega</v-tab>
-      <v-tab value="2">Ağır Mineralller</v-tab>
+    <v-tabs v-model="selectedTab">
+      <v-tab v-for="facility in facilities" :value="facility.id">{{
+        facility.name
+      }}</v-tab>
     </v-tabs>
-    <v-window v-model="selectedTab">
-      <v-window-item value="1">
+    <v-window v-model="selectedTab" class="py-1">
+      <v-window-item :value="1">
         <AgregatesActivityForm />
       </v-window-item>
-      <v-window-item value="2">
+      <v-window-item :value="2">
         <HeavyMineralsActivityForm />
       </v-window-item>
     </v-window>
   </div>
 </template>
 <script>
+import { mapGetters } from "vuex";
 import AgregatesActivityForm from "./AgregatesActivityForm.vue";
 import HeavyMineralsActivityForm from "./HeavyMineralsActivityForm.vue";
 export default {
@@ -23,21 +25,10 @@ export default {
     selectedTab: null,
   }),
   computed: {
-    selectableFacilities() {
-      return this.$store.state.facilities.filter((itm) => !itm.disabled);
-    },
+    ...mapGetters({ facilities: "getFacilities" }),
   },
-  methods: {
-    selectFacility(val) {
-      this.$router.push({
-        path: "/activity-form/" + val,
-        params: {
-          date: this.selectedDate,
-          facility: this.selectedFacility,
-          shift: this.selectedShift,
-        },
-      });
-    },
+  beforeMount() {
+    this.selectedTab = this.facilities[0].id;
   },
 };
 </script>
