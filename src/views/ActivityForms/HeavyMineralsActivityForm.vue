@@ -78,7 +78,11 @@
       >
         Temizle
       </v-btn>
-      <v-btn :loading="false" color="blue-darken-4" width="100px" @click="save"
+      <v-btn
+        :loading="$store.state.buttons.activityFormSaveButtonLoading"
+        color="blue-darken-4"
+        width="100px"
+        @click="save"
         >Kaydet</v-btn
       >
     </v-row>
@@ -124,24 +128,33 @@ export default {
       this.otherActivities = null;
     },
     save() {
-      this.$store.dispatch("addNewActivityForm", {
-        date: this.selectedDate,
-        facility: this.selectedFacility,
-        shift: this.selectedShift,
-        dryerKilnTimer: this.dryerKilnTimer,
-        reducerKilnTimer: this.reducerKilnTimer,
-        cngTimer: this.cngTimer,
-        productsText: this.productsText,
-        malfunctionsText: this.malfunctionsText,
-        otherActivities: this.otherActivities,
-      });
-    },
-  },
-  watch: {
-    selectedDate: {
-      handler(val) {
-        console.log(val);
-      },
+      this.$store.state.buttons.activityFormSaveButtonLoading = true;
+      if (this.isEdit) {
+        this.$store.dispatch("updateActivityForm", {
+          id: this.id,
+          date: this.selectedDate,
+          facility: this.selectedFacility,
+          shift: this.selectedShift,
+          dryerKilnTimer: this.dryerKilnTimer,
+          reducerKilnTimer: this.reducerKilnTimer,
+          cngTimer: this.cngTimer,
+          productsText: this.productsText,
+          malfunctionsText: this.malfunctionsText,
+          otherActivities: this.otherActivities,
+        });
+      } else {
+        this.$store.dispatch("addNewActivityForm", {
+          date: this.selectedDate,
+          facility: this.selectedFacility,
+          shift: this.selectedShift,
+          dryerKilnTimer: this.dryerKilnTimer,
+          reducerKilnTimer: this.reducerKilnTimer,
+          cngTimer: this.cngTimer,
+          productsText: this.productsText,
+          malfunctionsText: this.malfunctionsText,
+          otherActivities: this.otherActivities,
+        });
+      }
     },
   },
 };

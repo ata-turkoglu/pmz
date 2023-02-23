@@ -1,7 +1,7 @@
 <template>
   <div class="container1">
     <div class="form-list">
-      <span
+      <div
         v-for="item in formList"
         :key="item.id"
         class="form-list-item"
@@ -14,7 +14,7 @@
         <span class="form-list-item-shift">
           {{ findShiftNameById(item.shift) }}
         </span>
-      </span>
+      </div>
     </div>
     <HeavyMineralsActivityForm
       v-if="selectedItem != null"
@@ -48,6 +48,8 @@ export default {
   },
   methods: {
     selectForm(item) {
+      console.log("item", item);
+      console.log("list", this.$store.state.activityForms);
       this.selectedItem = item;
     },
     findShiftNameById(id) {
@@ -55,6 +57,14 @@ export default {
     },
     activeListItem(id) {
       return this.selectedItem != null && this.selectedItem.id == id;
+    },
+  },
+  watch: {
+    "$store.state.activityForms": {
+      deep: true,
+      handler(val) {
+        console.log("----", val);
+      },
     },
   },
 };

@@ -2,7 +2,7 @@ import { createStore } from "vuex";
 import axios from "axios";
 import moment from "moment";
 moment.locale("tr");
-const api = process.env.VUE_APP_BACKEND;
+axios.defaults.baseURL = process.env.VUE_APP_BACKEND;
 
 export default createStore({
   state: {
@@ -58,6 +58,9 @@ export default createStore({
         name: "Akşam",
       },
     ],
+    buttons: {
+      activityFormSaveButtonLoading: false,
+    },
   },
   getters: {
     getFacilities: (state) => {
@@ -66,7 +69,9 @@ export default createStore({
       });
     },
     getHeavyMineralsForms: (state) => {
-      return state.activityForms.filter((itm) => itm.facility == 2);
+      return state.activityForms
+        .filter((itm) => itm.facility == 2)
+        .sort((a, b) => a.id - b.id);
     },
   },
   mutations: {
@@ -84,32 +89,48 @@ export default createStore({
       console.log(data);
       state.activityForms.push(...data);
     },
+    updateActivityForms(state, data) {
+      let foundItem = state.activityForms.find((itm) => itm.id == data.id);
+
+      foundItem.date = data.date;
+      foundItem.facility = data.facility;
+      foundItem.shift = data.shift;
+      foundItem.dryerKilnTimer = data.dryerKilnTimer;
+      foundItem.reducerKilnTimer = data.reducerKilnTimer;
+      foundItem.cngTimer = data.cngTimer;
+      foundItem.productsText = data.productsText;
+      foundItem.malfunctionsText = data.malfunctionsText;
+      foundItem.otherActivities = data.otherActivities;
+
+      state.buttons.activityFormSaveButtonLoading = false;
+    },
   },
   actions: {
     getAllFacilities({ commit }) {
-      return axios
-        .get("http://localhost:3000" + "/facilities/getAll")
-        .then((result) => {
-          commit("setFacilities", result.data);
-        });
+      return axios.get("/facilities/getAll").then((result) => {
+        commit("setFacilities", result.data);
+      });
     },
     getFacilityActivityForms({ commit }, facility) {
       return axios
-        .get(
-          "http://localhost:3000" +
-            "/activity-forms/getFacilityForms/" +
-            facility
-        )
+        .get("/activity-forms/getFacilityForms/" + facility)
         .then((result) => {
           commit("setActivityForms", result.data);
         });
     },
     addNewActivityForm({ commit }, data) {
-      return axios
-        .put("http://localhost:3000" + "/activity-forms/add", data)
-        .then((result) => {
-          console.log("addNewActivityForm", result);
-        });
+      return axios.put("/activity-forms/add", data).then((result) => {
+        console.log("addNewActivityForm", result);
+        state.buttons.activityFormSaveButtonLoading = false;
+      });
+    },
+    updateActivityForm({ commit, state }, data) {
+      return axios.put("/activity-forms/update", data).then((result) => {
+        console.log("updateActivityForm", result);
+        if (!result.error) {
+          commit("updateActivityForms", data);
+        }
+      });
     },
   },
   modules: {},
