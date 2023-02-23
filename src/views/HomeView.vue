@@ -16,15 +16,31 @@
       v-model="drawer"
       temporary
       color="blue-darken-4"
+      width="30%"
     >
       <v-list>
-        <v-list-item
-          prepend-icon="mdi-clipboard-edit-outline"
-          title="Faaliyet Formu"
-          class="nav-list-item"
-          to="/activity-form"
-        >
-        </v-list-item>
+        <v-list-group>
+          <template v-slot:activator="{ props }">
+            <v-list-item
+              v-bind="props"
+              prepend-icon="mdi-clipboard-outline"
+              title="Faaliyet Formu"
+              class="nav-list-item"
+            ></v-list-item>
+          </template>
+          <v-list-item
+            title="Yeni Form"
+            prepend-icon="mdi-clipboard-edit-outline"
+            to="/activity-form/new"
+            class="justify-start"
+          ></v-list-item>
+          <v-list-item
+            title="Form Listesi"
+            prepend-icon="mdi-clipboard-list-outline"
+            to="/activity-form/list"
+            class="justify-start"
+          ></v-list-item>
+        </v-list-group>
         <v-list-item
           prepend-icon="mdi-chart-line"
           title="Grafikler"

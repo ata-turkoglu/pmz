@@ -38,7 +38,7 @@
         label="İndirgeme Fırını Çalışma Saati"
         variant="outlined"
         type="number"
-        v-model="reductionKilnTimer"
+        v-model="reducerKilnTimer"
       ></v-text-field>
       <v-text-field
         class="inputs"
@@ -70,6 +70,7 @@
     </div>
     <v-row class="mt-4 px-7" align="center" justify="end">
       <v-btn
+        v-if="!isEdit"
         class="mr-4"
         color="blue-grey-lighten-5"
         width="100px"
@@ -78,7 +79,7 @@
         Temizle
       </v-btn>
       <v-btn :loading="false" color="blue-darken-4" width="100px" @click="save"
-        >Save</v-btn
+        >Kaydet</v-btn
       >
     </v-row>
   </div>
@@ -86,39 +87,61 @@
 
 <script>
 export default {
-  props: ["data", "date", "facility", "shift"],
+  props: ["isEdit", "item"],
   data: () => ({
+    id: null,
     selectedDate: null,
     selectedFacility: 2,
     selectedShift: null,
     dryerKilnTimer: null,
-    reductionKilnTimer: null,
+    reducerKilnTimer: null,
     cngTimer: null,
     productsText: null,
     malfunctionsText: null,
     otherActivities: null,
   }),
+  mounted() {
+    if (this.isEdit && this.item != null) {
+      this.id = this.item.id;
+      this.selectedDate = this.item.date;
+      this.selectedFacility = this.item.facility;
+      this.selectedShift = this.item.shift;
+      this.dryerKilnTimer = this.item.dryerKilnTimer;
+      this.reducerKilnTimer = this.item.reducerKilnTimer;
+      this.cngTimer = this.item.cngTimer;
+      this.productsText = this.item.productsText;
+      this.malfunctionsText = this.item.malfunctionsText;
+      this.otherActivities = this.item.otherActivities;
+    }
+  },
   methods: {
     reset() {
       this.dryerKilnTimer = null;
-      this.reductionKilnTimer = null;
+      this.reducerKilnTimer = null;
       this.cngTimer = null;
       this.productsText = null;
       this.malfunctionsText = null;
       this.otherActivities = null;
     },
     save() {
-      console.log({
-        date: this.date,
-        facility: this.facility,
-        shift: this.shift,
+      this.$store.dispatch("addNewActivityForm", {
+        date: this.selectedDate,
+        facility: this.selectedFacility,
+        shift: this.selectedShift,
         dryerKilnTimer: this.dryerKilnTimer,
-        reductionKilnTimer: this.reductionKilnTimer,
+        reducerKilnTimer: this.reducerKilnTimer,
         cngTimer: this.cngTimer,
         productsText: this.productsText,
         malfunctionsText: this.malfunctionsText,
         otherActivities: this.otherActivities,
       });
+    },
+  },
+  watch: {
+    selectedDate: {
+      handler(val) {
+        console.log(val);
+      },
     },
   },
 };

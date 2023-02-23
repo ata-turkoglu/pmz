@@ -38,14 +38,4 @@ export default {
   width: 100%;
   padding: 10px;
 }
-.inputs {
-  max-width: 30%;
-  margin-inline: 10px;
-}
-@media screen and (max-width: 600px) {
-  .inputs {
-    width: 100%;
-    max-width: 100%;
-  }
-}
 </style>

@@ -7,7 +7,7 @@
 export default {
   data: () => ({}),
   created() {
-    this.$store.dispatch("getAllFacilities");
+    //this.$store.dispatch("getAllFacilities");
   },
 };
 </script>
