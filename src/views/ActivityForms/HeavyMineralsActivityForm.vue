@@ -68,7 +68,12 @@
         v-model="otherActivities"
       ></v-textarea>
     </div>
-    <v-row class="mt-4 px-7" align="center" justify="end">
+    <v-row
+      class="mt-4"
+      :class="$vuetify.display.smAndDown ? 'px-3' : 'px-9'"
+      align="center"
+      justify="end"
+    >
       <v-btn
         v-if="!isEdit"
         class="mr-4"
@@ -129,31 +134,24 @@ export default {
     },
     save() {
       this.$store.state.buttons.activityFormSaveButtonLoading = true;
+      let data = {
+        date: this.selectedDate,
+        facility: this.selectedFacility,
+        shift: this.selectedShift,
+        dryerKilnTimer: Number(this.dryerKilnTimer),
+        reducerKilnTimer: Number(this.reducerKilnTimer),
+        cngTimer: Number(this.cngTimer),
+        productsText: this.productsText,
+        malfunctionsText: this.malfunctionsText,
+        otherActivities: this.otherActivities,
+      };
       if (this.isEdit) {
         this.$store.dispatch("updateActivityForm", {
           id: this.id,
-          date: this.selectedDate,
-          facility: this.selectedFacility,
-          shift: this.selectedShift,
-          dryerKilnTimer: this.dryerKilnTimer,
-          reducerKilnTimer: this.reducerKilnTimer,
-          cngTimer: this.cngTimer,
-          productsText: this.productsText,
-          malfunctionsText: this.malfunctionsText,
-          otherActivities: this.otherActivities,
+          ...data,
         });
       } else {
-        this.$store.dispatch("addNewActivityForm", {
-          date: this.selectedDate,
-          facility: this.selectedFacility,
-          shift: this.selectedShift,
-          dryerKilnTimer: this.dryerKilnTimer,
-          reducerKilnTimer: this.reducerKilnTimer,
-          cngTimer: this.cngTimer,
-          productsText: this.productsText,
-          malfunctionsText: this.malfunctionsText,
-          otherActivities: this.otherActivities,
-        });
+        this.$store.dispatch("addNewActivityForm", data);
       }
     },
   },
@@ -163,6 +161,7 @@ export default {
 <style scoped>
 .container {
   width: 100%;
+  height: fit-content;
 }
 .selections {
   display: flex;

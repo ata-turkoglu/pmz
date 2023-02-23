@@ -16,12 +16,14 @@
         </span>
       </div>
     </div>
-    <HeavyMineralsActivityForm
-      v-if="selectedItem != null"
-      :isEdit="true"
-      :item="selectedItem"
-      :key="selectedItem.id"
-    />
+    <div class="form-container">
+      <HeavyMineralsActivityForm
+        v-if="selectedItem != null"
+        :isEdit="true"
+        :item="selectedItem"
+        :key="selectedItem.id"
+      />
+    </div>
   </div>
 </template>
 <script>
@@ -49,7 +51,6 @@ export default {
   methods: {
     selectForm(item) {
       console.log("item", item);
-      console.log("list", this.$store.state.activityForms);
       this.selectedItem = item;
     },
     findShiftNameById(id) {
@@ -66,17 +67,24 @@ export default {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  justify-content: space-between;
+  justify-content: flex-start;
   padding-block: 10px;
 }
 .form-list {
-  min-width: "15%";
+  min-width: "20%";
   width: "fit-content";
+  padding-right: 10px;
+  max-height: 90vh;
+  overflow-y: scroll;
+}
+.form-container {
+  width: 90%;
+  height: fit-content;
 }
 .form-list-item {
   background-color: #1565c0;
   color: white;
-  border-radius: 3px;
+  border-radius: 5px;
   margin-bottom: 1px;
   padding-block: 10px;
   padding-left: 20px;
@@ -105,7 +113,7 @@ export default {
     max-width: 90%;
     max-height: 250px;
     overflow: scroll;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
     padding-inline: 10px;
   }
 }

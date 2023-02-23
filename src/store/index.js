@@ -11,7 +11,7 @@ export default createStore({
       {
         id: 1,
         name: "Agrega",
-        disabled: false,
+        disabled: true,
       },
       {
         id: 2,
@@ -71,7 +71,8 @@ export default createStore({
     getHeavyMineralsForms: (state) => {
       return state.activityForms
         .filter((itm) => itm.facility == 2)
-        .sort((a, b) => a.id - b.id);
+        .sort((a, b) => a.shift - b.shift)
+        .sort((a, b) => new Date(b.date) - new Date(a.date));
     },
   },
   mutations: {
@@ -86,10 +87,13 @@ export default createStore({
           .reverse()
           .join("-");
       });
-      console.log(data);
       state.activityForms.push(...data);
     },
-    updateActivityForms(state, data) {
+    addNewActivityForm(state, data) {
+      state.activityForms.push(data);
+      state.buttons.activityFormSaveButtonLoading = false;
+    },
+    updateActivityForm(state, data) {
       let foundItem = state.activityForms.find((itm) => itm.id == data.id);
 
       foundItem.date = data.date;
@@ -118,17 +122,18 @@ export default createStore({
           commit("setActivityForms", result.data);
         });
     },
-    addNewActivityForm({ commit }, data) {
+    addNewActivityForm({ commit, state }, data) {
       return axios.put("/activity-forms/add", data).then((result) => {
         console.log("addNewActivityForm", result);
-        state.buttons.activityFormSaveButtonLoading = false;
+        data.id = result.data[0].id;
+        commit("addNewActivityForm", data);
       });
     },
     updateActivityForm({ commit, state }, data) {
       return axios.put("/activity-forms/update", data).then((result) => {
         console.log("updateActivityForm", result);
         if (!result.error) {
-          commit("updateActivityForms", data);
+          commit("updateActivityForm", data);
         }
       });
     },
