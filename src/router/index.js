@@ -1,8 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView";
-import ActivityForm from "../views/AvtifityForm/ActivityForm.vue";
-import HeavyMineralsActivityForm from "../views/AvtifityForm/HeavyMineralsActivityForm.vue";
-import AgregatesActivityForm from "../views/AvtifityForm/AgregatesActivityForm.vue";
+import NewActivityForm from "../views/ActivityForms/NewActivityForm.vue";
+import ActivityFormList from "../views/ActivityForms/ActivityFormList.vue";
 import Graphs from "../components/Graphs.vue";
 
 const routes = [
@@ -11,25 +10,21 @@ const routes = [
     name: "home",
     component: HomeView,
     children: [
-      {
+      /*       {
         path: "/activity-form",
-        name: "ActivityForm",
-        component: ActivityForm,
-        props: true,
-        children: [
-          {
-            path: "/activity-form/1",
-            name: "Agregates-ActivityForm",
-            component: AgregatesActivityForm,
-            props: true,
-          },
-          {
-            path: "/activity-form/2",
-            name: "HeavyMinerals-ActivityForm",
-            component: HeavyMineralsActivityForm,
-            props: true,
-          },
-        ],
+        name: "NewActivityForm",
+        component: NewActivityForm,
+        children: [],
+      }, */
+      {
+        path: "/activity-form/new",
+        name: "newActivityForm",
+        component: NewActivityForm,
+      },
+      {
+        path: "/activity-form/list",
+        name: "ActivityFormList",
+        component: ActivityFormList,
       },
       {
         path: "/graphs",
