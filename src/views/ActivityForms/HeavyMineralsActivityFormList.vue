@@ -59,14 +59,6 @@ export default {
       return this.selectedItem != null && this.selectedItem.id == id;
     },
   },
-  watch: {
-    "$store.state.activityForms": {
-      deep: true,
-      handler(val) {
-        console.log("----", val);
-      },
-    },
-  },
 };
 </script>
 <style scoped>
@@ -100,5 +92,21 @@ export default {
   display: flex;
   align-items: flex-start;
   margin-right: 20px;
+}
+@media screen and (max-width: 600px) {
+  .container1 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .form-list {
+    height: fit-content;
+    width: 90%;
+    max-width: 90%;
+    max-height: 250px;
+    overflow: scroll;
+    margin-bottom: 20px;
+    padding-inline: 10px;
+  }
 }
 </style>
