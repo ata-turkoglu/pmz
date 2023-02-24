@@ -120,6 +120,9 @@ export default createStore({
         .get("/activity-forms/getFacilityForms/" + facility)
         .then((result) => {
           commit("setActivityForms", result.data);
+        })
+        .then(() => {
+          return true;
         });
     },
     addNewActivityForm({ commit, state }, data) {

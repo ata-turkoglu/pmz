@@ -79,6 +79,7 @@ export default {
 }
 .form-container {
   width: 90%;
+  max-width: 90%;
   height: fit-content;
 }
 .form-list-item {
