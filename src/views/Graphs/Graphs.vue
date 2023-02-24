@@ -5,37 +5,37 @@
         facility.name
       }}</v-tab>
     </v-tabs>
-    <v-window id="activity-form-windows" v-model="selectedTab" class="py-1">
-      <v-window-item :value="1">
-        <AgregatesActivityFormList />
-      </v-window-item>
+    <v-window id="graphs-windows" v-model="selectedTab" class="py-1">
       <v-window-item :value="2">
-        <HeavyMineralsActivityFormList />
+        <HeavyMineralsGraphs />
       </v-window-item>
     </v-window>
   </div>
 </template>
+
 <script>
 import { mapGetters } from "vuex";
-import AgregatesActivityFormList from "./AgregatesActivityFormList.vue";
-import HeavyMineralsActivityFormList from "./HeavyMineralsActivityFormList.vue";
+import HeavyMineralsGraphs from "./HeavyMineralsGraphs";
 export default {
-  components: { AgregatesActivityFormList, HeavyMineralsActivityFormList },
+  components: { HeavyMineralsGraphs },
   data: () => ({
     selectedTab: null,
   }),
   computed: {
     ...mapGetters({ facilities: "getFacilities" }),
   },
-  beforeMount() {
-    this.selectedTab = this.facilities[0].id;
-  },
 };
 </script>
+
 <style scoped>
 .container {
   width: 100%;
   padding: 10px;
   padding-top: 0;
+}
+@media screen and (max-width: 600px) {
+  .container {
+    padding-inline: 5px;
+  }
 }
 </style>

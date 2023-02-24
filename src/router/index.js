@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView";
 import NewActivityForm from "../views/ActivityForms/NewActivityForm.vue";
 import ActivityFormList from "../views/ActivityForms/ActivityFormList.vue";
-import Graphs from "../components/Graphs.vue";
+import Graphs from "../views/Graphs/Graphs";
 
 const routes = [
   {

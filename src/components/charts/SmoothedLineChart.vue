@@ -27,10 +27,10 @@ export default {
       },
       legend: {
         data: [
-          { name: "Reducer" },
-          { name: "Dryer" },
-          { name: "ReducerHour" },
-          { name: "DryerHour" },
+          { name: "Reducer Total" },
+          { name: "Dryer Total" },
+          { name: "Reducer WH" },
+          { name: "Dryer WH" },
         ],
       },
       /* emphasis: {
@@ -71,7 +71,7 @@ export default {
       ],
       series: [
         {
-          name: "Reducer",
+          name: "Reducer Total",
           data: [],
           type: "line",
           smooth: true,
@@ -79,7 +79,7 @@ export default {
           color: "#4E342E",
         },
         {
-          name: "Dryer",
+          name: "Dryer Total",
           data: [],
           type: "line",
           smooth: true,
@@ -87,14 +87,14 @@ export default {
           color: "#FF8F00",
         },
         {
-          name: "DryerHour",
+          name: "Dryer WH",
           data: [],
           type: "bar",
           yAxisIndex: 1,
           color: "#FFECB3",
         },
         {
-          name: "ReducerHour",
+          name: "Reducer WH",
           data: [],
           type: "bar",
           yAxisIndex: 1,
@@ -110,8 +110,12 @@ export default {
   },
   methods: {
     setChart() {
-      let chartDiv = this.$refs.echart;
-      this.smoothChart = echarts.init(chartDiv);
+      /* let chartDiv = this.$refs.echart;
+      this.smoothChart = echarts.init(chartDiv); */
+
+      var chartDom = document.getElementById("echart");
+      this.smoothChart = echarts.init(chartDom);
+
       this.smoothChart.showLoading();
       setTimeout(() => {
         this.smoothChart.hideLoading();
@@ -150,14 +154,14 @@ export default {
 
       this.option.xAxis.data = days;
 
-      this.option.series.find((itm) => itm.name == "Dryer").data =
+      this.option.series.find((itm) => itm.name == "Dryer Total").data =
         calculatedData.map((itm) => itm.dryerTotalConsumption);
-      this.option.series.find((itm) => itm.name == "DryerHour").data =
+      this.option.series.find((itm) => itm.name == "Dryer WH").data =
         calculatedData.map((itm) => itm.dryerWorkingTime);
 
-      this.option.series.find((itm) => itm.name == "Reducer").data =
+      this.option.series.find((itm) => itm.name == "Reducer Total").data =
         calculatedData.map((itm) => itm.reducerTotalConsumption);
-      this.option.series.find((itm) => itm.name == "ReducerHour").data =
+      this.option.series.find((itm) => itm.name == "Reducer WH").data =
         calculatedData.map((itm) => itm.reducerWorkingTime);
     },
     setDataByDateRange(startDate, endDate) {
