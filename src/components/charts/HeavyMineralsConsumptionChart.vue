@@ -1,5 +1,8 @@
 <template>
-  <div id="chart" :style="$vuetify.display.smAndDown"></div>
+  <div class="chart-container">
+    <span class="title">Günlük Toplam Tüketim</span>
+    <div id="chart" :style="$vuetify.display.smAndDown"></div>
+  </div>
 </template>
 
 <script>
@@ -18,9 +21,16 @@ export default {
         feature: {
           saveAsImage: {},
         },
+        bottom: "2%",
       },
       legend: {
-        data: ["Reducer Total", "Reducer WH", "Dryer Total", "Dryer WH"],
+        type: "scroll",
+        data: [
+          "İndirgeme Toplam",
+          "İndirgeme ÇS",
+          "Kurutma Toplam",
+          "Kurutma ÇS",
+        ],
       },
       xAxis: {
         data: [],
@@ -57,7 +67,7 @@ export default {
       ],
       series: [
         {
-          name: "Reducer Total",
+          name: "İndirgeme Toplam",
           data: [],
           type: "line",
           smooth: true,
@@ -65,7 +75,7 @@ export default {
           color: "#4E342E",
         },
         {
-          name: "Dryer Total",
+          name: "Kurutma Toplam",
           data: [],
           type: "line",
           smooth: true,
@@ -73,14 +83,14 @@ export default {
           color: "#FF8F00",
         },
         {
-          name: "Dryer WH",
+          name: "Kurutma ÇS",
           data: [],
           type: "bar",
           yAxisIndex: 1,
           color: "#FFECB3",
         },
         {
-          name: "Reducer WH",
+          name: "İndirgeme ÇS",
           data: [],
           type: "bar",
           yAxisIndex: 1,
@@ -93,18 +103,19 @@ export default {
     setIncomingData() {
       this.chartOption.xAxis.data = this.xAxis;
 
-      this.chartOption.series.find((itm) => itm.name == "Dryer Total").data =
+      this.chartOption.series.find((itm) => itm.name == "Kurutma Toplam").data =
         this.chartData.map((itm) => itm.dryerTotalConsumption);
-      this.chartOption.series.find((itm) => itm.name == "Dryer WH").data =
+      this.chartOption.series.find((itm) => itm.name == "Kurutma ÇS").data =
         this.chartData.map((itm) => itm.dryerWorkingTime);
 
-      this.chartOption.series.find((itm) => itm.name == "Reducer Total").data =
-        this.chartData.map((itm) => itm.reducerTotalConsumption);
-      this.chartOption.series.find((itm) => itm.name == "Reducer WH").data =
+      this.chartOption.series.find(
+        (itm) => itm.name == "İndirgeme Toplam"
+      ).data = this.chartData.map((itm) => itm.reducerTotalConsumption);
+      this.chartOption.series.find((itm) => itm.name == "İndirgeme ÇS").data =
         this.chartData.map((itm) => itm.reducerWorkingTime);
     },
     setChart() {
-      var chartDom = document.getElementById("chart");
+      let chartDom = document.getElementById("chart");
       let myChart = echarts.init(chartDom);
 
       myChart.showLoading();
@@ -121,17 +132,31 @@ export default {
     this.setIncomingData();
   },
   mounted() {
-    this.setChart();
+    setTimeout(() => {
+      this.setChart();
+    }, 300);
   },
 };
 </script>
 
 <style scoped>
+.chart-container {
+  width: 100%;
+  height: fit-content;
+  box-shadow: 0 0 15px -5px grey;
+  border-radius: 20px;
+  padding-top: 20px;
+}
+.title {
+  display: flex;
+  align-self: flex-start;
+  padding-left: 5%;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
 #chart {
   width: 100%;
   height: 400px;
-  box-shadow: 0 0 15px -5px grey;
-  border-radius: 20px;
   padding-inline: 5px;
   padding-top: 20px;
   padding-bottom: 0;

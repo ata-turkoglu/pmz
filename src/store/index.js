@@ -11,7 +11,7 @@ export default createStore({
       {
         id: 1,
         name: "Agrega",
-        disabled: true,
+        disabled: false,
       },
       {
         id: 2,
@@ -26,12 +26,12 @@ export default createStore({
       {
         id: 4,
         name: "Kum",
-        disabled: true,
+        disabled: false,
       },
       {
         id: 5,
         name: "Kuvars Kırma",
-        disabled: true,
+        disabled: false,
       },
       {
         id: 6,

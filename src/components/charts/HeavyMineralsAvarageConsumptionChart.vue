@@ -1,5 +1,8 @@
 <template>
-  <div id="chart2"></div>
+  <div class="chart-container">
+    <span class="title">Günlük Ortalama Tüketim</span>
+    <div id="chart2"></div>
+  </div>
 </template>
 
 <script>
@@ -18,9 +21,11 @@ export default {
         feature: {
           saveAsImage: {},
         },
+        bottom: "2%",
       },
       legend: {
-        data: ["Reducer Avarage", "Dryer Avarage"],
+        z: 1,
+        data: ["İndirgeme Ortalama", "Kurutma Ortalama"],
       },
       xAxis: {
         data: [],
@@ -45,7 +50,7 @@ export default {
       ],
       series: [
         {
-          name: "Reducer Avarage",
+          name: "İndirgeme Ortalama",
           data: [],
           type: "line",
           smooth: true,
@@ -53,7 +58,7 @@ export default {
           symbolSize: 20,
         },
         {
-          name: "Dryer Avarage",
+          name: "Kurutma Ortalama",
           data: [],
           type: "line",
           smooth: true,
@@ -67,15 +72,16 @@ export default {
     setIncomingData() {
       this.chartOption.xAxis.data = this.xAxis;
 
-      this.chartOption.series.find((itm) => itm.name == "Dryer Avarage").data =
-        this.chartData.map((itm) => itm.dryerHourlyAvarageConsumption);
+      this.chartOption.series.find(
+        (itm) => itm.name == "Kurutma Ortalama"
+      ).data = this.chartData.map((itm) => itm.dryerHourlyAvarageConsumption);
 
       this.chartOption.series.find(
-        (itm) => itm.name == "Reducer Avarage"
+        (itm) => itm.name == "İndirgeme Ortalama"
       ).data = this.chartData.map((itm) => itm.reducerHourlyAvarageConsumption);
     },
     setChart() {
-      var chartDom = document.getElementById("chart2");
+      let chartDom = document.getElementById("chart2");
       let myChart = echarts.init(chartDom);
 
       myChart.showLoading();
@@ -92,17 +98,31 @@ export default {
     this.setIncomingData();
   },
   mounted() {
-    this.setChart();
+    setTimeout(() => {
+      this.setChart();
+    }, 300);
   },
 };
 </script>
 
 <style scoped>
+.chart-container {
+  width: 100%;
+  height: fit-content;
+  box-shadow: 0 0 15px -5px grey;
+  border-radius: 20px;
+  padding-top: 20px;
+}
+.title {
+  display: flex;
+  align-self: flex-start;
+  padding-left: 5%;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
 #chart2 {
   width: 100%;
   height: 400px;
-  box-shadow: 0 0 15px -5px grey;
-  border-radius: 20px;
   padding-inline: 5px;
   padding-top: 20px;
   padding-bottom: 0;
