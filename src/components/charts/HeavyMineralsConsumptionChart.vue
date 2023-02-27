@@ -104,15 +104,15 @@ export default {
       this.chartOption.xAxis.data = this.xAxis;
 
       this.chartOption.series.find((itm) => itm.name == "Kurutma Toplam").data =
-        this.chartData.map((itm) => itm.dryerTotalConsumption);
+        this.chartData.map((itm) => itm.dryer.totalConsumption);
       this.chartOption.series.find((itm) => itm.name == "Kurutma ÇS").data =
-        this.chartData.map((itm) => itm.dryerWorkingTime);
+        this.chartData.map((itm) => itm.dryer.workingTime);
 
       this.chartOption.series.find(
         (itm) => itm.name == "İndirgeme Toplam"
-      ).data = this.chartData.map((itm) => itm.reducerTotalConsumption);
+      ).data = this.chartData.map((itm) => itm.reducer.totalConsumption);
       this.chartOption.series.find((itm) => itm.name == "İndirgeme ÇS").data =
-        this.chartData.map((itm) => itm.reducerWorkingTime);
+        this.chartData.map((itm) => itm.reducer.workingTime);
     },
     setChart() {
       let chartDom = document.getElementById("chart");

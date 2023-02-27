@@ -74,11 +74,13 @@ export default {
 
       this.chartOption.series.find(
         (itm) => itm.name == "Kurutma Ortalama"
-      ).data = this.chartData.map((itm) => itm.dryerHourlyAvarageConsumption);
+      ).data = this.chartData.map((itm) => itm.dryer.hourlyAvarageConsumption);
 
       this.chartOption.series.find(
         (itm) => itm.name == "İndirgeme Ortalama"
-      ).data = this.chartData.map((itm) => itm.reducerHourlyAvarageConsumption);
+      ).data = this.chartData.map(
+        (itm) => itm.reducer.hourlyAvarageConsumption
+      );
     },
     setChart() {
       let chartDom = document.getElementById("chart2");
