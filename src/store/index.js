@@ -1,6 +1,7 @@
 import { createStore } from "vuex";
 import axios from "axios";
 import moment from "moment";
+import users from "./modules/users";
 moment.locale("tr");
 axios.defaults.baseURL = process.env.VUE_APP_BACKEND;
 
@@ -126,7 +127,7 @@ export default createStore({
         });
     },
     addNewActivityForm({ commit, state }, data) {
-      return axios.put("/activity-forms/add", data).then((result) => {
+      return axios.post("/activity-forms/add", data).then((result) => {
         console.log("addNewActivityForm", result);
         data.id = result.data[0].id;
         commit("addNewActivityForm", data);
@@ -141,5 +142,5 @@ export default createStore({
       });
     },
   },
-  modules: {},
+  modules: { users },
 });
