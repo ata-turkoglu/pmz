@@ -2,12 +2,19 @@
   <div class="container">
     <div class="selections">
       <VueDatePicker
+        ref="vDatePicker"
         class="datepicker"
         v-model="selectedDateRange"
         range
         :preset-ranges="presetRanges"
         :enable-time-picker="false"
-      />
+        position="left"
+        :format="vdpInputFormat"
+      >
+        <template #action-select>
+          <p class="vdp-select" @click="selectDate">Seç</p>
+        </template>
+      </VueDatePicker>
     </div>
     <HeavyMineralsConsumptionChart
       v-if="consumptionChartState"
@@ -50,6 +57,12 @@ export default {
     }),
   },
   methods: {
+    selectDate() {
+      this.$refs.vDatePicker.selectDate();
+    },
+    vdpInputFormat(date) {
+      return `${moment(date[0]).format("L")} - ${moment(date[1]).format("L")}`;
+    },
     setPresentRanges() {
       this.presetRanges = [
         {
@@ -272,6 +285,11 @@ export default {
 }
 .datepicker {
   width: 20%;
+}
+.vdp-select {
+  color: #1565c0;
+  cursor: pointer;
+  font-weight: 600;
 }
 @media screen and (max-width: 600px) {
   .container {
