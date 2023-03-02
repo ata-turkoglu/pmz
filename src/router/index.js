@@ -1,15 +1,17 @@
 import { createRouter, createWebHistory } from "vue-router";
+import store from "../store/index";
 import SignIn from "../views/SignIn";
 import Login from "../views/Login";
 import HomeView from "../views/HomeView";
 import NewActivityForm from "../views/ActivityForms/NewActivityForm.vue";
 import ActivityFormList from "../views/ActivityForms/ActivityFormList.vue";
 import Graphs from "../views/Graphs/Graphs";
+import Settings from "../views/Settings/Settings";
 
 const routes = [
   {
     path: "/signin",
-    name: "SignIn",
+    name: "Signin",
     component: SignIn,
   },
   {
@@ -19,15 +21,9 @@ const routes = [
   },
   {
     path: "/",
-    name: "home",
+    name: "Home",
     component: HomeView,
     children: [
-      /*       {
-        path: "/activity-form",
-        name: "NewActivityForm",
-        component: NewActivityForm,
-        children: [],
-      }, */
       {
         path: "/activity-form/new",
         name: "newActivityForm",
@@ -43,6 +39,11 @@ const routes = [
         name: "Graps",
         component: Graphs,
       },
+      {
+        path: "/settings",
+        name: "Settings",
+        component: Settings,
+      },
     ],
   },
 ];
@@ -50,6 +51,14 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  if (to.name !== "Login" && !store.state.users.authenticated) {
+    next({ name: "Login" });
+  } else {
+    next();
+  }
 });
 
 export default router;

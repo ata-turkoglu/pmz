@@ -44,7 +44,7 @@ export default {
   data: () => ({
     username: null,
     password: null,
-    rememberMe: false,
+    rememberMe: true,
     validation: {
       username: false,
       password: false,
@@ -74,6 +74,11 @@ export default {
       });
     },
   },
+  beforeMount() {
+    localStorage.getItem("username") &&
+      (this.username = localStorage.getItem("username")) &&
+      (this.validation.username = true);
+  },
 };
 </script>
 
@@ -87,10 +92,8 @@ export default {
 .login-modal {
   width: fit-content;
   height: fit-content;
-  padding: 20px;
-}
-.login-form {
-  width: 100%;
+  padding-inline: 20px;
+  padding-block: 25px;
 }
 .form-input {
   z-index: 1;

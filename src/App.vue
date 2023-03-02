@@ -9,6 +9,11 @@ export default {
   created() {
     //this.$store.dispatch("getAllFacilities");
   },
+  beforeCreate() {
+    this.$store.dispatch("users/userExist").then(() => {
+      !this.$store.state.users.authenticated && this.$router.push("/login");
+    });
+  },
 };
 </script>
 
