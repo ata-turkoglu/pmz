@@ -19,6 +19,12 @@
       <template v-slot:item.signup_date="{ item }">
         <span>{{ tableDate(item.raw.signup_date) }}</span>
       </template>
+      <template v-slot:item.enable_reset="{ item }">
+        <v-checkbox-btn
+          v-model="item.raw.enable_reset"
+          disabled
+        ></v-checkbox-btn>
+      </template>
       <template v-slot:item.actions="{ item }">
         <v-icon size="small" class="me-2" @click="editItem(item.raw)">
           mdi-pencil
@@ -59,6 +65,13 @@
               <v-checkbox
                 v-model="editedItem.status"
                 label="Aktif"
+                hide-details="true"
+              ></v-checkbox>
+            </v-col>
+            <v-col cols="12" sm="6" md="4">
+              <v-checkbox
+                v-model="editedItem.enable_reset"
+                label="Şifre İzni"
                 hide-details="true"
               ></v-checkbox>
             </v-col>
@@ -117,12 +130,14 @@ export default {
         align: "start",
         sortable: true,
       },
+      { title: "Şifre İzni", key: "enable_reset", align: "start" },
       { title: "işlem", key: "actions", align: "start" },
     ],
     editedItem: {
       username: null,
       role: null,
       status: null,
+      enable_reset: null,
     },
   }),
   computed: {
@@ -139,6 +154,7 @@ export default {
         username: item.username,
         role: item.role,
         status: item.status,
+        enable_reset: item.enable_reset,
       };
     },
     tableRole(role) {
