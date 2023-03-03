@@ -8,7 +8,19 @@
         >Data is tool for enhancing intuition</v-app-bar-title
       >
       <template v-slot:append>
-        <v-btn icon="mdi-dots-vertical" color="white"></v-btn>
+        <v-menu>
+          <template v-slot:activator="{ props }">
+            <v-btn icon="mdi-dots-vertical" v-bind="props"></v-btn>
+          </template>
+          <v-list>
+            <v-list-item
+              title="Ayarlar"
+              class="menu-item"
+              @click="goToSettings"
+            />
+            <v-list-item title="Çıkış" class="menu-item" @click="logout" />
+          </v-list>
+        </v-menu>
       </template>
     </v-app-bar>
     <v-navigation-drawer
@@ -63,6 +75,14 @@ export default {
   data: () => ({
     drawer: false,
   }),
+  methods: {
+    goToSettings() {
+      this.$router.push("/settings");
+    },
+    logout() {
+      this.$store.dispatch("users/logout");
+    },
+  },
 };
 </script>
 
@@ -71,5 +91,8 @@ export default {
   display: flex;
   color: white;
   cursor: pointer;
+}
+.menu-item {
+  width: fit-content;
 }
 </style>
