@@ -8,12 +8,27 @@ export default {
   namespaced: true,
   state: {
     user: null,
+    users: [],
     authenticated: false,
     buttons: {
       loginButtonLoading: false,
+      editUserSaveButtonLoading: false,
+    },
+    roles: [
+      { id: 1, value: "developer", title: "Geliştirici" },
+      { id: 2, value: "manager", title: "Yönetici" },
+      { id: 3, value: "foreman", title: "Formen" },
+      { id: 4, value: "worker", title: "İşçi" },
+    ],
+  },
+  getters: {
+    getUsers: (state) => {
+      return state.users;
+    },
+    getRoles: (state) => {
+      return state.roles;
     },
   },
-  getters: {},
   mutations: {
     setUser: (state, data) => {
       state.user = data;
@@ -24,6 +39,18 @@ export default {
         router.push("/");
       }
     },
+
+    setUsers: (state, data) => {
+      state.users = data;
+    },
+
+    updateUser: (state, data) => {
+      let index = state.users.findIndex((itm) => itm.id == data.id);
+      state.users.splice(index, 1, data);
+
+      state.buttons.editUserSaveButtonLoading = false;
+    },
+
     removeUser: (state) => {
       state.user = null;
     },
@@ -31,14 +58,27 @@ export default {
   actions: {
     async getUsers({ commit }) {
       return axios.get("/users/all").then((result) => {
-        console.log(result);
+        commit("setUsers", result.data);
       });
     },
+
+    async updateUser({ commit }, data) {
+      return axios.put("/users/update", data).then((result) => {
+        if (result.data[0].id) {
+          commit("updateUser", data);
+          return true;
+        } else {
+          return false;
+        }
+      });
+    },
+
     async signIn({ commit }, data) {
       return axios.post("/users/signin", data).then((result) => {
         console.log(result);
       });
     },
+
     async login({ commit }, data) {
       return axios
         .post("/users/login", {
@@ -68,12 +108,14 @@ export default {
           });
         });
     },
+
     async logout({ commit, state }) {
       localStorage.removeItem("auth_token");
       state.authenticated = false;
       commit("removeUser");
       router.push({ name: "Login" });
     },
+
     async userExist({ commit }) {
       return new Promise(async (resolve) => {
         let auth_token = window.localStorage.getItem("auth_token");
@@ -95,12 +137,3 @@ export default {
     },
   },
 };
-
-//id
-//username
-//password
-//role
-//status
-//signupdate
-//lastlogindate
-//token
