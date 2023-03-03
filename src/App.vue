@@ -1,10 +1,21 @@
 <template>
   <nav><router-link to="/">Home</router-link> |</nav>
   <router-view />
+  <v-dialog
+    v-model="$store.state.commonDialogs.routePermissionDialog"
+    width="auto"
+  >
+    <ErrorDialog
+      :errorText="'Giriş için izniniz yok'"
+      @close="$store.state.commonDialogs.routePermissionDialog = false"
+    />
+  </v-dialog>
 </template>
 
 <script>
+import ErrorDialog from "./components/common/ErrorDialog.vue";
 export default {
+  components: { ErrorDialog },
   data: () => ({}),
   created() {
     //this.$store.dispatch("getAllFacilities");

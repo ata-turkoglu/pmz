@@ -62,6 +62,7 @@ export default createStore({
     buttons: {
       activityFormSaveButtonLoading: false,
     },
+    commonDialogs: { routePermissionDialog: false },
   },
   getters: {
     getFacilities: (state) => {
