@@ -1,3 +1,1 @@
-<template>
-  <span>Agregates - Activity Form</span>
-</template>
+<template></template>

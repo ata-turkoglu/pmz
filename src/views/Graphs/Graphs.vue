@@ -35,7 +35,7 @@ export default {
 }
 @media screen and (max-width: 600px) {
   .container {
-    padding-inline: 5px;
+    padding-inline: 0;
   }
 }
 </style>

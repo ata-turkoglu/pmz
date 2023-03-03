@@ -4,7 +4,9 @@
       <template v-slot:prepend>
         <v-app-bar-nav-icon @click.stop="drawer = !drawer" color="white" />
       </template>
-      <v-app-bar-title style="color: white"
+      <v-app-bar-title
+        style="color: white; cursor: pointer"
+        @click="$router.push('/')"
         >Data is tool for enhancing intuition</v-app-bar-title
       >
       <template v-slot:append>

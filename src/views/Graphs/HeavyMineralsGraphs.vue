@@ -294,10 +294,10 @@ export default {
 @media screen and (max-width: 600px) {
   .container {
     margin-inline: 0;
-    padding-inline: 5px;
+    padding-inline: 0;
   }
   .datepicker {
-    width: 50%;
+    width: 100%;
   }
 }
 </style>

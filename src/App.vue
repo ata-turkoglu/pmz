@@ -1,15 +1,17 @@
 <template>
-  <nav><router-link to="/">Home</router-link> |</nav>
-  <router-view />
-  <v-dialog
-    v-model="$store.state.commonDialogs.routePermissionDialog"
-    width="auto"
-  >
-    <ErrorDialog
-      :errorText="'Giriş için izniniz yok'"
-      @close="$store.state.commonDialogs.routePermissionDialog = false"
-    />
-  </v-dialog>
+  <div class="main-container">
+    <nav></nav>
+    <router-view />
+    <v-dialog
+      v-model="$store.state.commonDialogs.routePermissionDialog"
+      width="auto"
+    >
+      <ErrorDialog
+        :errorText="'Giriş için izniniz yok'"
+        @close="$store.state.commonDialogs.routePermissionDialog = false"
+      />
+    </v-dialog>
+  </div>
 </template>
 
 <script>
@@ -36,7 +38,10 @@ export default {
   text-align: center;
   color: #2c3e50;
 }
-
+.main-container {
+  width: 100%;
+  height: 100%;
+}
 nav {
   padding: 30px;
 }

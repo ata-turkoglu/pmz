@@ -162,6 +162,14 @@ export default {
   padding-bottom: 0;
 }
 @media screen and (max-width: 600px) {
+  .chart-container {
+    width: 100%;
+    height: fit-content;
+    box-shadow: unset;
+    border-radius: 0;
+    padding-top: 20px;
+    border-bottom: 1px solid rgb(220, 220, 220);
+  }
   #chart {
     width: 100%;
     height: 300px;
