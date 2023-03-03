@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import store from "../store/index";
+import permissions from "@/mixins/permissions";
 import SignIn from "../views/SignIn";
 import Login from "../views/Login";
 import HomeView from "../views/HomeView";
@@ -43,6 +44,14 @@ const routes = [
         path: "/settings",
         name: "Settings",
         component: Settings,
+        beforeEnter: (to, from) => {
+          if (permissions.methods.accessSettings()) {
+            return true;
+          } else {
+            store.state.commonDialogs.routePermissionDialog = true;
+            return false;
+          }
+        },
       },
     ],
   },
@@ -54,7 +63,9 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  if (to.name !== "Login" && !store.state.users.authenticated) {
+  if (to.name == "Signin") {
+    next();
+  } else if (to.name !== "Login" && !store.state.users.authenticated) {
     next({ name: "Login" });
   } else {
     next();
