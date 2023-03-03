@@ -39,14 +39,14 @@
         @click:append-inner="show2 = !show2"
       ></v-text-field>
       <v-btn
-        :loading="false"
+        :loading="$store.state.users.buttons.signinButtonLoading"
         class="form-input"
         block
         variant="outlined"
         @click="signIn"
         :disabled="!formValidation"
       >
-        Kayıt
+        {{ resetPassword ? "Gönder" : "Kayıt" }}
       </v-btn>
       <div style="display: flex; justify-content: flex-end" width="100%">
         <span
@@ -58,11 +58,39 @@
         </span>
       </div>
     </v-card>
+    <v-dialog v-model="$store.state.commonDialogs.successDialog" width="auto">
+      <InfoDialog
+        :infoText="'Başarılı'"
+        @close="
+          [
+            ($store.state.commonDialogs.successDialog = false),
+            $router.push('/login'),
+          ]
+        "
+      />
+    </v-dialog>
+    <v-dialog
+      v-model="$store.state.commonDialogs.loginErrorDialog"
+      width="auto"
+    >
+      <ErrorDialog
+        :errorText="$store.state.commonErrorText"
+        @close="
+          [
+            ($store.state.commonDialogs.loginErrorDialog = false),
+            ($store.state.commonErrorText = null),
+          ]
+        "
+      />
+    </v-dialog>
   </div>
 </template>
 
 <script>
+import InfoDialog from "../components/common/InfoDialog.vue";
+import ErrorDialog from "../components/common/ErrorDialog.vue";
 export default {
+  components: { InfoDialog, ErrorDialog },
   data: () => ({
     username: null,
     password: null,
@@ -74,6 +102,7 @@ export default {
     },
     show1: false,
     show2: false,
+    resetPassword: false,
   }),
   computed: {
     checkUsername() {
@@ -95,12 +124,24 @@ export default {
   },
   methods: {
     signIn() {
-      this.$store.dispatch("users/signIn", {
-        username: this.username,
-        password: this.password,
-        confirmPassword: this.confirmPassword,
-      });
+      this.$store.state.users.buttons.signinButtonLoading = true;
+      if (this.resetPassword) {
+        this.$store.dispatch("users/passwordReset", {
+          username: this.username,
+          password: this.password,
+          confirmPassword: this.confirmPassword,
+        });
+      } else {
+        this.$store.dispatch("users/signIn", {
+          username: this.username,
+          password: this.password,
+          confirmPassword: this.confirmPassword,
+        });
+      }
     },
+  },
+  created() {
+    this.resetPassword = this.$route.name == "PasswordReset";
   },
 };
 </script>
@@ -115,7 +156,9 @@ export default {
 .login-modal {
   width: fit-content;
   height: fit-content;
-  padding: 20px;
+  padding-inline: 20px;
+  padding-top: 30px;
+  padding-bottom: 15px;
 }
 .login-form {
   width: 100%;

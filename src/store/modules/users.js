@@ -1,6 +1,7 @@
 import axios from "axios";
 import jwt from "vue-jwt-decode";
 import router from "../../router/index";
+import store from "../index";
 
 axios.defaults.baseURL = process.env.VUE_APP_BACKEND;
 
@@ -12,6 +13,7 @@ export default {
     authenticated: false,
     buttons: {
       loginButtonLoading: false,
+      signinButtonLoading: false,
       editUserSaveButtonLoading: false,
     },
     roles: [
@@ -98,14 +100,20 @@ export default {
               result.data.token,
               process.env.VUE_APP_JWT_SECRET_KEY
             );
+          } else if (result.data.error) {
+            store.state.commonErrorText = result.data.error;
+            store.state.commonDialogs.loginErrorDialog = true;
+            store.state.users.buttons.loginButtonLoading = false;
           }
         })
         .then((decoded) => {
-          commit("setUser", {
-            id: decoded.id,
-            username: decoded.username,
-            role: decoded.role,
-          });
+          if (decoded) {
+            commit("setUser", {
+              id: decoded.id,
+              username: decoded.username,
+              role: decoded.role,
+            });
+          }
         });
     },
 
@@ -114,6 +122,19 @@ export default {
       state.authenticated = false;
       commit("removeUser");
       router.push({ name: "Login" });
+    },
+
+    async passwordReset({ commit, state }, data) {
+      return axios.put("/users/password-reset", data).then((result) => {
+        if (result.data.error) {
+          store.state.commonErrorText = result.data.error;
+          store.state.commonDialogs.loginErrorDialog = true;
+          store.state.users.buttons.signinButtonLoading = false;
+        } else if (result.data[0].id) {
+          store.state.commonDialogs.successDialog = true;
+          store.state.users.buttons.signinButtonLoading = false;
+        }
+      });
     },
 
     async userExist({ commit }) {

@@ -35,7 +35,14 @@
         :disabled="!formValidation"
         >Giriş</v-btn
       >
-      <div style="display: flex; justify-content: flex-end" width="100%">
+      <div style="display: flex; justify-content: space-between" width="100%">
+        <span
+          style="color: black; cursor: pointer; font-size: 0.8rem"
+          class="mt-4 mb-0 mr-2"
+          @click="$router.push('/password-reset')"
+        >
+          Şifremi Değiştir
+        </span>
         <span
           style="color: black; cursor: pointer"
           class="mt-4 mb-0 mr-2"
@@ -45,11 +52,27 @@
         </span>
       </div>
     </v-card>
+    <v-dialog
+      v-model="$store.state.commonDialogs.loginErrorDialog"
+      width="auto"
+    >
+      <ErrorDialog
+        :errorText="$store.state.commonErrorText"
+        @close="
+          [
+            ($store.state.commonDialogs.loginErrorDialog = false),
+            ($store.state.commonErrorText = null),
+          ]
+        "
+      />
+    </v-dialog>
   </div>
 </template>
 
 <script>
+import ErrorDialog from "../components/common/ErrorDialog.vue";
 export default {
+  components: { ErrorDialog },
   data: () => ({
     username: null,
     password: null,
@@ -102,7 +125,8 @@ export default {
   width: fit-content;
   height: fit-content;
   padding-inline: 20px;
-  padding-block: 25px;
+  padding-top: 30px;
+  padding-bottom: 15px;
 }
 .form-input {
   z-index: 1;

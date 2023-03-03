@@ -21,6 +21,12 @@ const routes = [
     component: Login,
   },
   {
+    path: "/password-reset",
+    name: "PasswordReset",
+    component: SignIn,
+    props: true,
+  },
+  {
     path: "/",
     name: "Home",
     component: HomeView,
@@ -63,7 +69,7 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  if (to.name == "Signin") {
+  if (to.name == "Signin" || to.name == "PasswordReset") {
     next();
   } else if (to.name !== "Login" && !store.state.users.authenticated) {
     next({ name: "Login" });
