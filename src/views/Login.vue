@@ -35,6 +35,15 @@
         :disabled="!formValidation"
         >Giriş</v-btn
       >
+      <div style="display: flex; justify-content: flex-end" width="100%">
+        <span
+          style="color: black; cursor: pointer"
+          class="mt-4 mb-0 mr-2"
+          @click="$router.push('/signin')"
+        >
+          Kayıt Ol
+        </span>
+      </div>
     </v-card>
   </div>
 </template>

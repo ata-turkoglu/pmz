@@ -284,7 +284,7 @@ export default {
   padding-inline: 10px;
 }
 .datepicker {
-  width: 20%;
+  width: 30%;
 }
 .vdp-select {
   color: #1565c0;
