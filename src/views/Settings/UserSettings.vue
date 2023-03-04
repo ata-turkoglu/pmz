@@ -158,7 +158,8 @@ export default {
       };
     },
     tableRole(role) {
-      return this.roles.find((itm) => itm.id == role).title;
+      let found = this.roles.find((itm) => itm.id == role) || { title: "" };
+      return found.title;
     },
     tableDate(date) {
       return moment(date).format("lll");
