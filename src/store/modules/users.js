@@ -77,7 +77,14 @@ export default {
 
     async signIn({ commit }, data) {
       return axios.post("/users/signin", data).then((result) => {
-        console.log(result);
+        if (result.data.error) {
+          store.state.commonErrorText = result.data.error;
+          store.state.commonDialogs.loginErrorDialog = true;
+          store.state.users.buttons.signinButtonLoading = false;
+        } else if (result.data[0].id) {
+          store.state.commonDialogs.successDialog = true;
+          store.state.users.buttons.signinButtonLoading = false;
+        }
       });
     },
 
@@ -126,11 +133,11 @@ export default {
 
     async passwordReset({ commit, state }, data) {
       return axios.put("/users/password-reset", data).then((result) => {
-        if (result.data.error) {
+        if (result.data?.error) {
           store.state.commonErrorText = result.data.error;
           store.state.commonDialogs.loginErrorDialog = true;
           store.state.users.buttons.signinButtonLoading = false;
-        } else if (result.data[0].id) {
+        } else if (result.data[0]?.id) {
           store.state.commonDialogs.successDialog = true;
           store.state.users.buttons.signinButtonLoading = false;
         }
