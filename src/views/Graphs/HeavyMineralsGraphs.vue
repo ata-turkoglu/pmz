@@ -16,26 +16,46 @@
           <p class="vdp-select" @click="selectDate">Seç</p>
         </template>
       </VueDatePicker>
-      <div class="average-data">
-        <div>
-          <span>Genel Ortalama</span>
+      <div class="average-data mt-5 pa-3">
+        <div
+          class="avarage-section mr-16"
+          :class="$vuetify.display.smAndDown ? 'mb-5' : ''"
+        >
+          <span><b>Genel Ortalamalar</b></span>
+          <div>
+            <span>İndirgeme:</span>
+            <span class="ml-2">{{ totalAvarages.reducer }} sm3</span>
+          </div>
+          <div>
+            <span>Kurutma:</span>
+            <span class="ml-2">{{ totalAvarages.dryer }} sm3</span>
+          </div>
         </div>
-        <div>
-          <span>Seçilen tarihlerde ortalama</span>
+        <div class="avarage-section">
+          <span><b>Seçilen tarihlerde ortalamalar</b></span>
+          <div>
+            <span>İndirgeme:</span>
+            <span></span>
+          </div>
+          <div>
+            <span>Kurutma:</span>
+          </div>
         </div>
       </div>
     </div>
-    <HeavyMineralsConsumptionChart
-      v-if="consumptionChartState"
-      :xAxis="consumption_xAxis"
-      :chartData="consumption_calculatedData"
-      style="margin-bottom: 20px"
-    />
-    <HeavyMineralsAvarageConsumptionChart
-      v-if="consumptionChartState"
-      :xAxis="consumption_xAxis"
-      :chartData="consumption_calculatedData"
-    />
+    <div class="charts">
+      <HeavyMineralsConsumptionChart
+        v-if="consumptionChartState"
+        :xAxis="consumption_xAxis"
+        :chartData="consumption_calculatedData"
+        style="margin-bottom: 20px"
+      />
+      <HeavyMineralsAvarageConsumptionChart
+        v-if="consumptionChartState"
+        :xAxis="consumption_xAxis"
+        :chartData="consumption_calculatedData"
+      />
+    </div>
   </div>
 </template>
 <script>
@@ -58,12 +78,13 @@ export default {
     consumption_xAxis: null,
     selectedDateRange: null,
     presetRanges: [],
-    conut: 0,
+    totalAvarages: {},
   }),
   computed: {
     ...mapGetters({
       formList: "getHeavyMineralsForms",
       chartData: "chartData/getHeavyMineralsConsumptionData",
+      lastTotal: "chartData/getLastTotalData",
     }),
   },
   methods: {
@@ -150,9 +171,27 @@ export default {
         this.consumptionChartState = true;
       }, 100);
     },
+    setAvarages() {
+      this.$store
+        .dispatch("chartData/getLastTotalData", { facility: 2 })
+        .then(() => {
+          let dryerPartOfCng =
+            this.lastTotal.dryerTotal * this.dryerConsumption;
+          let reducerPartOfCng = this.lastTotal.cngTotal - dryerPartOfCng;
+
+          this.totalAvarages.dryer = (
+            dryerPartOfCng / this.lastTotal.dryerTotal
+          ).toFixed(2);
+
+          this.totalAvarages.reducer = (
+            reducerPartOfCng / this.lastTotal.reducerTotal
+          ).toFixed(2);
+        });
+    },
   },
   created() {
     this.setPresentRanges();
+    this.setAvarages();
   },
   watch: {
     selectedDateRange: {
@@ -184,6 +223,11 @@ export default {
   padding-block: 20px;
   padding-inline: 10px;
 }
+.charts {
+  width: 100%;
+  height: 100%;
+  padding-inline: 10px;
+}
 .datepicker {
   width: 30%;
 }
@@ -196,6 +240,14 @@ export default {
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  border: 1px solid rgb(215, 215, 215);
+  border-radius: 4px;
+  width: fit-content;
+}
+.avarage-section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 @media screen and (max-width: 600px) {
   .container {
@@ -204,6 +256,11 @@ export default {
     min-height: 90vh;
   }
   .datepicker {
+    width: 100%;
+  }
+  .average-data {
+    flex-direction: column;
+    align-items: flex-start;
     width: 100%;
   }
 }

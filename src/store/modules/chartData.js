@@ -7,11 +7,15 @@ export default {
   state: {
     chartData: {
       heavyMineralsConsumption: null,
+      heavyMineralsLastTotal: null,
     },
   },
   getters: {
     getHeavyMineralsConsumptionData: (state) => {
       return state.chartData.heavyMineralsConsumption;
+    },
+    getLastTotalData: (state) => {
+      return state.chartData.heavyMineralsLastTotal;
     },
   },
   mutations: {
@@ -19,6 +23,16 @@ export default {
       switch (data.facility) {
         case 2:
           state.chartData.heavyMineralsConsumption = data.chartData;
+          break;
+
+        default:
+          break;
+      }
+    },
+    setLastTotal: (state, data) => {
+      switch (data.facility) {
+        case 2:
+          state.chartData.heavyMineralsLastTotal = data.chartData;
           break;
 
         default:
@@ -43,6 +57,21 @@ export default {
           console.log("result", result);
           await commit("setChartData", {
             chartData: result.data,
+            facility,
+          });
+          return true;
+        });
+    },
+    async getLastTotalData({ commit }, { facility }) {
+      return axios
+        .get("/chart-data/get-last-total", {
+          params: {
+            facility,
+          },
+        })
+        .then(async (result) => {
+          await commit("setLastTotal", {
+            chartData: result.data[0],
             facility,
           });
           return true;
