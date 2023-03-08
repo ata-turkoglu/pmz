@@ -32,6 +32,7 @@
         variant="outlined"
         type="number"
         v-model="dryerKilnTimer"
+        :hint="setHint"
       ></v-text-field>
       <v-text-field
         class="inputs"
@@ -39,6 +40,7 @@
         variant="outlined"
         type="number"
         v-model="reducerKilnTimer"
+        :hint="setHint"
       ></v-text-field>
       <v-text-field
         class="inputs"
@@ -46,6 +48,7 @@
         variant="outlined"
         type="number"
         v-model="cngTimer"
+        :hint="setHint"
       ></v-text-field>
     </div>
     <div class="notes mt-4">
@@ -91,12 +94,33 @@
         >Kaydet</v-btn
       >
     </v-row>
+    <v-dialog v-model="$store.state.commonDialogs.successDialog" width="auto">
+      <InfoDialog
+        :infoText="'Başarılı'"
+        @close="$store.state.commonDialogs.successDialog = false"
+      />
+    </v-dialog>
+    <v-dialog v-model="$store.state.commonDialogs.errorDialog" width="auto">
+      <ErrorDialog
+        :errorText="$store.state.commonErrorText"
+        @close="
+          [
+            ($store.state.commonDialogs.errorDialog = false),
+            ($store.state.commonErrorText = null),
+          ]
+        "
+      />
+    </v-dialog>
   </div>
 </template>
 
 <script>
+import InfoDialog from "@/components/common/InfoDialog.vue";
+import ErrorDialog from "@/components/common/ErrorDialog.vue";
+import moment from "moment";
 export default {
   props: ["isEdit", "item"],
+  components: { InfoDialog, ErrorDialog },
   data: () => ({
     id: null,
     selectedDate: null,
@@ -152,6 +176,23 @@ export default {
         });
       } else {
         this.$store.dispatch("addNewActivityForm", data);
+      }
+    },
+  },
+  computed: {
+    setHint() {
+      switch (this.selectedShift) {
+        case 1:
+          return "8.00 daki çalışma saati";
+
+        case 2:
+          return "16.00 daki çalışma saati";
+
+        case 3:
+          return "24.00 daki çalışma saati";
+
+        default:
+          return "";
       }
     },
   },
