@@ -2,6 +2,7 @@ import { createStore } from "vuex";
 import axios from "axios";
 import moment from "moment";
 import users from "./modules/users";
+import chartData from "./modules/chartData";
 moment.locale("tr");
 axios.defaults.baseURL = process.env.VUE_APP_BACKEND;
 
@@ -12,7 +13,7 @@ export default createStore({
       {
         id: 1,
         name: "Agrega",
-        disabled: false,
+        disabled: true,
       },
       {
         id: 2,
@@ -27,12 +28,12 @@ export default createStore({
       {
         id: 4,
         name: "Kum",
-        disabled: false,
+        disabled: true,
       },
       {
         id: 5,
         name: "Kuvars Kırma",
-        disabled: false,
+        disabled: true,
       },
       {
         id: 6,
@@ -66,6 +67,7 @@ export default createStore({
       routePermissionDialog: false,
       loginErrorDialog: false,
       successDialog: false,
+      errorDialog: false,
     },
     commonErrorText: null,
   },
@@ -126,6 +128,7 @@ export default createStore({
       return axios
         .get("/activity-forms/getFacilityForms/" + facility)
         .then((result) => {
+          console.log(result.data);
           commit("setActivityForms", result.data);
         })
         .then(() => {
@@ -134,9 +137,18 @@ export default createStore({
     },
     addNewActivityForm({ commit, state }, data) {
       return axios.post("/activity-forms/add", data).then((result) => {
-        console.log("addNewActivityForm", result);
-        data.id = result.data[0].id;
-        commit("addNewActivityForm", data);
+        if (result.data[0]?.id) {
+          data.id = result.data[0].id;
+          commit("addNewActivityForm", data);
+          state.commonDialogs.successDialog = true;
+          state.buttons.activityFormSaveButtonLoading = false;
+        } else if (result.data?.error) {
+          state.commonErrorText = result.data.error;
+          state.commonDialogs.errorDialog = true;
+          state.buttons.activityFormSaveButtonLoading = false;
+        } else {
+          console.log("addNewActivityForm Error");
+        }
       });
     },
     updateActivityForm({ commit, state }, data) {
@@ -148,5 +160,5 @@ export default createStore({
       });
     },
   },
-  modules: { users },
+  modules: { users, chartData },
 });
