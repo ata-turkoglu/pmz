@@ -143,9 +143,9 @@ export default {
 .chart-container {
   width: 100%;
   height: fit-content;
-  box-shadow: 0 0 15px -5px grey;
-  border-radius: 20px;
+  border-radius: 4px;
   padding-top: 20px;
+  border: 1px solid rgb(220, 220, 220);
 }
 .title {
   display: flex;
