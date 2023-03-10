@@ -24,21 +24,26 @@
           <span><b>Genel Ortalamalar</b></span>
           <div>
             <span>İndirgeme:</span>
-            <span class="ml-2">{{ totalAvarages.reducer }} sm3</span>
+            <span class="ml-2">{{ totalAvarages.reducer }} sm<sup>3</sup></span>
           </div>
           <div>
             <span>Kurutma:</span>
-            <span class="ml-2">{{ totalAvarages.dryer }} sm3</span>
+            <span class="ml-2">{{ totalAvarages.dryer }} sm<sup>3</sup></span>
           </div>
         </div>
         <div class="avarage-section">
           <span><b>Seçilen tarihlerde ortalamalar</b></span>
           <div>
             <span>İndirgeme:</span>
-            <span></span>
+            <span class="ml-2" v-if="selectedAvarages.reducer"
+              >{{ selectedAvarages.reducer }} sm<sup>3</sup></span
+            >
           </div>
           <div>
             <span>Kurutma:</span>
+            <span class="ml-2" v-if="selectedAvarages.dryer"
+              >{{ selectedAvarages.dryer }} sm<sup>3</sup></span
+            >
           </div>
         </div>
       </div>
@@ -79,10 +84,10 @@ export default {
     selectedDateRange: null,
     presetRanges: [],
     totalAvarages: {},
+    selectedAvarages: {},
   }),
   computed: {
     ...mapGetters({
-      formList: "getHeavyMineralsForms",
       chartData: "chartData/getHeavyMineralsConsumptionData",
       lastTotal: "chartData/getLastTotalData",
     }),
@@ -188,6 +193,9 @@ export default {
           ).toFixed(2);
         });
     },
+    calculateAvarage(list) {
+      return (list.reduce((a, b) => a + b, 0) / list.length).toFixed(2);
+    },
   },
   created() {
     this.setPresentRanges();
@@ -205,6 +213,16 @@ export default {
           .then(() => {
             this.setXAxis();
             this.consumption_calculatedData = this.setDataByDateRange();
+            this.selectedAvarages.dryer = this.calculateAvarage(
+              this.consumption_calculatedData
+                .map((item) => item.dryer.hourlyAvarageConsumption)
+                .filter((itm) => itm != 0)
+            );
+            this.selectedAvarages.reducer = this.calculateAvarage(
+              this.consumption_calculatedData
+                .map((item) => item.reducer.hourlyAvarageConsumption)
+                .filter((itm) => itm != 0)
+            );
           });
       },
     },
