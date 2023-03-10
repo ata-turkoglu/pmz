@@ -273,6 +273,10 @@ export default {
     padding-inline: 0;
     min-height: 90vh;
   }
+  .selections {
+    padding: 0;
+    margin-bottom: 20px;
+  }
   .datepicker {
     width: 100%;
   }
@@ -280,6 +284,11 @@ export default {
     flex-direction: column;
     align-items: flex-start;
     width: 100%;
+  }
+  .charts {
+    width: 100%;
+    height: 100%;
+    padding: 0;
   }
 }
 </style>

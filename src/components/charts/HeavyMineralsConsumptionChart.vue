@@ -26,9 +26,9 @@ export default {
       legend: {
         type: "scroll",
         data: [
-          "İndirgeme Toplam",
+          "İndirgeme Tüketim",
           "İndirgeme ÇS",
-          "Kurutma Toplam",
+          "Kurutma Tüketim",
           "Kurutma ÇS",
         ],
       },
@@ -67,7 +67,7 @@ export default {
       ],
       series: [
         {
-          name: "İndirgeme Toplam",
+          name: "İndirgeme Tüketim",
           data: [],
           type: "line",
           smooth: true,
@@ -75,7 +75,7 @@ export default {
           color: "#4E342E",
         },
         {
-          name: "Kurutma Toplam",
+          name: "Kurutma Tüketim",
           data: [],
           type: "line",
           smooth: true,
@@ -103,13 +103,14 @@ export default {
     setIncomingData() {
       this.chartOption.xAxis.data = this.xAxis;
 
-      this.chartOption.series.find((itm) => itm.name == "Kurutma Toplam").data =
-        this.chartData.map((itm) => itm.dryer.totalConsumption);
+      this.chartOption.series.find(
+        (itm) => itm.name == "Kurutma Tüketim"
+      ).data = this.chartData.map((itm) => itm.dryer.totalConsumption);
       this.chartOption.series.find((itm) => itm.name == "Kurutma ÇS").data =
         this.chartData.map((itm) => itm.dryer.workingTime);
 
       this.chartOption.series.find(
-        (itm) => itm.name == "İndirgeme Toplam"
+        (itm) => itm.name == "İndirgeme Tüketim"
       ).data = this.chartData.map((itm) => itm.reducer.totalConsumption);
       this.chartOption.series.find((itm) => itm.name == "İndirgeme ÇS").data =
         this.chartData.map((itm) => itm.reducer.workingTime);
