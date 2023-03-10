@@ -13,7 +13,7 @@ export default {
     authenticated: false,
     buttons: {
       loginButtonLoading: false,
-      signinButtonLoading: false,
+      signupButtonLoading: false,
       editUserSaveButtonLoading: false,
     },
     roles: [
@@ -75,15 +75,15 @@ export default {
       });
     },
 
-    async signIn({ commit }, data) {
-      return axios.post("/users/signin", data).then((result) => {
+    async signUp({ commit }, data) {
+      return axios.post("/users/signup", data).then((result) => {
         if (result.data.error) {
           store.state.commonErrorText = result.data.error;
           store.state.commonDialogs.loginErrorDialog = true;
-          store.state.users.buttons.signinButtonLoading = false;
+          store.state.users.buttons.signupButtonLoading = false;
         } else if (result.data[0].id) {
           store.state.commonDialogs.successDialog = true;
-          store.state.users.buttons.signinButtonLoading = false;
+          store.state.users.buttons.signupButtonLoading = false;
         }
       });
     },
@@ -136,10 +136,10 @@ export default {
         if (result.data?.error) {
           store.state.commonErrorText = result.data.error;
           store.state.commonDialogs.loginErrorDialog = true;
-          store.state.users.buttons.signinButtonLoading = false;
+          store.state.users.buttons.signupButtonLoading = false;
         } else if (result.data[0]?.id) {
           store.state.commonDialogs.successDialog = true;
-          store.state.users.buttons.signinButtonLoading = false;
+          store.state.users.buttons.signupButtonLoading = false;
         }
       });
     },

@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import store from "../store/index";
 import permissions from "@/mixins/permissions";
-import SignIn from "../views/SignIn";
+import SignUp from "../views/SignUp";
 import Login from "../views/Login";
 import HomeView from "../views/HomeView";
 import NewActivityForm from "../views/ActivityForms/NewActivityForm.vue";
@@ -11,9 +11,9 @@ import Settings from "../views/Settings/Settings";
 
 const routes = [
   {
-    path: "/signin",
-    name: "Signin",
-    component: SignIn,
+    path: "/signup",
+    name: "Signup",
+    component: SignUp,
   },
   {
     path: "/login",
@@ -23,7 +23,7 @@ const routes = [
   {
     path: "/password-reset",
     name: "PasswordReset",
-    component: SignIn,
+    component: SignUp,
     props: true,
   },
   {
@@ -69,7 +69,7 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  if (to.name == "Signin" || to.name == "PasswordReset") {
+  if (to.name == "Signup" || to.name == "PasswordReset") {
     next();
   } else if (to.name !== "Login" && !store.state.users.authenticated) {
     next({ name: "Login" });

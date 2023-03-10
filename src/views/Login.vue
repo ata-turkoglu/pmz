@@ -46,7 +46,7 @@
         <span
           style="color: black; cursor: pointer"
           class="mt-4 mb-0 mr-2"
-          @click="$router.push('/signin')"
+          @click="$router.push('/signup')"
         >
           Kayıt Ol
         </span>

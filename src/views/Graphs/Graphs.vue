@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container py-3">
     <v-tabs v-model="selectedTab">
       <v-tab v-for="facility in facilities" :value="facility.id">{{
         facility.name

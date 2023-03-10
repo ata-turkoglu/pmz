@@ -39,11 +39,11 @@
         @click:append-inner="show2 = !show2"
       ></v-text-field>
       <v-btn
-        :loading="$store.state.users.buttons.signinButtonLoading"
+        :loading="$store.state.users.buttons.signupButtonLoading"
         class="form-input"
         block
         variant="outlined"
-        @click="signIn"
+        @click="signUp"
         :disabled="!formValidation"
       >
         {{ resetPassword ? "Gönder" : "Kayıt" }}
@@ -123,8 +123,8 @@ export default {
     },
   },
   methods: {
-    signIn() {
-      this.$store.state.users.buttons.signinButtonLoading = true;
+    signUp() {
+      this.$store.state.users.buttons.signupButtonLoading = true;
       if (this.resetPassword) {
         this.$store.dispatch("users/passwordReset", {
           username: this.username,
@@ -132,7 +132,7 @@ export default {
           confirmPassword: this.confirmPassword,
         });
       } else {
-        this.$store.dispatch("users/signIn", {
+        this.$store.dispatch("users/signUp", {
           username: this.username,
           password: this.password,
           confirmPassword: this.confirmPassword,
