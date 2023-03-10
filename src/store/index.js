@@ -80,7 +80,7 @@ export default createStore({
     getHeavyMineralsForms: (state) => {
       return state.activityForms
         .filter((itm) => itm.facility == 2)
-        .sort((a, b) => a.shift - b.shift)
+        .sort((a, b) => b.shift - a.shift)
         .sort((a, b) => new Date(b.date) - new Date(a.date));
     },
   },
