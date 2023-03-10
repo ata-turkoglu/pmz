@@ -54,7 +54,6 @@ export default {
           },
         })
         .then(async (result) => {
-          console.log("result", result);
           await commit("setChartData", {
             chartData: result.data,
             facility,

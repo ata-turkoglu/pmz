@@ -118,7 +118,6 @@
 <script>
 import InfoDialog from "@/components/common/InfoDialog.vue";
 import ErrorDialog from "@/components/common/ErrorDialog.vue";
-import moment from "moment";
 export default {
   props: ["isEdit", "editPermission", "item"],
   components: { InfoDialog, ErrorDialog },

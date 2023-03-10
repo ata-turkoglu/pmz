@@ -103,9 +103,19 @@ export default createStore({
       state.buttons.activityFormSaveButtonLoading = false;
     },
     updateActivityForm(state, data) {
+      let date, shift;
+
       let foundItem = state.activityForms.find((itm) => itm.id == data.id);
 
-      foundItem.date = data.date;
+      foundItem.shift == 1
+        ? (date = moment(data.date).subtract(1, "days").format("YYYY-MM-DD"))
+        : (date = foundItem.date);
+      foundItem.shift == 1 ? (shift = 3) : (shift = foundItem.shift - 1);
+
+      let previousItem = state.activityForms.find(
+        (itm) => itm.date == date && itm.shift == shift
+      );
+
       foundItem.facility = data.facility;
       foundItem.shift = data.shift;
       foundItem.dryerKilnTimer = data.dryerKilnTimer;
@@ -114,6 +124,15 @@ export default createStore({
       foundItem.productsText = data.productsText;
       foundItem.malfunctionsText = data.malfunctionsText;
       foundItem.otherActivities = data.otherActivities;
+      foundItem.dryerDiff =
+        foundItem.dryerKilnTimer - previousItem.dryerKilnTimer;
+      foundItem.reducerDiff =
+        foundItem.reducerKilnTimer - previousItem.reducerKilnTimer;
+      foundItem.cngDiff = foundItem.cngTimer - previousItem.cngTimer;
+      foundItem.dryerTotal = previousItem.dryerTotal + foundItem.dryerDiff;
+      foundItem.reducerTotal =
+        previousItem.reducerTotal + foundItem.reducerDiff;
+      foundItem.cngTotal = previousItem.cngTotal + foundItem.cngDiff;
 
       state.buttons.activityFormSaveButtonLoading = false;
     },
@@ -128,7 +147,6 @@ export default createStore({
       return axios
         .get("/activity-forms/getFacilityForms/" + facility)
         .then((result) => {
-          console.log(result.data);
           commit("setActivityForms", result.data);
         })
         .then(() => {
@@ -141,7 +159,6 @@ export default createStore({
           data.id = result.data[0].id;
           commit("addNewActivityForm", data);
           state.commonDialogs.successDialog = true;
-          state.buttons.activityFormSaveButtonLoading = false;
         } else if (result.data?.error) {
           state.commonErrorText = result.data.error;
           state.commonDialogs.errorDialog = true;
@@ -153,9 +170,15 @@ export default createStore({
     },
     updateActivityForm({ commit, state }, data) {
       return axios.put("/activity-forms/update", data).then((result) => {
-        console.log("updateActivityForm", result);
-        if (!result.error) {
+        if (result.data[0]?.id) {
           commit("updateActivityForm", data);
+          state.commonDialogs.successDialog = true;
+        } else if (result.data?.error) {
+          state.commonErrorText = result.data.error;
+          state.commonDialogs.errorDialog = true;
+          state.buttons.activityFormSaveButtonLoading = false;
+        } else {
+          console.log("updateActivityForm Error");
         }
       });
     },
