@@ -6,7 +6,7 @@ import Login from "../views/Login";
 import HomeView from "../views/HomeView";
 import NewActivityForm from "../views/ActivityForms/NewActivityForm.vue";
 import ActivityFormList from "../views/ActivityForms/ActivityFormList.vue";
-import Graphs from "../views/Graphs/Graphs";
+import Charts from "../views/Charts/Charts";
 import Settings from "../views/Settings/Settings";
 
 const routes = [
@@ -42,9 +42,9 @@ const routes = [
         component: ActivityFormList,
       },
       {
-        path: "/graphs",
-        name: "Graps",
-        component: Graphs,
+        path: "/charts",
+        name: "charts",
+        component: Charts,
       },
       {
         path: "/settings",

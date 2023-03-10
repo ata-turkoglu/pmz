@@ -59,7 +59,7 @@
           prepend-icon="mdi-chart-line"
           title="Grafikler"
           class="nav-list-item"
-          to="/graphs"
+          to="/charts"
         >
         </v-list-item>
       </v-list>

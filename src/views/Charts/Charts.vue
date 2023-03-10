@@ -5,7 +5,7 @@
         facility.name
       }}</v-tab>
     </v-tabs>
-    <v-window id="graphs-windows" v-model="selectedTab" class="py-1">
+    <v-window id="chart-windows" v-model="selectedTab" class="py-1">
       <v-window-item :value="2">
         <HeavyMineralsGraphs />
       </v-window-item>
@@ -15,7 +15,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import HeavyMineralsGraphs from "./HeavyMineralsGraphs";
+import HeavyMineralsCharts from "./HeavyMineralsCharts";
 export default {
   components: { HeavyMineralsGraphs },
   data: () => ({
