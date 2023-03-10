@@ -5,7 +5,9 @@
         v-for="item in formList"
         :key="item.id"
         class="form-list-item"
-        :style="activeListItem(item.id) ? { backgroundColor: '#0D47A1' } : ''"
+        :style="
+          activeListItem(item.id) ? { backgroundColor: 'rgb(230,230,230)' } : ''
+        "
         @click="selectForm(item)"
       >
         <span class="form-list-item-date">{{
@@ -20,6 +22,7 @@
       <HeavyMineralsActivityForm
         v-if="selectedItem != null"
         :isEdit="true"
+        :editPermission="formList[0].id == selectedItem.id"
         :item="selectedItem"
         :key="selectedItem.id"
       />
@@ -50,7 +53,6 @@ export default {
   },
   methods: {
     selectForm(item) {
-      console.log("item", item);
       this.selectedItem = item;
     },
     findShiftNameById(id) {
@@ -83,9 +85,10 @@ export default {
   height: fit-content;
 }
 .form-list-item {
-  background-color: #1565c0;
-  color: white;
+  /* background-color: #1565c0;
   border-radius: 5px;
+  color: white; */
+  border-bottom: 1px solid rgb(220, 220, 220);
   margin-bottom: 1px;
   padding-block: 10px;
   padding-left: 20px;

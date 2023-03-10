@@ -72,6 +72,7 @@
       ></v-textarea>
     </div>
     <v-row
+      v-if="isEdit ? (editPermission ? true : false) : true"
       class="mt-4"
       :class="$vuetify.display.smAndDown ? 'px-3' : 'px-9'"
       align="center"
@@ -119,7 +120,7 @@ import InfoDialog from "@/components/common/InfoDialog.vue";
 import ErrorDialog from "@/components/common/ErrorDialog.vue";
 import moment from "moment";
 export default {
-  props: ["isEdit", "item"],
+  props: ["isEdit", "editPermission", "item"],
   components: { InfoDialog, ErrorDialog },
   data: () => ({
     id: null,
