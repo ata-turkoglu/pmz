@@ -125,37 +125,52 @@ export default {
       }
       return range;
     },
-    setDataByDateRange() {
-      return this.chartData.map((item) => {
-        return {
-          date: item.date,
+    setDataByDateRange(dateList) {
+      let list = [];
+      dateList.forEach((dateItem) => {
+        let found = this.chartData.find((itm) => itm.date == dateItem);
+        let obj = {
+          date: dateItem,
           dryer: {
-            workingTime: item.dryerWorkingTime,
-            totalConsumption: item.dryerWorkingTime * this.dryerConsumption,
-            hourlyAvarageConsumption:
-              +(
-                (item.dryerWorkingTime * this.dryerConsumption) /
-                item.dryerWorkingTime
-              ).toFixed(2) || 0,
+            workingTime: null,
+            totalConsumption: null,
+            hourlyAvarageConsumption: null,
           },
           reducer: {
-            workingTime: item.reducerWorkingTime,
-            totalConsumption:
-              item.cngConsumption -
-              item.dryerWorkingTime * this.dryerConsumption,
-            hourlyAvarageConsumption:
-              +(
-                (item.cngConsumption -
-                  item.dryerWorkingTime * this.dryerConsumption) /
-                item.reducerWorkingTime
-              ).toFixed(2) || 0,
+            workingTime: null,
+            totalConsumption: null,
+            hourlyAvarageConsumption: null,
           },
         };
+        if (found) {
+          obj.dryer.workingTime = +found.dryerWorkingTime;
+          obj.dryer.totalConsumption =
+            found.dryerWorkingTime * this.dryerConsumption;
+          obj.dryer.hourlyAvarageConsumption =
+            +(
+              (found.dryerWorkingTime * this.dryerConsumption) /
+              found.dryerWorkingTime
+            ).toFixed(2) || 0;
+          obj.reducer.workingTime = +found.reducerWorkingTime;
+          obj.reducer.totalConsumption =
+            found.cngConsumption -
+            found.dryerWorkingTime * this.dryerConsumption;
+          obj.reducer.hourlyAvarageConsumption =
+            +(
+              (found.cngConsumption -
+                found.dryerWorkingTime * this.dryerConsumption) /
+              found.reducerWorkingTime
+            ).toFixed(2) || 0;
+          list.push(obj);
+        } else {
+          list.push(obj);
+        }
       });
+      return list;
     },
     setXAxis() {
-      this.consumptionChartState = false;
-      setTimeout(() => {
+      return new Promise((resolve) => {
+        this.consumptionChartState = false;
         //let startDate = moment(this.selectedDateRange[0]).subtract(1, "days");
         let startDate = moment(this.selectedDateRange[0]);
         let endDate = moment(this.selectedDateRange[1]);
@@ -173,8 +188,8 @@ export default {
           this.consumption_xAxis = range.map((itm) => itm.format("DD/MM"));
         }
 
-        this.consumptionChartState = true;
-      }, 100);
+        resolve(range.map((itm) => itm.format("YYYY-MM-DD")));
+      });
     },
     setAvarages() {
       this.$store
@@ -211,18 +226,23 @@ export default {
             endDate: moment(val[1]).format("YYYY-MM-DD"),
           })
           .then(() => {
-            this.setXAxis();
-            this.consumption_calculatedData = this.setDataByDateRange();
-            this.selectedAvarages.dryer = this.calculateAvarage(
-              this.consumption_calculatedData
-                .map((item) => item.dryer.hourlyAvarageConsumption)
-                .filter((itm) => itm != 0)
-            );
-            this.selectedAvarages.reducer = this.calculateAvarage(
-              this.consumption_calculatedData
-                .map((item) => item.reducer.hourlyAvarageConsumption)
-                .filter((itm) => itm != 0)
-            );
+            this.setXAxis()
+              .then((list) => {
+                this.consumption_calculatedData = this.setDataByDateRange(list);
+              })
+              .then(() => {
+                this.selectedAvarages.dryer = this.calculateAvarage(
+                  this.consumption_calculatedData
+                    .map((item) => item.dryer.hourlyAvarageConsumption || 0)
+                    .filter((itm) => itm != 0)
+                );
+                this.selectedAvarages.reducer = this.calculateAvarage(
+                  this.consumption_calculatedData
+                    .map((item) => item.reducer.hourlyAvarageConsumption || 0)
+                    .filter((itm) => itm != 0)
+                );
+                this.consumptionChartState = true;
+              });
           });
       },
     },
