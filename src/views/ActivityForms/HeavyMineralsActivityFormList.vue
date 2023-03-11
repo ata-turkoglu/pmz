@@ -71,6 +71,7 @@ export default {
   align-items: flex-start;
   justify-content: flex-start;
   padding-block: 10px;
+  min-height: 90vh;
 }
 .form-list {
   min-width: "20%";

@@ -233,7 +233,7 @@ export default {
 <style scoped>
 .container {
   width: 100%;
-  min-height: 50vh;
+  min-height: 90vh;
   margin-top: 10px;
   padding: 10px;
 }

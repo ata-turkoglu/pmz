@@ -41,6 +41,7 @@ export default {
 .main-container {
   width: 100%;
   height: 100%;
+  min-height: 90vh;
 }
 nav {
   padding: 30px;
