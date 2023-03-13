@@ -24,11 +24,15 @@
           <span><b>Genel Ortalamalar</b></span>
           <div>
             <span>İndirgeme:</span>
-            <span class="ml-2">{{ totalAvarages.reducer }} sm<sup>3</sup></span>
+            <span class="ml-2"
+              >{{ totalAvarages.reducer }} sm<sup>3</sup>/saat</span
+            >
           </div>
           <div>
             <span>Kurutma:</span>
-            <span class="ml-2">{{ totalAvarages.dryer }} sm<sup>3</sup></span>
+            <span class="ml-2"
+              >{{ totalAvarages.dryer }} sm<sup>3</sup>/saat</span
+            >
           </div>
         </div>
         <div class="avarage-section">
@@ -36,13 +40,13 @@
           <div>
             <span>İndirgeme:</span>
             <span class="ml-2" v-if="selectedAvarages.reducer"
-              >{{ selectedAvarages.reducer }} sm<sup>3</sup></span
+              >{{ selectedAvarages.reducer }} sm<sup>3</sup>/saat</span
             >
           </div>
           <div>
             <span>Kurutma:</span>
             <span class="ml-2" v-if="selectedAvarages.dryer"
-              >{{ selectedAvarages.dryer }} sm<sup>3</sup></span
+              >{{ selectedAvarages.dryer }} sm<sup>3</sup>/saat</span
             >
           </div>
         </div>
@@ -219,31 +223,34 @@ export default {
   watch: {
     selectedDateRange: {
       handler(val) {
-        this.$store
-          .dispatch("chartData/getDailyChartDataByDateRange", {
-            facility: 2,
-            startDate: moment(val[0]).format("YYYY-MM-DD"),
-            endDate: moment(val[1]).format("YYYY-MM-DD"),
-          })
-          .then(() => {
-            this.setXAxis()
-              .then((list) => {
-                this.consumption_calculatedData = this.setDataByDateRange(list);
-              })
-              .then(() => {
-                this.selectedAvarages.dryer = this.calculateAvarage(
-                  this.consumption_calculatedData
-                    .map((item) => item.dryer.hourlyAvarageConsumption || 0)
-                    .filter((itm) => itm != 0)
-                );
-                this.selectedAvarages.reducer = this.calculateAvarage(
-                  this.consumption_calculatedData
-                    .map((item) => item.reducer.hourlyAvarageConsumption || 0)
-                    .filter((itm) => itm != 0)
-                );
-                this.consumptionChartState = true;
-              });
-          });
+        if (val != [] || val.length <= 0) {
+          this.$store
+            .dispatch("chartData/getDailyChartDataByDateRange", {
+              facility: 2,
+              startDate: moment(val[0]).format("YYYY-MM-DD"),
+              endDate: moment(val[1]).format("YYYY-MM-DD"),
+            })
+            .then(() => {
+              this.setXAxis()
+                .then((list) => {
+                  this.consumption_calculatedData =
+                    this.setDataByDateRange(list);
+                })
+                .then(() => {
+                  this.selectedAvarages.dryer = this.calculateAvarage(
+                    this.consumption_calculatedData
+                      .map((item) => item.dryer.hourlyAvarageConsumption || 0)
+                      .filter((itm) => itm != 0)
+                  );
+                  this.selectedAvarages.reducer = this.calculateAvarage(
+                    this.consumption_calculatedData
+                      .map((item) => item.reducer.hourlyAvarageConsumption || 0)
+                      .filter((itm) => itm != 0)
+                  );
+                  this.consumptionChartState = true;
+                });
+            });
+        }
       },
     },
   },
