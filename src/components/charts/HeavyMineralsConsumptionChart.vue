@@ -1,7 +1,7 @@
 <template>
   <div class="chart-container">
     <span class="title">Günlük Toplam Tüketim</span>
-    <div id="chart" :style="$vuetify.display.smAndDown"></div>
+    <div id="chart"></div>
   </div>
 </template>
 
@@ -35,9 +35,16 @@ export default {
       xAxis: {
         data: [],
         type: "category",
-        name: "",
+        name: "Gün",
         axisTick: {
           alignWithLabel: true,
+        },
+        nameLocation: "center",
+        nameTextStyle: {
+          align: "center",
+          verticalAlign: "top",
+          lineHeight: 35,
+          fontWeight: "bold",
         },
       },
       yAxis: [
@@ -45,12 +52,12 @@ export default {
           type: "value",
           name: "CNG sm3",
           position: "left",
-          alignTicks: true,
           axisLine: {
             show: true,
           },
           nameTextStyle: {
             align: "left",
+            fontWeight: "bold",
           },
         },
         {
@@ -62,6 +69,7 @@ export default {
           },
           nameTextStyle: {
             align: "right",
+            fontWeight: "bold",
           },
         },
       ],

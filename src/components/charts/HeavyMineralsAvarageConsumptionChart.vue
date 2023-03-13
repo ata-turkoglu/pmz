@@ -30,21 +30,29 @@ export default {
       xAxis: {
         data: [],
         type: "category",
-        name: "",
+        name: "Gün",
         axisTick: {
           alignWithLabel: true,
+        },
+        nameLocation: "center",
+        nameTextStyle: {
+          align: "center",
+          verticalAlign: "top",
+          lineHeight: 35,
+          fontWeight: "bold",
         },
       },
       yAxis: [
         {
           type: "value",
-          name: "Ortalama m3/s",
+          name: "Ortalama m3/saat",
           position: "left",
           axisLine: {
             show: true,
           },
           nameTextStyle: {
             align: "left",
+            fontWeight: "bold",
           },
         },
       ],
