@@ -118,6 +118,7 @@
 <script>
 import InfoDialog from "@/components/common/InfoDialog.vue";
 import ErrorDialog from "@/components/common/ErrorDialog.vue";
+import moment from "moment";
 export default {
   props: ["isEdit", "editPermission", "item"],
   components: { InfoDialog, ErrorDialog },
@@ -133,6 +134,22 @@ export default {
     malfunctionsText: null,
     otherActivities: null,
   }),
+  created() {
+    this.$store
+      .dispatch("chartData/getLastTotalData", { facility: 2 })
+      .then(() => {
+        const { date, shift } =
+          this.$store.state.chartData.chartData.heavyMineralsLastTotal;
+
+        if (shift == 3) {
+          this.selectedFacility = 1;
+          this.selectedDate = moment(date).add(1, "days").format("YYYY-MM-DD");
+        } else {
+          this.selectedShift = +shift + 1;
+          this.selectedDate = date;
+        }
+      });
+  },
   mounted() {
     if (this.isEdit && this.item != null) {
       this.id = this.item.id;
