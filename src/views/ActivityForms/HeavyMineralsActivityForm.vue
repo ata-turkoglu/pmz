@@ -135,20 +135,24 @@ export default {
     otherActivities: null,
   }),
   created() {
-    this.$store
-      .dispatch("chartData/getLastTotalData", { facility: 2 })
-      .then(() => {
-        const { date, shift } =
-          this.$store.state.chartData.chartData.heavyMineralsLastTotal;
+    if (!this.isEdit) {
+      this.$store
+        .dispatch("chartData/getLastTotalData", { facility: 2 })
+        .then(() => {
+          const { date, shift } =
+            this.$store.state.chartData.chartData.heavyMineralsLastTotal;
 
-        if (shift == 3) {
-          this.selectedFacility = 1;
-          this.selectedDate = moment(date).add(1, "days").format("YYYY-MM-DD");
-        } else {
-          this.selectedShift = +shift + 1;
-          this.selectedDate = date;
-        }
-      });
+          if (shift == 3) {
+            this.selectedShift = 1;
+            this.selectedDate = moment(date)
+              .add(1, "days")
+              .format("YYYY-MM-DD");
+          } else {
+            this.selectedShift = +shift + 1;
+            this.selectedDate = date;
+          }
+        });
+    }
   },
   mounted() {
     if (this.isEdit && this.item != null) {
