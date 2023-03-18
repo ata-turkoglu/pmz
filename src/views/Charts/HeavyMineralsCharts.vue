@@ -154,7 +154,7 @@ export default {
             +(
               (found.dryerWorkingTime * this.dryerConsumption) /
               found.dryerWorkingTime
-            ).toFixed(2) || 0;
+            ).toFixed(2) || null;
           obj.reducer.workingTime = +found.reducerWorkingTime;
           obj.reducer.totalConsumption =
             found.cngConsumption -
@@ -164,7 +164,7 @@ export default {
               (found.cngConsumption -
                 found.dryerWorkingTime * this.dryerConsumption) /
               found.reducerWorkingTime
-            ).toFixed(2) || 0;
+            ).toFixed(2) || null;
           list.push(obj);
         } else {
           list.push(obj);

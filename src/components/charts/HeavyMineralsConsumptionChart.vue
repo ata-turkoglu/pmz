@@ -81,6 +81,7 @@ export default {
           smooth: true,
           yAxisIndex: 0,
           color: "#4E342E",
+          symbolSize: 10,
         },
         {
           name: "Kurutma Tüketim",
@@ -89,6 +90,7 @@ export default {
           smooth: true,
           yAxisIndex: 0,
           color: "#FF8F00",
+          symbolSize: 10,
         },
         {
           name: "Kurutma ÇS",
