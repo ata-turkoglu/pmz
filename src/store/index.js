@@ -49,15 +49,15 @@ export default createStore({
     shifts: [
       {
         id: 1,
-        name: "Gece",
+        name: "Gece 00:00-08:00",
       },
       {
         id: 2,
-        name: "Gündüz",
+        name: "Gündüz 08:00-16:00",
       },
       {
         id: 3,
-        name: "Akşam",
+        name: "Akşam 16:00-24:00",
       },
     ],
     buttons: {

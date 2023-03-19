@@ -31,6 +31,7 @@
         label="Kurutma Fırını Çalışma Saati"
         variant="outlined"
         type="number"
+        :placeholder="String(previousData.dryerKilnTimer)"
         v-model="dryerKilnTimer"
         :hint="setHint"
       ></v-text-field>
@@ -39,6 +40,7 @@
         label="İndirgeme Fırını Çalışma Saati"
         variant="outlined"
         type="number"
+        :placeholder="String(previousData.reducerKilnTimer)"
         v-model="reducerKilnTimer"
         :hint="setHint"
       ></v-text-field>
@@ -47,6 +49,7 @@
         label="CNG Saati"
         variant="outlined"
         type="number"
+        :placeholder="String(previousData.cngTimer)"
         v-model="cngTimer"
         :hint="setHint"
       ></v-text-field>
@@ -133,13 +136,18 @@ export default {
     productsText: null,
     malfunctionsText: null,
     otherActivities: null,
+    previousData: {
+      dryerKilnTimer: null,
+      reducerKilnTimer: null,
+      cngTimer: null,
+    },
   }),
   created() {
     if (!this.isEdit) {
       this.$store
         .dispatch("chartData/getLastTotalData", { facility: 2 })
         .then(() => {
-          const { date, shift } =
+          const { date, shift, dryerKilnTimer, reducerKilnTimer, cngTimer } =
             this.$store.state.chartData.chartData.heavyMineralsLastTotal;
 
           if (shift == 3) {
@@ -151,6 +159,10 @@ export default {
             this.selectedShift = +shift + 1;
             this.selectedDate = date;
           }
+
+          this.previousData.dryerKilnTimer = dryerKilnTimer;
+          this.previousData.reducerKilnTimer = reducerKilnTimer;
+          this.previousData.cngTimer = cngTimer;
         });
     }
   },
