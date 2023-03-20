@@ -34,6 +34,14 @@
         :placeholder="String(previousData.dryerKilnTimer)"
         v-model="dryerKilnTimer"
         :hint="setHint"
+        :rules="[
+          checkTimerValue(
+            dryerKilnTimer,
+            previousData.dryerKilnTimer,
+            true,
+            'dryer'
+          ),
+        ]"
       ></v-text-field>
       <v-text-field
         class="inputs"
@@ -43,6 +51,14 @@
         :placeholder="String(previousData.reducerKilnTimer)"
         v-model="reducerKilnTimer"
         :hint="setHint"
+        :rules="[
+          checkTimerValue(
+            reducerKilnTimer,
+            previousData.reducerKilnTimer,
+            true,
+            'reducer'
+          ),
+        ]"
       ></v-text-field>
       <v-text-field
         class="inputs"
@@ -52,6 +68,9 @@
         :placeholder="String(previousData.cngTimer)"
         v-model="cngTimer"
         :hint="setHint"
+        :rules="[
+          checkTimerValue(cngTimer, previousData.cngTimer, false, 'cng'),
+        ]"
       ></v-text-field>
     </div>
     <div class="notes mt-4">
@@ -95,6 +114,7 @@
         color="blue-darken-4"
         width="100px"
         @click="save"
+        :disabled="!checkValidation()"
         >Kaydet</v-btn
       >
     </v-row>
@@ -141,6 +161,11 @@ export default {
       reducerKilnTimer: null,
       cngTimer: null,
     },
+    fieldValidation: {
+      dryer: false,
+      reducer: false,
+      cng: false,
+    },
   }),
   created() {
     if (!this.isEdit) {
@@ -181,6 +206,25 @@ export default {
     }
   },
   methods: {
+    checkTimerValue(newVal, lastVal, timer, field) {
+      if (!newVal) {
+        this.fieldValidation[field] = false;
+        return "Boş bırakılamaz";
+      }
+      if (newVal < lastVal) {
+        this.fieldValidation[field] = false;
+        return "Eski değerden küçük olamaz";
+      }
+      if (newVal - lastVal > 9 && timer) {
+        this.fieldValidation[field] = false;
+        return "Mesai saatinden büyük olamaz";
+      }
+      this.fieldValidation[field] = true;
+      return true;
+    },
+    checkValidation() {
+      return Object.values(this.fieldValidation).every((item) => item);
+    },
     reset() {
       this.dryerKilnTimer = null;
       this.reducerKilnTimer = null;
