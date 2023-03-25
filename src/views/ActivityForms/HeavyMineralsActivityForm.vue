@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div v-if="loaded" class="container">
     <div class="selections">
       <v-text-field
         value="Ağır Mineraller"
@@ -166,6 +166,7 @@ export default {
       reducer: false,
       cng: false,
     },
+    loaded: false,
   }),
   created() {
     if (!this.isEdit) {
@@ -188,6 +189,30 @@ export default {
           this.previousData.dryerKilnTimer = dryerKilnTimer;
           this.previousData.reducerKilnTimer = reducerKilnTimer;
           this.previousData.cngTimer = cngTimer;
+          this.loaded = true;
+        });
+    } else {
+      this.$store
+        .dispatch("chartData/getPreviousTotalDataForEdit", { facility: 2 })
+        .then(() => {
+          const { date, shift, dryerKilnTimer, reducerKilnTimer, cngTimer } =
+            this.$store.state.chartData.chartData
+              .heavyMineralsPreviousTotalForEdit;
+
+          if (shift == 3) {
+            this.selectedShift = 1;
+            this.selectedDate = moment(date)
+              .add(1, "days")
+              .format("YYYY-MM-DD");
+          } else {
+            this.selectedShift = +shift + 1;
+            this.selectedDate = date;
+          }
+
+          this.previousData.dryerKilnTimer = dryerKilnTimer;
+          this.previousData.reducerKilnTimer = reducerKilnTimer;
+          this.previousData.cngTimer = cngTimer;
+          this.loaded = true;
         });
     }
   },
