@@ -8,6 +8,7 @@ export default {
     chartData: {
       heavyMineralsConsumption: null,
       heavyMineralsLastTotal: null,
+      heavyMineralsPreviousTotalForEdit: null,
     },
   },
   getters: {
@@ -33,6 +34,16 @@ export default {
       switch (data.facility) {
         case 2:
           state.chartData.heavyMineralsLastTotal = data.chartData;
+          break;
+
+        default:
+          break;
+      }
+    },
+    setPreviousTotalForEdit: (state, data) => {
+      switch (data.facility) {
+        case 2:
+          state.chartData.heavyMineralsPreviousTotalForEdit = data.chartData;
           break;
 
         default:
@@ -70,6 +81,21 @@ export default {
         })
         .then(async (result) => {
           await commit("setLastTotal", {
+            chartData: result.data[0],
+            facility,
+          });
+          return true;
+        });
+    },
+    async getPreviousTotalDataForEdit({ commit }, { facility }) {
+      return axios
+        .get("/chart-data/get-previous-total-for-edit", {
+          params: {
+            facility,
+          },
+        })
+        .then(async (result) => {
+          await commit("setPreviousTotalForEdit", {
             chartData: result.data[0],
             facility,
           });
