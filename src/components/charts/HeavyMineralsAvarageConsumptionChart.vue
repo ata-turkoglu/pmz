@@ -63,7 +63,7 @@ export default {
           type: "line",
           smooth: true,
           color: "#4E342E",
-          symbolSize: 20,
+          symbolSize: 10,
         },
         {
           name: "Kurutma Ortalama",
@@ -71,7 +71,7 @@ export default {
           type: "line",
           smooth: true,
           color: "#FF8F00",
-          symbolSize: 20,
+          symbolSize: 10,
         },
       ],
     },
