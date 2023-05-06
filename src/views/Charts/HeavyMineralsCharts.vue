@@ -82,7 +82,7 @@ export default {
   },
   data: () => ({
     consumptionChartState: false,
-    dryerConsumption: 48,
+    dryerConsumption: 46.2,
     consumption_calculatedData: null,
     consumption_xAxis: null,
     selectedDateRange: null,
@@ -147,24 +147,37 @@ export default {
           },
         };
         if (found) {
-          obj.dryer.workingTime = +found.dryerWorkingTime;
-          obj.dryer.totalConsumption =
-            found.dryerWorkingTime * this.dryerConsumption;
-          obj.dryer.hourlyAvarageConsumption =
-            +(
-              (found.dryerWorkingTime * this.dryerConsumption) /
-              found.dryerWorkingTime
-            ).toFixed(2) || null;
-          obj.reducer.workingTime = +found.reducerWorkingTime;
-          obj.reducer.totalConsumption =
-            found.cngConsumption -
-            found.dryerWorkingTime * this.dryerConsumption;
-          obj.reducer.hourlyAvarageConsumption =
-            +(
-              (found.cngConsumption -
-                found.dryerWorkingTime * this.dryerConsumption) /
-              found.reducerWorkingTime
-            ).toFixed(2) || null;
+          if (found.reducerWorkingTime != 0) {
+            obj.dryer.workingTime = +found.dryerWorkingTime;
+            obj.dryer.totalConsumption =
+              found.dryerWorkingTime * this.dryerConsumption;
+            obj.dryer.hourlyAvarageConsumption =
+              +(
+                (found.dryerWorkingTime * this.dryerConsumption) /
+                found.dryerWorkingTime
+              ).toFixed(2) || null;
+
+            obj.reducer.workingTime = +found.reducerWorkingTime;
+            obj.reducer.totalConsumption =
+              found.cngConsumption -
+              found.dryerWorkingTime * this.dryerConsumption;
+            obj.reducer.hourlyAvarageConsumption =
+              +(
+                (found.cngConsumption -
+                  found.dryerWorkingTime * this.dryerConsumption) /
+                found.reducerWorkingTime
+              ).toFixed(2) || null;
+          } else {
+            obj.reducer.workingTime = 0;
+            obj.reducer.totalConsumption = 0;
+            obj.reducer.hourlyAvarageConsumption = 0;
+
+            obj.dryer.workingTime = +found.dryerWorkingTime;
+            obj.dryer.totalConsumption = found.cngConsumption;
+            obj.dryer.hourlyAvarageConsumption =
+              +(found.cngConsumption / found.dryerWorkingTime).toFixed(2) ||
+              null;
+          }
           list.push(obj);
         } else {
           list.push(obj);
