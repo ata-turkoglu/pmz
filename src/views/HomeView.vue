@@ -62,6 +62,22 @@
           to="/charts"
         >
         </v-list-item>
+        <v-list-group>
+          <template v-slot:activator="{ props }">
+            <v-list-item
+              v-bind="props"
+              prepend-icon="mdi-truck-outline"
+              title="Hammadde Giriş"
+              class="nav-list-item"
+            ></v-list-item>
+          </template>
+          <v-list-item
+            title="Kömür"
+            prepend-icon="mdi-fire"
+            to="/raw/coal"
+            class="justify-start"
+          ></v-list-item>
+        </v-list-group>
       </v-list>
     </v-navigation-drawer>
     <v-main class="ma-0 pa-0">

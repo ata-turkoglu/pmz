@@ -7,6 +7,7 @@ import HomeView from "../views/HomeView";
 import NewActivityForm from "../views/ActivityForms/NewActivityForm.vue";
 import ActivityFormList from "../views/ActivityForms/ActivityFormList.vue";
 import Charts from "../views/Charts/Charts";
+import Coal from "../views/RawMaterials/Coal";
 import Settings from "../views/Settings/Settings";
 
 const routes = [
@@ -45,6 +46,11 @@ const routes = [
         path: "/charts",
         name: "charts",
         component: Charts,
+      },
+      {
+        path: "/raw/coal",
+        name: "coal",
+        component: Coal,
       },
       {
         path: "/settings",
