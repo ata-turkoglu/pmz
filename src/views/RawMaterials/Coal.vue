@@ -29,7 +29,6 @@
                 v-model="formData.amount"
                 :max="32767"
                 :min="1"
-                :rules="[max32767]"
             ></v-text-field>
             <v-text-field
                 class="inputs"
@@ -67,6 +66,9 @@
             :items-per-page="10"
             class="elevation-1 mt-8"
         >
+            <template v-slot:item.dateTime="{ item }">
+                <span>{{ parseDate(item.raw) }}</span>
+            </template>
             <template v-slot:item.actions="{ item }">
                 <v-icon size="small" class="me-2" @click="editItem(item.raw)">
                     mdi-pencil
@@ -74,8 +76,8 @@
                 <v-icon size="small" @click="deleteItem(item.raw)">
                     mdi-delete
                 </v-icon>
-            </template></v-data-table
-        >
+            </template>
+        </v-data-table>
     </div>
 </template>
 
@@ -113,7 +115,9 @@ export default {
         });
 
         const items = computed(() =>
-            store.state.rawMaterials.coalData.sort((a, b) => b.id - a.id)
+            store.state.rawMaterials.coalData.sort(
+                (a, b) => new Date(b.dateTime) - new Date(a.dateTime)
+            )
         );
         const addButtonState = computed(
             () => store.state.rawMaterials.buttons.coalAddButtonState
@@ -123,17 +127,12 @@ export default {
             if (formData.companyName.trim() == "") return false;
             if (formData.amount == null) return false;
             if (formData.amount < 1) return false;
-            if (formData.amount > 32767) return false;
             if (formData.dateTime == null) return false;
             return true;
         });
 
-        const max32767 = (v) => {
-            return v > 32767
-                ? "32767 büyük olamaz"
-                : v < 1
-                ? "1'den küçük olamaz"
-                : true;
+        const parseDate = (item) => {
+            return moment(item.dateTime).format("LLL");
         };
 
         store.dispatch("rawMaterials/getCoalData");
@@ -158,14 +157,6 @@ export default {
             },
             { deep: true }
         );
-        watch(
-            () => formData.dateTime,
-            (val) => {
-                console.log(val);
-                console.log(moment().format());
-            },
-            { deep: true }
-        );
 
         const reset = () => {
             editMode = false;
@@ -178,22 +169,19 @@ export default {
         };
 
         function editItem(item) {
+            console.log(item);
             editMode = true;
-            console.log(
-                "----",
-                moment(item.dateTime).format("YYYY-MM-DD[T]HH:mm")
-            );
-            console.log("----", moment(item.dateTime).format());
             formData.id = item.id;
             formData.companyName = item.companyName;
-            //formData.dateTime = null
+            formData.dateTime = moment(item.dateTime).format(
+                "YYYY-MM-DDTHH:mm"
+            );
             formData.amount = item.amount;
             formData.unitPrice = item.unitPrice;
             formData.totalPrice = item.totalPrice;
         }
 
         function deleteItem(item) {
-            console.log(item);
             confirm("Silmek istediğinize emin misiniz?");
             if (confirm) {
                 store.dispatch("rawMaterials/deleteCoalEntry", item.id);
@@ -202,22 +190,34 @@ export default {
 
         function save() {
             if (editMode) {
+                formData.amount = Number(formData.amount);
+                formData.unitPrice = Number(formData.unitPrice);
+                formData.totalPrice = Number(formData.totalPrice);
+                store.state.rawMaterials.buttons.addButtonState = false;
+                store
+                    .dispatch("rawMaterials/updateCoalEntry", formData)
+                    .then((state) => {
+                        //if (state) reset();
+                    });
             } else {
                 formData.amount = Number(formData.amount);
                 formData.unitPrice = Number(formData.unitPrice);
                 formData.totalPrice = Number(formData.totalPrice);
                 store.state.rawMaterials.buttons.addButtonState = false;
-                store.dispatch("rawMaterials/addNewCoalEntry", formData);
-                console.log("save", formData);
+                store
+                    .dispatch("rawMaterials/addNewCoalEntry", formData)
+                    .then((state) => {
+                        //if (state) reset();
+                    });
             }
         }
         return {
             formData,
             addButtonState,
             buttonState,
-            max32767,
             headers,
             items,
+            parseDate,
             save,
             editItem,
             deleteItem,
