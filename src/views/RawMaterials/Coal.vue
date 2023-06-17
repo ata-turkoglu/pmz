@@ -66,6 +66,15 @@
             :items-per-page="10"
             class="elevation-1 mt-8"
         >
+            <template v-slot:item.amount="{ item }">
+                <span>{{ item.raw.amount + " kg" }}</span>
+            </template>
+            <template v-slot:item.unitPrice="{ item }">
+                <span>{{ item.raw.unitPrice + " TL" }}</span>
+            </template>
+            <template v-slot:item.totalPrice="{ item }">
+                <span>{{ item.raw.totalPrice + " TL" }}</span>
+            </template>
             <template v-slot:item.dateTime="{ item }">
                 <span>{{ parseDate(item.raw) }}</span>
             </template>
@@ -182,8 +191,7 @@ export default {
         }
 
         function deleteItem(item) {
-            confirm("Silmek istediğinize emin misiniz?");
-            if (confirm) {
+            if (confirm("Silmek istediğinize emin misiniz?")) {
                 store.dispatch("rawMaterials/deleteCoalEntry", item.id);
             }
         }
