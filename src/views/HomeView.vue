@@ -101,6 +101,21 @@
                         class="justify-start"
                     ></v-list-item>
                 </v-list-group>
+                <v-list-group>
+                    <template v-slot:activator="{ props }">
+                        <v-list-item
+                            v-bind="props"
+                            prepend-icon="mdi-test-tube"
+                            title="Analizler"
+                            class="nav-list-item"
+                        ></v-list-item>
+                    </template>
+                    <v-list-item
+                        title="80 Mesh"
+                        to="/analysis/heavy-minerals/80mesh"
+                        class="justify-start"
+                    ></v-list-item>
+                </v-list-group>
             </v-list>
         </v-navigation-drawer>
         <v-main class="ma-0 pa-0">

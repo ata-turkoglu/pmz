@@ -4,6 +4,7 @@ import moment from "moment";
 import users from "./modules/users";
 import chartData from "./modules/chartData";
 import rawMaterials from "./modules/rawMaterials";
+import analysis from "./modules/analysis";
 moment.locale("tr");
 axios.defaults.baseURL = process.env.VUE_APP_BACKEND;
 
@@ -189,5 +190,5 @@ export default createStore({
             });
         },
     },
-    modules: { users, chartData, rawMaterials },
+    modules: { users, chartData, rawMaterials, analysis },
 });

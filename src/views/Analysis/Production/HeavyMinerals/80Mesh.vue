@@ -29,24 +29,48 @@
                 class="inputs"
                 label="Açıklama"
                 variant="outlined"
-                v-model="formData.comment"
+                v-model="formData.notes"
             ></v-text-field>
         </div>
+        <v-row
+            v-if="isEdit ? (editPermission ? true : false) : true"
+            class="mt-4"
+            :class="$vuetify.display.smAndDown ? 'px-3' : 'px-9'"
+            align="center"
+            justify="end"
+        >
+            <v-btn
+                :loading="
+                    $store.state.analysis.buttons
+                        .analysis80MeshSaveButtonLoading
+                "
+                color="blue-darken-4"
+                width="100px"
+                @click="save()"
+                >Kaydet</v-btn
+            >
+        </v-row>
     </div>
 </template>
 
 <script>
 import { reactive, computed, watch } from "vue";
+import { useStore } from "vuex";
 export default {
     setup() {
+        const store = useStore();
         let formData = reactive({
             id: null,
-            bigbagNo: null,
+            bigbagNo: "0080",
             p400: null,
             m212: null,
             m160: null,
-            comment: null,
+            notes: null,
         });
+        const save = () => {
+            store.dispatch("analysis/save80Mesh", formData);
+        };
+        return { formData, save };
     },
 };
 </script>
