@@ -12,18 +12,21 @@
                 label="+400"
                 variant="outlined"
                 v-model="formData.p400"
+                type="number"
             ></v-text-field>
             <v-text-field
                 class="inputs"
                 label="-212"
                 variant="outlined"
                 v-model="formData.m212"
+                type="number"
             ></v-text-field>
             <v-text-field
                 class="inputs"
                 label="-160"
                 variant="outlined"
                 v-model="formData.m160"
+                type="number"
             ></v-text-field>
             <v-text-field
                 class="inputs"
@@ -32,33 +35,71 @@
                 v-model="formData.notes"
             ></v-text-field>
         </div>
-        <v-row
-            v-if="isEdit ? (editPermission ? true : false) : true"
-            class="mt-4"
-            :class="$vuetify.display.smAndDown ? 'px-3' : 'px-9'"
-            align="center"
-            justify="end"
-        >
+        <div class="second pr-3">
+            <v-btn color="blue-darken-3 mr-3" width="100px" @click="reset()"
+                >Temizle</v-btn
+            >
             <v-btn
                 :loading="
+                    $store.state.analysis.buttons
+                        .analysis80MeshSaveButtonLoading
+                "
+                :disabled="
                     $store.state.analysis.buttons
                         .analysis80MeshSaveButtonLoading
                 "
                 color="blue-darken-4"
                 width="100px"
                 @click="save()"
-                >Kaydet</v-btn
+                >{{ formData.id ? "Değiştir" : "Ekle" }}</v-btn
             >
-        </v-row>
+        </div>
+        <v-data-table
+            :headers="headers"
+            :items="items"
+            :items-per-page="10"
+            class="elevation-1 mt-8"
+        >
+            <template v-slot:item.actions="{ item }">
+                <v-icon size="small" class="me-2" @click="editItem(item.raw)">
+                    mdi-pencil
+                </v-icon>
+                <v-icon size="small" @click="deleteItem(item.raw)">
+                    mdi-delete
+                </v-icon>
+            </template></v-data-table
+        >
     </div>
 </template>
 
 <script>
 import { reactive, computed, watch } from "vue";
 import { useStore } from "vuex";
+import { VDataTable } from "vuetify/lib/labs/components";
 export default {
+    components: { VDataTable },
     setup() {
         const store = useStore();
+
+        const headers = [
+            {
+                title: "Bigbag No",
+                key: "bigbagNo",
+                align: "start",
+            },
+            { title: "+400", key: "p400", align: "end" },
+            { title: "-212", key: "m212", align: "end" },
+            { title: "-160", key: "m160", align: "end" },
+            { title: "Açıklama", key: "notes", align: "end" },
+            { title: "", key: "actions", align: "end" },
+        ];
+
+        const items = computed(() =>
+            store.state.analysis.analysis80Mesh.sort(
+                (a, b) => b.bigbagQueue - a.bigbagQueue
+            )
+        );
+
         let formData = reactive({
             id: null,
             bigbagNo: "0080",
@@ -67,10 +108,64 @@ export default {
             m160: null,
             notes: null,
         });
+
+        let editMode = false;
+
+        store.dispatch("analysis/get80Mesh");
+
         const save = () => {
-            store.dispatch("analysis/save80Mesh", formData);
+            if (editMode) {
+                store
+                    .dispatch("analysis/update80Mesh", formData)
+                    .then((state) => {
+                        if (state) reset();
+                    });
+            } else {
+                store
+                    .dispatch("analysis/save80Mesh", formData)
+                    .then((state) => {
+                        if (state) reset();
+                    });
+            }
         };
-        return { formData, save };
+
+        const editItem = (item) => {
+            console.log(item);
+            editMode = true;
+            formData.id = item.id;
+            formData.bigbagNo = "00" + item.bigbagNo.toString();
+            formData.p400 = item.p400;
+            formData.m212 = item.m212;
+            formData.m160 = item.m160;
+            formData.notes = item.notes;
+        };
+
+        const deleteItem = (item) => {
+            if (confirm("Silmek istediğinize emin misiniz?")) {
+                store.dispatch("analysis/delete80Mesh", item.id);
+            }
+        };
+
+        const reset = () => {
+            editMode = false;
+            formData.id = null;
+            formData.bigbagNo = "0080";
+            formData.p400 = null;
+            formData.m212 = null;
+            formData.m160 = null;
+            formData.notes = null;
+        };
+
+        return {
+            formData,
+            save,
+            deleteItem,
+            editItem,
+            reset,
+            headers,
+            items,
+            editMode,
+        };
     },
 };
 </script>
@@ -87,7 +182,7 @@ export default {
     justify-content: space-around;
 }
 .inputs {
-    max-width: 30%;
+    width: 100%;
     margin-inline: 10px;
 }
 .second {
