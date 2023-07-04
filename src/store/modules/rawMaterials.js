@@ -36,7 +36,7 @@ export default {
 
         ADD_COAL_DATA: (state, data) => {
             console.log(data);
-            state.coalData.unshift(data);
+            state.coalData.unshift(Object.assign({}, data));
         },
 
         UPDATE_COAL_DATA: (state, data) => {
