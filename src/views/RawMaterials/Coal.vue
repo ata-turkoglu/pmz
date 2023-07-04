@@ -104,11 +104,12 @@ export default {
             {
                 title: "Firma",
                 key: "companyName",
+                align: "start",
             },
-            { title: "Tarih", key: "dateTime" },
-            { title: "Miktar", key: "amount" },
-            { title: "Fiyat", key: "unitPrice" },
-            { title: "Toplam", key: "totalPrice" },
+            { title: "Tarih", key: "dateTime", align: "end" },
+            { title: "Miktar", key: "amount", align: "end" },
+            { title: "Fiyat", key: "unitPrice", align: "end" },
+            { title: "Toplam", key: "totalPrice", align: "end" },
             { title: "", key: "actions" },
         ];
 
@@ -205,7 +206,7 @@ export default {
                 store
                     .dispatch("rawMaterials/updateCoalEntry", formData)
                     .then((state) => {
-                        //if (state) reset();
+                        if (state) reset();
                     });
             } else {
                 formData.amount = Number(formData.amount);
@@ -215,7 +216,7 @@ export default {
                 store
                     .dispatch("rawMaterials/addNewCoalEntry", formData)
                     .then((state) => {
-                        //if (state) reset();
+                        if (state) reset();
                     });
             }
         }
@@ -247,7 +248,7 @@ export default {
     justify-content: space-around;
 }
 .inputs {
-    max-width: 30%;
+    width: 100%;
     margin-inline: 10px;
 }
 .second {
