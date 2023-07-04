@@ -101,7 +101,7 @@ export default createStore({
             state.activityForms.push(...data);
         },
         addNewActivityForm(state, data) {
-            state.activityForms.push(data);
+            state.activityForms.push(Object.assign({}, data));
             state.buttons.activityFormSaveButtonLoading = false;
         },
         updateActivityForm(state, data) {
