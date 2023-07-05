@@ -120,6 +120,11 @@
                         to="/analysis/heavy-minerals/180mesh"
                         class="justify-start"
                     ></v-list-item>
+                    <v-list-item
+                        title="3060 Mesh"
+                        to="/analysis/heavy-minerals/3060mesh"
+                        class="justify-start"
+                    ></v-list-item>
                 </v-list-group>
             </v-list>
         </v-navigation-drawer>
