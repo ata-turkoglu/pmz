@@ -37,6 +37,7 @@ export default {
         analysis180Mesh: [],
         buttons: {
             analysis80MeshSaveButtonLoading: false,
+            analysis180MeshSaveButtonLoading: false,
         },
     },
     getters: {},
@@ -68,6 +69,35 @@ export default {
         DELETE_80_MESH: (state, id) => {
             let index = state.analysis80Mesh.findIndex((itm) => itm.id == id);
             state.analysis80Mesh.splice(index, 1);
+        },
+
+        SET_180_MESH: (state, data) => {
+            data.forEach((item) => {
+                resolveBigbagSerial(item);
+            });
+            state.analysis180Mesh = [...data];
+        },
+        ADD_180_MESH: (state, data) => {
+            data.bigbagNo = parseInt(data.bigbagNo);
+            resolveBigbagSerial(data);
+            state.analysis180Mesh.push(Object.assign({}, data));
+            state.buttons.analysis180MeshSaveButtonLoading = false;
+        },
+        UPDATE_180_MESH: (state, data) => {
+            let found = state.analysis180Mesh.find((itm) => itm.id == data.id);
+
+            found.bigbagNo = parseInt(data.bigbagNo);
+            resolveBigbagSerial(found);
+            found.p212 = data.p212;
+            found.p160 = data.p160;
+            found.m90 = data.m90;
+            found.notes = data.notes;
+
+            state.buttons.analysis180MeshSaveButtonLoading = false;
+        },
+        DELETE_180_MESH: (state, id) => {
+            let index = state.analysis180Mesh.findIndex((itm) => itm.id == id);
+            state.analysis180Mesh.splice(index, 1);
         },
     },
     actions: {
@@ -125,12 +155,48 @@ export default {
                 });
         },
 
+        async get180Mesh({ commit }) {
+            return axios.get("/analysis/get180Mesh").then(async (result) => {
+                await commit("SET_180_MESH", result.data);
+            });
+        },
         async save180Mesh({ commit }, data) {
             console.log(data);
             return axios
                 .post("/analysis/save180Mesh", data)
                 .then(async (result) => {
-                    console.log(result);
+                    let id = result.data[0].id;
+                    if (id) {
+                        data.id = id;
+                        await commit("ADD_180_MESH", data);
+                        return true;
+                    } else {
+                        return false;
+                    }
+                });
+        },
+        async update180Mesh({ commit, state }, data) {
+            state.buttons.analysis180MeshSaveButtonLoading = true;
+            return axios
+                .put("/analysis/update180Mesh", data)
+                .then(async (result) => {
+                    if (result.data == "OK") {
+                        await commit("UPDATE_180_MESH", data);
+                        return true;
+                    } else {
+                        console.log(result);
+                        return false;
+                    }
+                });
+        },
+        async delete180Mesh({ commit }, id) {
+            return axios
+                .delete("/analysis/delete180Mesh", { data: { id } })
+                .then(async (result) => {
+                    if (result.data == "OK") {
+                        await commit("DELETE_180_MESH", id);
+                        return true;
+                    }
                 });
         },
     },
