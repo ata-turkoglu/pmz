@@ -10,6 +10,7 @@ import Charts from "../views/Charts/Charts";
 import Coal from "../views/RawMaterials/Coal";
 import Settings from "../views/Settings/Settings";
 import reducerProcess from "../views/Process/Reducer";
+import Analysis3060Mesh from "../views/Analysis/Production/HeavyMinerals/3060Mesh.vue";
 import Analysis80Mesh from "../views/Analysis/Production/HeavyMinerals/80Mesh.vue";
 import Analysis180Mesh from "../views/Analysis/Production/HeavyMinerals/180Mesh.vue";
 
@@ -59,6 +60,11 @@ const routes = [
                 path: "/process/heavy-minerals/reducer",
                 name: "process-heavy-minerals-reducer",
                 component: reducerProcess,
+            },
+            {
+                path: "analysis/heavy-minerals/3060mesh",
+                name: "analysis-heavy-minerals-3060-mesh",
+                component: Analysis3060Mesh,
             },
             {
                 path: "analysis/heavy-minerals/80mesh",
