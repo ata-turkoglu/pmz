@@ -36,12 +36,42 @@ export default {
         analysis80Mesh: [],
         analysis180Mesh: [],
         buttons: {
+            analysis3060MeshSaveButtonLoading: false,
             analysis80MeshSaveButtonLoading: false,
             analysis180MeshSaveButtonLoading: false,
         },
     },
     getters: {},
     mutations: {
+        SET_3060_MESH: (state, data) => {
+            data.forEach((item) => {
+                resolveBigbagSerial(item);
+            });
+            state.analysis3060Mesh = [...data];
+        },
+        ADD_3060_MESH: (state, data) => {
+            data.bigbagNo = parseInt(data.bigbagNo);
+            resolveBigbagSerial(data);
+            state.analysis3060Mesh.push(Object.assign({}, data));
+            state.buttons.analysis3060MeshSaveButtonLoading = false;
+        },
+        UPDATE_3060_MESH: (state, data) => {
+            let found = state.analysis3060Mesh.find((itm) => itm.id == data.id);
+
+            found.bigbagNo = parseInt(data.bigbagNo);
+            resolveBigbagSerial(found);
+            found.p600 = data.p600;
+            found.p400 = data.p400;
+            found.m212 = data.m212;
+            found.notes = data.notes;
+
+            state.buttons.analysis3060MeshSaveButtonLoading = false;
+        },
+        DELETE_3060_MESH: (state, id) => {
+            let index = state.analysis3060Mesh.findIndex((itm) => itm.id == id);
+            state.analysis3060Mesh.splice(index, 1);
+        },
+
         SET_80_MESH: (state, data) => {
             data.forEach((item) => {
                 resolveBigbagSerial(item);
@@ -101,12 +131,48 @@ export default {
         },
     },
     actions: {
+        async get3060Mesh({ commit }) {
+            return axios.get("/analysis/get3060Mesh").then(async (result) => {
+                await commit("SET_3060_MESH", result.data);
+            });
+        },
         async save3060Mesh({ commit }, data) {
             console.log(data);
             return axios
                 .post("/analysis/save3060Mesh", data)
                 .then(async (result) => {
-                    console.log(result);
+                    let id = result.data[0].id;
+                    if (id) {
+                        data.id = id;
+                        await commit("ADD_3060_MESH", data);
+                        return true;
+                    } else {
+                        return false;
+                    }
+                });
+        },
+        async update3060Mesh({ commit, state }, data) {
+            state.buttons.analysis3060MeshSaveButtonLoading = true;
+            return axios
+                .put("/analysis/update3060Mesh", data)
+                .then(async (result) => {
+                    if (result.data == "OK") {
+                        await commit("UPDATE_3060_MESH", data);
+                        return true;
+                    } else {
+                        console.log(result);
+                        return false;
+                    }
+                });
+        },
+        async delete3060Mesh({ commit }, id) {
+            return axios
+                .delete("/analysis/delete3060Mesh", { data: { id } })
+                .then(async (result) => {
+                    if (result.data == "OK") {
+                        await commit("DELETE_3060_MESH", id);
+                        return true;
+                    }
                 });
         },
 
