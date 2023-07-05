@@ -42,11 +42,11 @@
             <v-btn
                 :loading="
                     $store.state.analysis.buttons
-                        .analysis80MeshSaveButtonLoading
+                        .analysis180MeshSaveButtonLoading
                 "
                 :disabled="
                     $store.state.analysis.buttons
-                        .analysis80MeshSaveButtonLoading
+                        .analysis180MeshSaveButtonLoading
                 "
                 color="blue-darken-4"
                 width="100px"
