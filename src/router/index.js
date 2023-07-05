@@ -11,6 +11,7 @@ import Coal from "../views/RawMaterials/Coal";
 import Settings from "../views/Settings/Settings";
 import reducerProcess from "../views/Process/Reducer";
 import Analysis80Mesh from "../views/Analysis/Production/HeavyMinerals/80Mesh.vue";
+import Analysis180Mesh from "../views/Analysis/Production/HeavyMinerals/180Mesh.vue";
 
 const routes = [
     {
@@ -63,6 +64,11 @@ const routes = [
                 path: "analysis/heavy-minerals/80mesh",
                 name: "analysis-heavy-minerals-80-mesh",
                 component: Analysis80Mesh,
+            },
+            {
+                path: "analysis/heavy-minerals/180mesh",
+                name: "analysis-heavy-minerals-180-mesh",
+                component: Analysis180Mesh,
             },
             {
                 path: "/settings",
