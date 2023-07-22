@@ -177,19 +177,24 @@ export default createStore({
                 }
             });
         },
-        updateActivityForm({ commit, state }, data) {
-            return axios.put("/activity-forms/update", data).then((result) => {
-                if (result.data[0]?.id) {
-                    commit("updateActivityForm", data);
-                    state.commonDialogs.successDialog = true;
-                } else if (result.data?.error) {
-                    state.commonErrorText = result.data.error;
-                    state.commonDialogs.errorDialog = true;
-                    state.buttons.activityFormSaveButtonLoading = false;
-                } else {
-                    console.log("updateActivityForm Error");
-                }
-            });
+        async updateActivityForm({ commit, state }, data) {
+            return axios
+                .put("/activity-forms/update", data)
+                .then(async (result) => {
+                    if (result.data == "OK") {
+                        await commit("updateActivityForm", data);
+                        state.commonDialogs.successDialog = true;
+                        return true;
+                    } else if (result.data?.error) {
+                        state.commonErrorText = result.data.error;
+                        state.commonDialogs.errorDialog = true;
+                        state.buttons.activityFormSaveButtonLoading = false;
+                        return false;
+                    } else {
+                        console.log("updateActivityForm Error");
+                        return false;
+                    }
+                });
         },
     },
     modules: { analysis, chartData, process, rawMaterials, users },
