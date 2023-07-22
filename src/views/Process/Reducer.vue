@@ -194,7 +194,7 @@ export default {
             (val) => {
                 if (val >= 0) {
                     formData.calculatedHeavyMinerals =
-                        (((val * 20) / 60) * 60) / 1000;
+                        ((val / 20) * 3600) / 1000;
                 }
             }
         );
