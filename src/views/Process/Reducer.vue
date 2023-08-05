@@ -9,6 +9,7 @@
                 v-model="formData.dateTime"
             ></v-text-field>
             <v-text-field
+                :disabled="formData.calculatedCoal == null"
                 class="inputs"
                 label="Kömür Besleme"
                 suffix="kg/saat"
@@ -17,6 +18,7 @@
                 readonly
             ></v-text-field>
             <v-text-field
+                :disabled="formData.calculatedHeavyMinerals == null"
                 class="inputs"
                 label="Ağır Mineraller Besleme"
                 suffix="kg/saat"
@@ -25,6 +27,7 @@
                 readonly
             ></v-text-field>
             <v-text-field
+                :disabled="formData.ratio == null"
                 class="inputs"
                 label="Kömür/Ağır Mineral Oranı"
                 variant="solo"
@@ -65,6 +68,14 @@
                 label="Ağır Mineral Miktarı (gr)"
                 variant="outlined"
                 v-model="formData.heavyMineralAmount"
+                type="number"
+                min="0"
+            ></v-text-field>
+            <v-text-field
+                class="inputs"
+                label="Baca Fan (Hz)"
+                variant="outlined"
+                v-model="formData.flueFan"
                 type="number"
                 min="0"
             ></v-text-field>
@@ -110,6 +121,10 @@
             <template v-slot:item.ratio="{ item }">
                 <span>{{ "% " + item.raw.ratio }}</span>
             </template>
+            <template v-slot:item.flueFan="{ item }">
+                <span>{{ item.raw.flueFan }}</span>
+                <span v-if="item.raw.flueFan != null" class="suffix">Hz</span>
+            </template>
             <template v-slot:item.actions="{ item }">
                 <!-- <v-icon size="small" class="me-2" @click="editItem(item.raw)">
                     mdi-pencil
@@ -143,6 +158,7 @@ export default {
                 align: "start",
             },
             { title: "Oran", key: "ratio", align: "start" },
+            { title: "Fan (Hz)", key: "flueFan", align: "start" },
             { title: "", key: "actions" },
         ];
 
@@ -156,6 +172,7 @@ export default {
             heavyMineralAmount: null,
             calculatedHeavyMinerals: null,
             ratio: null,
+            flueFan: null,
         });
 
         const items = computed(() =>
@@ -252,6 +269,7 @@ export default {
             if (formData.heavyMineralAmount == null) return false;
             if (formData.coalAmount < 0) return false;
             if (formData.heavyMineralAmount < 0) return false;
+            if (formData.flueFan < 0) return false;
             return true;
         });
 
@@ -265,6 +283,7 @@ export default {
                 heavyMineralHz: formData.heavyMineralHz,
                 calculatedHeavyMinerals: formData.calculatedHeavyMinerals,
                 ratio: formData.ratio,
+                flueFan: formData.flueFan,
             };
             store.dispatch("process/addReducerFeedingData", obj);
             console.log(obj);
