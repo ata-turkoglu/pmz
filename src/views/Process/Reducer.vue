@@ -71,6 +71,8 @@
                 type="number"
                 min="0"
             ></v-text-field>
+        </div>
+        <div class="first">
             <v-text-field
                 class="inputs"
                 label="Baca Fan (Hz)"
@@ -78,7 +80,33 @@
                 v-model="formData.flueFan"
                 type="number"
                 min="0"
+                max="50"
             ></v-text-field>
+            <v-text-field
+                class="inputs"
+                label="Fırın Hız (Hz)"
+                variant="outlined"
+                v-model="formData.kilnSpeed"
+                type="number"
+                min="0"
+                max="50"
+            ></v-text-field>
+            <v-text-field
+                class="inputs"
+                label="Sıcaklık (°C)"
+                variant="outlined"
+                v-model="formData.temp"
+                type="number"
+                min="0"
+            ></v-text-field>
+            <v-select
+                class="inputs"
+                label="Yanma Puanı"
+                :items="selectOptions"
+                v-model="formData.score"
+                variant="solo"
+            >
+            </v-select>
         </div>
         <div class="second pr-3">
             <v-btn color="blue-darken-3 mr-3" width="100px" @click="reset()"
@@ -125,6 +153,17 @@
                 <span>{{ item.raw.flueFan }}</span>
                 <span v-if="item.raw.flueFan != null" class="suffix">Hz</span>
             </template>
+            <template v-slot:item.kilnSpeed="{ item }">
+                <span>{{ item.raw.kilnSpeed }}</span>
+                <span v-if="item.raw.kilnSpeed != null" class="suffix">Hz</span>
+            </template>
+            <template v-slot:item.temp="{ item }">
+                <span>{{ item.raw.temp }}</span>
+                <span v-if="item.raw.temp != null" class="suffix">°C</span>
+            </template>
+            <template v-slot:item.score="{ item }">
+                <span>{{ getSelectOptionTitle(item.raw.score) }}</span>
+            </template>
             <template v-slot:item.actions="{ item }">
                 <!-- <v-icon size="small" class="me-2" @click="editItem(item.raw)">
                     mdi-pencil
@@ -159,6 +198,9 @@ export default {
             },
             { title: "Oran", key: "ratio", align: "start" },
             { title: "Fan (Hz)", key: "flueFan", align: "start" },
+            { title: "Fırın Hız (Hz)", key: "kilnSpeed", align: "start" },
+            { title: "Sıcaklık", key: "temp", align: "start" },
+            { title: "Yanma", key: "score", align: "start" },
             { title: "", key: "actions" },
         ];
 
@@ -173,6 +215,9 @@ export default {
             calculatedHeavyMinerals: null,
             ratio: null,
             flueFan: null,
+            kilnSpeed: null,
+            temp: null,
+            score: null,
         });
 
         const items = computed(() =>
@@ -180,6 +225,19 @@ export default {
                 (a, b) => new Date(b.dateTime) - new Date(a.dateTime)
             )
         );
+
+        const selectOptions = [
+            { title: "Tehlikeli", value: 5 },
+            { title: "Çok", value: 4 },
+            { title: "Normal", value: 3 },
+            { title: "Kötü", value: 2 },
+            { title: "Çok Kötü", value: 1 },
+            { title: "Yanmıyor", value: 0 },
+        ];
+
+        const getSelectOptionTitle = (val) => {
+            return selectOptions.find((itm) => itm.value == val)?.title || null;
+        };
 
         store.dispatch("process/getReducerFeedingData");
 
@@ -270,6 +328,9 @@ export default {
             if (formData.coalAmount < 0) return false;
             if (formData.heavyMineralAmount < 0) return false;
             if (formData.flueFan < 0) return false;
+            if (formData.kilnSpeed < 0) return false;
+            if (formData.temp < 0) return false;
+            if (formData.score < 0) return false;
             return true;
         });
 
@@ -284,6 +345,9 @@ export default {
                 calculatedHeavyMinerals: formData.calculatedHeavyMinerals,
                 ratio: formData.ratio,
                 flueFan: formData.flueFan,
+                kilnSpeed: formData.kilnSpeed,
+                temp: formData.temp,
+                score: formData.score,
             };
             store.dispatch("process/addReducerFeedingData", obj);
             console.log(obj);
@@ -309,6 +373,8 @@ export default {
             addButtonState,
             headers,
             items,
+            selectOptions,
+            getSelectOptionTitle,
         };
     },
 };
