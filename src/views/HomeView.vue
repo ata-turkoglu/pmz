@@ -1,17 +1,37 @@
 <template>
-    <v-layout>
+    <v-layout class="homeView">
         <v-app-bar color="blue-darken-4" flat>
             <template v-slot:prepend>
                 <v-app-bar-nav-icon
-                    @click.stop="drawer = !drawer"
+                    v-if="!main"
+                    @click.stop="setDrawerState"
                     color="white"
                 />
             </template>
-            <v-app-bar-title
-                style="color: white; cursor: pointer"
-                @click="$router.push('/')"
-                >Data is tool for enhancing intuition</v-app-bar-title
-            >
+            <div style="width: fit-content; min-width: 160px">
+                <v-app-bar-title
+                    v-if="main"
+                    style="color: white; cursor: pointer"
+                    @click="$router.push('/')"
+                    >Data is tool for enhancing intuition</v-app-bar-title
+                >
+                <v-select
+                    variant="outlined"
+                    density="compact"
+                    :hide-details="true"
+                    v-model="$store.state.appBarSelectedFactory"
+                    :items="$store.getters.getFacilities"
+                    item-title="name"
+                    item-value="path"
+                    v-else
+                >
+                    <template v-slot:prepend-item>
+                        <v-list-item @click="$router.push('/')"
+                            >Ana Sayfa</v-list-item
+                        >
+                    </template></v-select
+                >
+            </div>
             <template v-slot:append>
                 <v-menu>
                     <template v-slot:activator="{ props }">
@@ -32,104 +52,19 @@
                 </v-menu>
             </template>
         </v-app-bar>
-        <v-navigation-drawer
-            class="px-3 py-2"
-            v-model="drawer"
-            temporary
-            color="blue-darken-4"
-            width="30%"
-        >
-            <v-list>
-                <v-list-group>
-                    <template v-slot:activator="{ props }">
-                        <v-list-item
-                            v-bind="props"
-                            prepend-icon="mdi-clipboard-outline"
-                            title="Faaliyet Formu"
-                            class="nav-list-item"
-                        ></v-list-item>
-                    </template>
-                    <v-list-item
-                        title="Yeni Form"
-                        prepend-icon="mdi-clipboard-edit-outline"
-                        to="/activity-form/new"
-                        class="justify-start"
-                    ></v-list-item>
-                    <v-list-item
-                        title="Form Listesi"
-                        prepend-icon="mdi-clipboard-list-outline"
-                        to="/activity-form/list"
-                        class="justify-start"
-                    ></v-list-item>
-                </v-list-group>
-                <v-list-item
-                    prepend-icon="mdi-chart-line"
-                    title="Grafikler"
-                    class="nav-list-item"
-                    to="/charts"
-                >
-                </v-list-item>
-                <v-list-group>
-                    <template v-slot:activator="{ props }">
-                        <v-list-item
-                            v-bind="props"
-                            prepend-icon="mdi-truck-outline"
-                            title="Hammadde Giriş"
-                            class="nav-list-item"
-                        ></v-list-item>
-                    </template>
-                    <v-list-item
-                        title="Kömür"
-                        prepend-icon="mdi-fire"
-                        to="/raw/coal"
-                        class="justify-start"
-                    ></v-list-item>
-                </v-list-group>
-                <v-list-group>
-                    <template v-slot:activator="{ props }">
-                        <v-list-item
-                            v-bind="props"
-                            prepend-icon="mdi-state-machine"
-                            title="Proses Giriş"
-                            class="nav-list-item"
-                        ></v-list-item>
-                    </template>
-                    <v-list-item
-                        title="Kömür - Ağır Mineral"
-                        prepend-icon="mdi-vector-polyline-plus"
-                        to="/process/heavy-minerals/reducer"
-                        class="justify-start"
-                    ></v-list-item>
-                </v-list-group>
-                <v-list-group>
-                    <template v-slot:activator="{ props }">
-                        <v-list-item
-                            v-bind="props"
-                            prepend-icon="mdi-test-tube"
-                            title="Analizler"
-                            class="nav-list-item"
-                        ></v-list-item>
-                    </template>
-                    <v-list-item
-                        title="80 Mesh"
-                        to="/analysis/heavy-minerals/80mesh"
-                        class="justify-start"
-                    ></v-list-item>
-                    <v-list-item
-                        title="180 Mesh"
-                        to="/analysis/heavy-minerals/180mesh"
-                        class="justify-start"
-                    ></v-list-item>
-                    <v-list-item
-                        title="3060 Mesh"
-                        to="/analysis/heavy-minerals/3060mesh"
-                        class="justify-start"
-                    ></v-list-item>
-                </v-list-group>
-            </v-list>
-        </v-navigation-drawer>
         <v-main class="ma-0 pa-0">
-            <RouterView></RouterView>
+            <div v-if="main" class="mainView">
+                <div
+                    class="mainView_item"
+                    @click="$router.push('/heavy-minerals')"
+                >
+                    <span>Ağır Mineraller Tesisi</span>
+                </div>
+                <div class="mainView_item" @click="$router.push('/quartz')">
+                    <span>Kuvars Tesisi</span>
+                </div>
+            </div>
+            <RouterView v-else></RouterView>
         </v-main>
     </v-layout>
 </template>
@@ -137,11 +72,19 @@
 <script>
 export default {
     name: "HomeView",
-    components: {},
     data: () => ({
         drawer: false,
+        selectedFactory: null,
     }),
+    computed: {
+        main() {
+            return this.$route.path == "/";
+        },
+    },
     methods: {
+        setDrawerState() {
+            this.$store.state.drawer = !this.$store.state.drawer;
+        },
         goToSettings() {
             this.$router.push("/settings");
         },
@@ -149,16 +92,50 @@ export default {
             this.$store.dispatch("users/logout");
         },
     },
+    watch: {
+        "$store.state.appBarSelectedFactory": {
+            handler(val) {
+                this.$router.push(val);
+            },
+        },
+    },
 };
 </script>
 
-<style scoped>
-.nav-list-item {
+<style lang="scss" scoped>
+@mixin flexCenter {
     display: flex;
-    color: white;
-    cursor: pointer;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    justify-items: center;
+}
+.homeView {
+    width: 100%;
+    height: 100%;
 }
 .menu-item {
     width: fit-content;
+}
+.mainView {
+    width: 100%;
+    height: 100%;
+    padding: 1rem;
+    &_item:first-of-type {
+        margin-top: 1rem;
+    }
+    &_item {
+        @include flexCenter;
+        height: 10%;
+        margin-bottom: 2rem;
+        border: 1px solid rgb(200, 200, 200);
+        width: 100%;
+        cursor: pointer;
+        background-color: rgb(238, 246, 255);
+        span {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+    }
 }
 </style>
