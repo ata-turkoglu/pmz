@@ -26,11 +26,12 @@
                     v-else
                 >
                     <template v-slot:prepend-item>
-                        <v-list-item @click="$router.push('/')"
+                        <v-list-item
+                            @click="$store.state.appBarSelectedFacility = null"
                             >Ana Sayfa</v-list-item
                         >
-                    </template></v-select
-                >
+                    </template>
+                </v-select>
             </div>
             <template v-slot:append>
                 <v-menu>
@@ -95,7 +96,11 @@ export default {
     watch: {
         "$store.state.appBarSelectedFacility": {
             handler(val) {
-                this.$router.push(val);
+                if (val == null) {
+                    this.$router.push("/");
+                } else {
+                    this.$router.push(val);
+                }
             },
         },
     },
