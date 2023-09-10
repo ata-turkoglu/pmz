@@ -89,21 +89,89 @@
             </v-list-group>
         </v-list>
     </Navbar>
-    <RouterView></RouterView>
+    <div v-if="route.name == 'HeavyMinerals'" id="heavyMineralsMain">
+        <v-expansion-panels>
+            <v-expansion-panel>
+                <v-expansion-panel-title>
+                    <div class="panel-title">
+                        <ul>
+                            <li class="mb-2">05.08.2023</li>
+                            <li>Ağır Mineraller Hammadde Ölçümü</li>
+                        </ul>
+                    </div>
+                </v-expansion-panel-title>
+                <v-expansion-panel-text>
+                    <div class="panel-text">
+                        <ul>
+                            <li>Ocakta en üstte çalışılıyor</li>
+                            <li>
+                                En üst spirallerin atığında %10 civarı ağır
+                                mineraller bulunuyor
+                            </li>
+                            <li>
+                                Sallantılı masalardan atığa giden kısımda %25
+                                ağır mineraller var
+                            </li>
+                            <li>
+                                Havuza gelen ağır minerallerin miktarı 1
+                                ton/saat
+                            </li>
+                        </ul>
+                    </div>
+                </v-expansion-panel-text>
+            </v-expansion-panel>
+        </v-expansion-panels>
+    </div>
+    <RouterView v-else></RouterView>
 </template>
 <script>
 import Navbar from "@/components/Navbar.vue";
 import { onBeforeMount } from "vue";
 import { useStore } from "vuex";
+import { useRoute } from "vue-router";
 export default {
     components: { Navbar },
     setup() {
         const store = useStore();
+        const route = useRoute();
         onBeforeMount(() => {
             store.state.drawer = true;
             store.state.appBarSelectedFacility ??= "/heavy-minerals";
         });
-        return {};
+        return { route };
     },
 };
 </script>
+<style lang="scss" scoped>
+.nav-list-item {
+    display: flex;
+    color: white;
+    cursor: pointer;
+}
+
+#heavyMineralsMain {
+    width: 100%;
+    height: 100%;
+    padding-block: 30px;
+    padding-inline: 30px;
+
+    .panel-title {
+        li {
+            display: block;
+            text-align: start;
+        }
+    }
+    .panel-text {
+        padding-left: 10px;
+        padding-top: 10px;
+        li {
+            text-align: start;
+        }
+    }
+}
+@media screen and (max-width: 600px) {
+    #heavyMineralsMain {
+        padding-inline: 10px;
+    }
+}
+</style>

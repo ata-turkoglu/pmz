@@ -19,10 +19,4 @@ export default {
     },
 };
 </script>
-<style scoped>
-.nav-list-item {
-    display: flex;
-    color: white;
-    cursor: pointer;
-}
-</style>
+<style scoped></style>
