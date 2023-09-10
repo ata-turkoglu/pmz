@@ -330,8 +330,11 @@ export default {
 <style scoped>
 .container {
     width: 100%;
-    min-height: 90vh;
+    height: 100%;
     height: fit-content;
+    padding-top: 20px;
+    padding-inline: 10px;
+    padding-bottom: 50px;
 }
 .selections {
     display: flex;

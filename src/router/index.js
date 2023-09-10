@@ -4,12 +4,14 @@ import permissions from "@/mixins/permissions";
 import SignUp from "../views/SignUp";
 import Login from "../views/Login";
 import HomeView from "../views/HomeView";
-import NewActivityForm from "../views/ActivityForms/NewActivityForm.vue";
-import ActivityFormList from "../views/ActivityForms/ActivityFormList.vue";
-import Charts from "../views/Charts/Charts";
+import HeavyMinerals from "../views/Factories/HeavyMinerals";
+import Quartz from "../views/Factories/Quartz";
+import HeavyMineralsActivityFormList from "../views/ActivityForms/HeavyMinerals/HeavyMineralsActivityFormList.vue";
+import NewHeavyMineralsActivityForm from "../views/ActivityForms/HeavyMinerals/HeavyMineralsActivityForm.vue";
+import HeavyMineralsCharts from "../views/Charts/HeavyMineralsCharts";
 import Coal from "../views/RawMaterials/Coal";
 import Settings from "../views/Settings/Settings";
-import reducerProcess from "../views/Process/Reducer";
+import ReducerProcess from "../views/Process/Reducer";
 import Analysis3060Mesh from "../views/Analysis/Production/HeavyMinerals/3060Mesh.vue";
 import Analysis80Mesh from "../views/Analysis/Production/HeavyMinerals/80Mesh.vue";
 import Analysis180Mesh from "../views/Analysis/Production/HeavyMinerals/180Mesh.vue";
@@ -37,44 +39,57 @@ const routes = [
         component: HomeView,
         children: [
             {
-                path: "/activity-form/new",
-                name: "newActivityForm",
-                component: NewActivityForm,
+                path: "/heavy-minerals",
+                name: "HeavyMinerals",
+                component: HeavyMinerals,
+                children: [
+                    {
+                        path: "activity-form/new",
+                        name: "NewHeavyMineralsActivityForm",
+                        component: NewHeavyMineralsActivityForm,
+                    },
+                    {
+                        path: "activity-form/list",
+                        name: "HeavyMineralsActivityFormList",
+                        component: HeavyMineralsActivityFormList,
+                    },
+                    {
+                        path: "charts",
+                        name: "HeavyMineralsCharts",
+                        component: HeavyMineralsCharts,
+                    },
+                    {
+                        path: "raw/coal",
+                        name: "Coal",
+                        component: Coal,
+                    },
+                    {
+                        path: "process/reducer",
+                        name: "ProcessHeavyMineralsReducer",
+                        component: ReducerProcess,
+                    },
+                    {
+                        path: "analysis/3060mesh",
+                        name: "analysisHeavyMinerals3060Mesh",
+                        component: Analysis3060Mesh,
+                    },
+                    {
+                        path: "analysis/80mesh",
+                        name: "AnalysisHeavyMinerals80Mesh",
+                        component: Analysis80Mesh,
+                    },
+                    {
+                        path: "analysis/180mesh",
+                        name: "AnalysisHeavyMinerals180Mesh",
+                        component: Analysis180Mesh,
+                    },
+                ],
             },
             {
-                path: "/activity-form/list",
-                name: "ActivityFormList",
-                component: ActivityFormList,
-            },
-            {
-                path: "/charts",
-                name: "charts",
-                component: Charts,
-            },
-            {
-                path: "/raw/coal",
-                name: "coal",
-                component: Coal,
-            },
-            {
-                path: "/process/heavy-minerals/reducer",
-                name: "process-heavy-minerals-reducer",
-                component: reducerProcess,
-            },
-            {
-                path: "analysis/heavy-minerals/3060mesh",
-                name: "analysis-heavy-minerals-3060-mesh",
-                component: Analysis3060Mesh,
-            },
-            {
-                path: "analysis/heavy-minerals/80mesh",
-                name: "analysis-heavy-minerals-80-mesh",
-                component: Analysis80Mesh,
-            },
-            {
-                path: "analysis/heavy-minerals/180mesh",
-                name: "analysis-heavy-minerals-180-mesh",
-                component: Analysis180Mesh,
+                path: "/quartz",
+                name: "Quartz",
+                component: Quartz,
+                children: [],
             },
             {
                 path: "/settings",
