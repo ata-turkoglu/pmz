@@ -19,7 +19,7 @@
                     variant="outlined"
                     density="compact"
                     :hide-details="true"
-                    v-model="$store.state.appBarSelectedFactory"
+                    v-model="$store.state.appBarSelectedFacility"
                     :items="$store.getters.getFacilities"
                     item-title="name"
                     item-value="path"
@@ -93,7 +93,7 @@ export default {
         },
     },
     watch: {
-        "$store.state.appBarSelectedFactory": {
+        "$store.state.appBarSelectedFacility": {
             handler(val) {
                 this.$router.push(val);
             },

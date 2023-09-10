@@ -17,25 +17,35 @@ export default createStore({
             {
                 id: 1,
                 name: "Agrega",
+                path: "/agregate",
                 disabled: true,
             },
             {
                 id: 2,
                 name: "Ağır Mineraller",
+                path: "/heavy-minerals",
                 disabled: false,
             },
             {
                 id: 3,
                 name: "Altın",
+                path: "/gold",
                 disabled: true,
             },
             {
                 id: 4,
                 name: "Kum",
+                path: "/sand",
                 disabled: true,
             },
             {
                 id: 5,
+                name: "Kuvars",
+                path: "/quartz",
+                disabled: false,
+            },
+            {
+                id: 6,
                 name: "Kuvars Kırma",
                 disabled: true,
             },
@@ -74,6 +84,8 @@ export default createStore({
             errorDialog: false,
         },
         commonErrorText: null,
+        drawer: false,
+        appBarSelectedFacility: null,
     },
     getters: {
         getFacilities: (state) => {
