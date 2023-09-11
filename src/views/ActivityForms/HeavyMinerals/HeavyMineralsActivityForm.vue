@@ -179,7 +179,9 @@ export default {
     created() {
         if (!this.isEdit) {
             this.$store
-                .dispatch("chartData/getLastTotalData", { facility: 2 })
+                .dispatch("heavyMineralsChartData/getLastTotalData", {
+                    facility: 2,
+                })
                 .then(() => {
                     const {
                         date,
@@ -208,9 +210,12 @@ export default {
                 });
         } else {
             this.$store
-                .dispatch("chartData/getPreviousTotalDataForEdit", {
-                    facility: 2,
-                })
+                .dispatch(
+                    "heavyMineralsChartData/getPreviousTotalDataForEdit",
+                    {
+                        facility: 2,
+                    }
+                )
                 .then(() => {
                     const {
                         date,

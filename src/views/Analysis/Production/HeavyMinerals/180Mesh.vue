@@ -111,18 +111,18 @@ export default {
 
         let editMode = false;
 
-        store.dispatch("analysis/get180Mesh");
+        store.dispatch("heavyMineralsAnalysis/get180Mesh");
 
         const save = () => {
             if (editMode) {
                 store
-                    .dispatch("analysis/update180Mesh", formData)
+                    .dispatch("heavyMineralsAnalysis/update180Mesh", formData)
                     .then((state) => {
                         if (state) reset();
                     });
             } else {
                 store
-                    .dispatch("analysis/save180Mesh", formData)
+                    .dispatch("heavyMineralsAnalysis/save180Mesh", formData)
                     .then((state) => {
                         if (state) reset();
                     });
@@ -142,7 +142,7 @@ export default {
 
         const deleteItem = (item) => {
             if (confirm("Silmek istediğinize emin misiniz?")) {
-                store.dispatch("analysis/delete180Mesh", item.id);
+                store.dispatch("heavyMineralsAnalysis/delete180Mesh", item.id);
             }
         };
 

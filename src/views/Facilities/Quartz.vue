@@ -13,7 +13,7 @@ export default {
         const route = useRoute();
         onBeforeMount(() => {
             store.state.drawer = true;
-            store.state.appBarSelectedFacility ??= "/quartz";
+            store.state.appBarSelectedFacility = "/quartz";
         });
         return { route };
     },

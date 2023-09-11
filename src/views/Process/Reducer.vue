@@ -239,7 +239,7 @@ export default {
             return selectOptions.find((itm) => itm.value == val)?.title || null;
         };
 
-        store.dispatch("process/getReducerFeedingData");
+        store.dispatch("heavyMineralsProcess/getReducerFeedingData");
 
         const ratio = computed(() => {
             return (
@@ -349,7 +349,7 @@ export default {
                 temp: formData.temp,
                 score: formData.score,
             };
-            store.dispatch("process/addReducerFeedingData", obj);
+            store.dispatch("heavyMineralsProcess/addReducerFeedingData", obj);
             console.log(obj);
         };
 
@@ -357,7 +357,10 @@ export default {
 
         const deleteItem = (item) => {
             if (confirm("Silmek istediğinize emin misiniz?")) {
-                store.dispatch("process/deleteReducerFeedingData", item.id);
+                store.dispatch(
+                    "heavyMineralsProcess/deleteReducerFeedingData",
+                    item.id
+                );
             }
         };
 

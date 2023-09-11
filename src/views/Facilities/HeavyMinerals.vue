@@ -136,7 +136,7 @@ export default {
         const route = useRoute();
         onBeforeMount(() => {
             store.state.drawer = true;
-            store.state.appBarSelectedFacility ??= "/heavy-minerals";
+            store.state.appBarSelectedFacility = "/heavy-minerals";
         });
         return { route };
     },

@@ -235,7 +235,9 @@ export default {
         },
         setAvarages() {
             this.$store
-                .dispatch("chartData/getLastTotalData", { facility: 2 })
+                .dispatch("heavyMineralsChartData/getLastTotalData", {
+                    facility: 2,
+                })
                 .then(() => {
                     let dryerPartOfCng =
                         this.lastTotal.dryerTotal * this.dryerConsumption;
@@ -264,11 +266,14 @@ export default {
             handler(val) {
                 if (val != [] || val.length <= 0) {
                     this.$store
-                        .dispatch("chartData/getDailyChartDataByDateRange", {
-                            facility: 2,
-                            startDate: moment(val[0]).format("YYYY-MM-DD"),
-                            endDate: moment(val[1]).format("YYYY-MM-DD"),
-                        })
+                        .dispatch(
+                            "heavyMineralsChartData/getDailyChartDataByDateRange",
+                            {
+                                facility: 2,
+                                startDate: moment(val[0]).format("YYYY-MM-DD"),
+                                endDate: moment(val[1]).format("YYYY-MM-DD"),
+                            }
+                        )
                         .then(() => {
                             this.setXAxis()
                                 .then((list) => {

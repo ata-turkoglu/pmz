@@ -111,18 +111,18 @@ export default {
 
         let editMode = false;
 
-        store.dispatch("analysis/get3060Mesh");
+        store.dispatch("heavyMineralsAnalysis/get3060Mesh");
 
         const save = () => {
             if (editMode) {
                 store
-                    .dispatch("analysis/update3060Mesh", formData)
+                    .dispatch("heavyMineralsAnalysis/update3060Mesh", formData)
                     .then((state) => {
                         if (state) reset();
                     });
             } else {
                 store
-                    .dispatch("analysis/save3060Mesh", formData)
+                    .dispatch("heavyMineralsAnalysis/save3060Mesh", formData)
                     .then((state) => {
                         if (state) reset();
                     });
@@ -142,7 +142,7 @@ export default {
 
         const deleteItem = (item) => {
             if (confirm("Silmek istediğinize emin misiniz?")) {
-                store.dispatch("analysis/delete3060Mesh", item.id);
+                store.dispatch("heavyMineralsAnalysis/delete3060Mesh", item.id);
             }
         };
 

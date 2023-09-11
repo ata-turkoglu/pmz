@@ -145,7 +145,7 @@ export default {
             return moment(item.dateTime).format("LLL");
         };
 
-        store.dispatch("rawMaterials/getCoalData");
+        store.dispatch("heavyMineralsRawMaterials/getCoalData");
 
         watch(
             () => formData.amount,
@@ -193,7 +193,10 @@ export default {
 
         function deleteItem(item) {
             if (confirm("Silmek istediğinize emin misiniz?")) {
-                store.dispatch("rawMaterials/deleteCoalEntry", item.id);
+                store.dispatch(
+                    "heavyMineralsRawMaterials/deleteCoalEntry",
+                    item.id
+                );
             }
         }
 
@@ -204,7 +207,10 @@ export default {
                 formData.totalPrice = Number(formData.totalPrice);
                 store.state.rawMaterials.buttons.addButtonState = false;
                 store
-                    .dispatch("rawMaterials/updateCoalEntry", formData)
+                    .dispatch(
+                        "heavyMineralsRawMaterials/updateCoalEntry",
+                        formData
+                    )
                     .then((state) => {
                         if (state) reset();
                     });
@@ -214,7 +220,10 @@ export default {
                 formData.totalPrice = Number(formData.totalPrice);
                 store.state.rawMaterials.buttons.addButtonState = false;
                 store
-                    .dispatch("rawMaterials/addNewCoalEntry", formData)
+                    .dispatch(
+                        "heavyMineralsRawMaterials/addNewCoalEntry",
+                        formData
+                    )
                     .then((state) => {
                         if (state) reset();
                     });

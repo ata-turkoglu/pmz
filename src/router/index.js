@@ -4,6 +4,7 @@ import permissions from "@/mixins/permissions";
 import SignUp from "../views/SignUp";
 import Login from "../views/Login";
 import HomeView from "../views/HomeView";
+import MainView from "../views/MainView.vue";
 import HeavyMinerals from "../views/Facilities/HeavyMinerals";
 import Quartz from "../views/Facilities/Quartz";
 import HeavyMineralsActivityFormList from "../views/ActivityForms/HeavyMinerals/HeavyMineralsActivityFormList.vue";
@@ -38,6 +39,11 @@ const routes = [
         name: "Home",
         component: HomeView,
         children: [
+            {
+                path: "/",
+                name: "MainView",
+                component: MainView,
+            },
             {
                 path: "/heavy-minerals",
                 name: "HeavyMinerals",

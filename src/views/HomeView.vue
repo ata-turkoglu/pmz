@@ -3,14 +3,14 @@
         <v-app-bar color="blue-darken-4" flat>
             <template v-slot:prepend>
                 <v-app-bar-nav-icon
-                    v-if="!main"
+                    v-if="!mainState"
                     @click.stop="setDrawerState"
                     color="white"
                 />
             </template>
             <div style="width: fit-content; min-width: 160px">
                 <v-app-bar-title
-                    v-if="main"
+                    v-if="mainState"
                     style="color: white; cursor: pointer"
                     @click="$router.push('/')"
                     >Data is tool for enhancing intuition</v-app-bar-title
@@ -54,18 +54,7 @@
             </template>
         </v-app-bar>
         <v-main class="ma-0 pa-0">
-            <div v-if="main" class="mainView">
-                <div
-                    class="mainView_item"
-                    @click="$router.push('/heavy-minerals')"
-                >
-                    <span>Ağır Mineraller Tesisi</span>
-                </div>
-                <div class="mainView_item" @click="$router.push('/quartz')">
-                    <span>Kuvars Tesisi</span>
-                </div>
-            </div>
-            <RouterView v-else></RouterView>
+            <RouterView></RouterView>
         </v-main>
     </v-layout>
 </template>
@@ -73,13 +62,10 @@
 <script>
 export default {
     name: "HomeView",
-    data: () => ({
-        drawer: false,
-        selectedFactory: null,
-    }),
+    data: () => ({}),
     computed: {
-        main() {
-            return this.$route.path == "/";
+        mainState() {
+            return this.$store.state.appBarSelectedFacility == null;
         },
     },
     methods: {
@@ -108,39 +94,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@mixin flexCenter {
-    display: flex;
-    align-items: center;
-    align-content: center;
-    justify-content: center;
-    justify-items: center;
-}
 .homeView {
     width: 100%;
     height: 100%;
 }
 .menu-item {
     width: fit-content;
-}
-.mainView {
-    width: 100%;
-    height: 100%;
-    padding: 1rem;
-    &_item:first-of-type {
-        margin-top: 1rem;
-    }
-    &_item {
-        @include flexCenter;
-        height: 10%;
-        margin-bottom: 2rem;
-        border: 1px solid rgb(200, 200, 200);
-        width: 100%;
-        cursor: pointer;
-        background-color: rgb(238, 246, 255);
-        span {
-            font-size: 1.2rem;
-            font-weight: 600;
-        }
-    }
 }
 </style>

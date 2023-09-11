@@ -2,10 +2,10 @@ import { createStore } from "vuex";
 import axios from "axios";
 import moment from "moment";
 import users from "./modules/users";
-import chartData from "./modules/chartData";
-import rawMaterials from "./modules/rawMaterials";
-import analysis from "./modules/analysis";
-import process from "./modules/process";
+import heavyMineralsChartData from "./modules/HeavyMinerals/chartData";
+import heavyMineralsRawMaterials from "./modules/HeavyMinerals/rawMaterials";
+import heavyMineralsAnalysis from "./modules/HeavyMinerals/analysis";
+import heavyMineralsProcess from "./modules/HeavyMinerals/process";
 
 moment.locale("tr");
 axios.defaults.baseURL = process.env.VUE_APP_BACKEND;
@@ -209,5 +209,11 @@ export default createStore({
                 });
         },
     },
-    modules: { analysis, chartData, process, rawMaterials, users },
+    modules: {
+        users,
+        heavyMineralsAnalysis,
+        heavyMineralsChartData,
+        heavyMineralsProcess,
+        heavyMineralsRawMaterials,
+    },
 });
