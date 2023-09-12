@@ -180,13 +180,15 @@ export default {
                         found.diffBigbag != null
                             ? found.diffBigbag *
                               packagingWeights.bigbag.toFixed()
-                            : 2;
+                            : null;
                     obj.palletValue =
                         found.pallet != null
-                            ? found.pallet * packagingWeights.pallet
-                            : 1;
+                            ? found.pallet * packagingWeights.pallet.toFixed()
+                            : null;
                     obj.ppValue =
-                        found.pp != null ? found.pp * packagingWeights.pp : 8;
+                        found.pp != null
+                            ? found.pp * packagingWeights.pp.toFixed()
+                            : null;
                     list.push(obj);
                 } else {
                     list.push(obj);
