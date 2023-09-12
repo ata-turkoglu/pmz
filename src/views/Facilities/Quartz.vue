@@ -1,5 +1,16 @@
 <template>
-    <Navbar><span>Quartz</span></Navbar>
+    <Navbar>
+        <v-list>
+            <v-list-item
+                prepend-icon="mdi-chart-line"
+                title="Grafikler"
+                class="nav-list-item"
+                to="/quartz/charts"
+            >
+            </v-list-item>
+        </v-list>
+    </Navbar>
+    <RouterView></RouterView>
 </template>
 <script>
 import Navbar from "@/components/Navbar.vue";

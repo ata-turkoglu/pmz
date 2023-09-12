@@ -101,8 +101,8 @@ export default {
     }),
     computed: {
         ...mapGetters({
-            chartData: "chartData/getHeavyMineralsConsumptionData",
-            lastTotal: "chartData/getLastTotalData",
+            chartData: "heavyMineralsChartData/getHeavyMineralsConsumptionData",
+            lastTotal: "heavyMineralsChartData/getLastTotalData",
         }),
     },
     methods: {
