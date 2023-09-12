@@ -221,7 +221,7 @@ export default {
         });
 
         const items = computed(() =>
-            store.state.process.reducerFeedingData.sort(
+            store.state.heavyMineralsProcess.reducerFeedingData.sort(
                 (a, b) => new Date(b.dateTime) - new Date(a.dateTime)
             )
         );
@@ -313,7 +313,8 @@ export default {
         );
 
         const addButtonState = computed(
-            () => store.state.rawMaterials.buttons.coalAddButtonState
+            () =>
+                store.state.heavyMineralsRawMaterials.buttons.coalAddButtonState
         );
         const buttonState = computed(() => {
             if (formData.dateTime == null) return false;

@@ -125,12 +125,13 @@ export default {
         });
 
         const items = computed(() =>
-            store.state.rawMaterials.coalData.sort(
+            store.state.heavyMineralsRawMaterials.coalData.sort(
                 (a, b) => new Date(b.dateTime) - new Date(a.dateTime)
             )
         );
         const addButtonState = computed(
-            () => store.state.rawMaterials.buttons.coalAddButtonState
+            () =>
+                store.state.heavyMineralsRawMaterials.buttons.coalAddButtonState
         );
         const buttonState = computed(() => {
             if (formData.companyName == null) return false;
@@ -205,7 +206,7 @@ export default {
                 formData.amount = Number(formData.amount);
                 formData.unitPrice = Number(formData.unitPrice);
                 formData.totalPrice = Number(formData.totalPrice);
-                store.state.rawMaterials.buttons.addButtonState = false;
+                store.state.heavyMineralsRawMaterials.buttons.addButtonState = false;
                 store
                     .dispatch(
                         "heavyMineralsRawMaterials/updateCoalEntry",
@@ -218,7 +219,7 @@ export default {
                 formData.amount = Number(formData.amount);
                 formData.unitPrice = Number(formData.unitPrice);
                 formData.totalPrice = Number(formData.totalPrice);
-                store.state.rawMaterials.buttons.addButtonState = false;
+                store.state.heavyMineralsRawMaterials.buttons.addButtonState = false;
                 store
                     .dispatch(
                         "heavyMineralsRawMaterials/addNewCoalEntry",

@@ -190,7 +190,7 @@ export default {
                         reducerKilnTimer,
                         cngTimer,
                     } =
-                        this.$store.state.chartData.chartData
+                        this.$store.state.heavyMineralsChartData.chartData
                             .heavyMineralsLastTotal;
 
                     if (shift == 3) {
@@ -224,7 +224,7 @@ export default {
                         reducerKilnTimer,
                         cngTimer,
                     } =
-                        this.$store.state.chartData.chartData
+                        this.$store.state.heavyMineralsChartData.chartData
                             .heavyMineralsPreviousTotalForEdit;
 
                     if (shift == 3) {
