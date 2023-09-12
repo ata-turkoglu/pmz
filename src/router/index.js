@@ -10,6 +10,7 @@ import Quartz from "../views/Facilities/Quartz";
 import HeavyMineralsActivityFormList from "../views/ActivityForms/HeavyMinerals/HeavyMineralsActivityFormList.vue";
 import NewHeavyMineralsActivityForm from "../views/ActivityForms/HeavyMinerals/HeavyMineralsActivityForm.vue";
 import HeavyMineralsCharts from "../views/Charts/HeavyMineralsCharts";
+import QuartzCharts from "../views/Charts/QuartzCharts";
 import Coal from "../views/RawMaterials/Coal";
 import Settings from "../views/Settings/Settings";
 import ReducerProcess from "../views/Process/Reducer";
@@ -45,7 +46,7 @@ const routes = [
                 component: MainView,
             },
             {
-                path: "/heavy-minerals",
+                path: "heavy-minerals",
                 name: "HeavyMinerals",
                 component: HeavyMinerals,
                 children: [
@@ -92,13 +93,20 @@ const routes = [
                 ],
             },
             {
-                path: "/quartz",
+                path: "quartz",
                 name: "Quartz",
                 component: Quartz,
-                children: [],
+                children: [
+                    {
+                        path: "charts",
+                        name: "QuartzCharts",
+                        component: QuartzCharts,
+                    },
+                ],
+                redirect: { name: "QuartzCharts" },
             },
             {
-                path: "/settings",
+                path: "settings",
                 name: "Settings",
                 component: Settings,
                 beforeEnter: (to, from) => {
