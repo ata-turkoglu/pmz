@@ -41,11 +41,11 @@
             >
             <v-btn
                 :loading="
-                    $store.state.analysis.buttons
+                    $store.state.heavyMineralsAnalysis.buttons
                         .analysis180MeshSaveButtonLoading
                 "
                 :disabled="
-                    $store.state.analysis.buttons
+                    $store.state.heavyMineralsAnalysis.buttons
                         .analysis180MeshSaveButtonLoading
                 "
                 color="blue-darken-4"
@@ -95,7 +95,7 @@ export default {
         ];
 
         const items = computed(() =>
-            store.state.analysis.analysis180Mesh.sort(
+            store.state.heavyMineralsAnalysis.analysis180Mesh.sort(
                 (a, b) => b.bigbagQueue - a.bigbagQueue
             )
         );
@@ -130,7 +130,6 @@ export default {
         };
 
         const editItem = (item) => {
-            console.log(item);
             editMode = true;
             formData.id = item.id;
             formData.bigbagNo = "0" + item.bigbagNo.toString();

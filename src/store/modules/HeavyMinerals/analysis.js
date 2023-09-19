@@ -137,7 +137,6 @@ export default {
             });
         },
         async save3060Mesh({ commit }, data) {
-            console.log(data);
             return axios
                 .post("/analysis/save3060Mesh", data)
                 .then(async (result) => {
@@ -227,7 +226,6 @@ export default {
             });
         },
         async save180Mesh({ commit }, data) {
-            console.log(data);
             return axios
                 .post("/analysis/save180Mesh", data)
                 .then(async (result) => {
