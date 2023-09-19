@@ -351,7 +351,6 @@ export default {
                 score: formData.score,
             };
             store.dispatch("heavyMineralsProcess/addReducerFeedingData", obj);
-            console.log(obj);
         };
 
         const editItem = (item) => {};

@@ -180,7 +180,6 @@ export default {
         };
 
         function editItem(item) {
-            console.log(item);
             editMode = true;
             formData.id = item.id;
             formData.companyName = item.companyName;

@@ -27,7 +27,6 @@ export default {
             return axios
                 .get("/process/getReducerFeedingData")
                 .then((result) => {
-                    console.log(result);
                     commit("SET_REDUCER_FEEDING_DATA", result.data);
                 });
         },

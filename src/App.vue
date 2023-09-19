@@ -23,6 +23,8 @@ export default {
     data: () => ({}),
     created() {
         //this.$store.dispatch("getAllFacilities");
+        this.$store.dispatch("getDbProducts");
+        this.$store.dispatch("getDbProductPackagings");
     },
     beforeCreate() {
         this.$store.dispatch("users/userExist").then(() => {

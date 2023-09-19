@@ -84,6 +84,8 @@ export default createStore({
             successDialog: false,
             errorDialog: false,
         },
+        dbProducts: [],
+        dbProductPackagings: [],
         commonErrorText: null,
         drawer: false,
         appBarSelectedFacility: null,
@@ -100,20 +102,30 @@ export default createStore({
                 .sort((a, b) => b.shift - a.shift)
                 .sort((a, b) => new Date(b.date) - new Date(a.date));
         },
+        getDbProducts: (state) => {
+            return state.dbProducts;
+        },
+        getDbProductPackagings: (state) => {
+            return state.dbProductPackagings;
+        },
     },
     mutations: {
         setFacilities(state, data) {
             state.facilities = data;
         },
         setActivityForms(state, data) {
-            data.forEach((item) => {
+            let activityForms = data.activityForms;
+            activityForms.forEach((item) => {
                 item.date = moment(item.date)
                     .format("L")
                     .split(".")
                     .reverse()
                     .join("-");
+                item.produced = data.producedList.filter(
+                    (itm) => itm.form_id == item.id
+                );
             });
-            state.activityForms.push(...data);
+            state.activityForms.push(...activityForms);
         },
         addNewActivityForm(state, data) {
             state.activityForms.push(Object.assign({}, data));
@@ -158,6 +170,12 @@ export default createStore({
 
             state.buttons.activityFormSaveButtonLoading = false;
         },
+        SET_DB_PRODUCTS(state, data) {
+            state.dbProducts = data;
+        },
+        SET_DB_PRODUCT_PACKAGING(state, data) {
+            state.dbProductPackagings = data;
+        },
     },
     actions: {
         getAllFacilities({ commit }) {
@@ -177,8 +195,9 @@ export default createStore({
         },
         addNewActivityForm({ commit, state }, data) {
             return axios.post("/activity-forms/add", data).then((result) => {
-                if (result.data[0]?.id) {
-                    data.id = result.data[0].id;
+                if (result.status == 200) {
+                    data.id = result.data.formId;
+                    data.producedIds = result.data.producedIds;
                     commit("addNewActivityForm", data);
                     state.commonDialogs.successDialog = true;
                 } else if (result.data?.error) {
@@ -194,7 +213,7 @@ export default createStore({
             return axios
                 .put("/activity-forms/update", data)
                 .then(async (result) => {
-                    if (result.data == "OK") {
+                    if (result.status == 200) {
                         await commit("updateActivityForm", data);
                         state.commonDialogs.successDialog = true;
                         return true;
@@ -208,6 +227,26 @@ export default createStore({
                         return false;
                     }
                 });
+        },
+        getDbProducts({ commit }) {
+            return axios.get("/utils/getProducts").then((result) => {
+                if (result.status == 200) {
+                    commit("SET_DB_PRODUCTS", result.data);
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+        },
+        getDbProductPackagings({ commit }) {
+            return axios.get("/utils/getProductPackagings").then((result) => {
+                if (result.status == 200) {
+                    commit("SET_DB_PRODUCT_PACKAGING", result.data);
+                    return true;
+                } else {
+                    return false;
+                }
+            });
         },
     },
     modules: {
