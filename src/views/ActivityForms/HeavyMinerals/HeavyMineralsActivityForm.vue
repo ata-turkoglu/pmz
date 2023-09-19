@@ -25,6 +25,7 @@
                 v-model="selectedShift"
             ></v-select>
         </div>
+
         <div class="timers mt-2">
             <v-text-field
                 class="inputs"
@@ -78,13 +79,11 @@
                 ]"
             ></v-text-field>
         </div>
+
         <div class="notes mt-4">
-            <v-textarea
-                label="Ürünler"
-                variant="outlined"
-                class="inputs"
-                v-model="productsText"
-            ></v-textarea>
+            <div class="production">
+                <AddProduct ref="addProduct" :receivedProduced="produced" />
+            </div>
             <v-textarea
                 label="Arızalar"
                 variant="outlined"
@@ -149,10 +148,12 @@
 <script>
 import InfoDialog from "@/components/common/InfoDialog.vue";
 import ErrorDialog from "@/components/common/ErrorDialog.vue";
+import AddProduct from "@/components/activityForms/addProduct.vue";
+import { mapState } from "vuex";
 import moment from "moment";
 export default {
     props: ["isEdit", "editPermission", "item"],
-    components: { InfoDialog, ErrorDialog },
+    components: { InfoDialog, ErrorDialog, AddProduct },
     data: () => ({
         id: null,
         selectedDate: null,
@@ -161,7 +162,7 @@ export default {
         dryerKilnTimer: null,
         reducerKilnTimer: null,
         cngTimer: null,
-        productsText: null,
+        produced: null,
         malfunctionsText: null,
         otherActivities: null,
         previousData: {
@@ -177,6 +178,12 @@ export default {
         loaded: false,
     }),
     created() {
+        if (this.dbProducts == []) {
+            this.$store.dispatch("getDbProducts");
+        }
+        if (this.dbProductPackagings == []) {
+            this.$store.dispatch("getDbProductPackagings");
+        }
         if (!this.isEdit) {
             this.$store
                 .dispatch("heavyMineralsChartData/getLastTotalData", {
@@ -253,7 +260,7 @@ export default {
             this.dryerKilnTimer = this.item.dryerKilnTimer;
             this.reducerKilnTimer = this.item.reducerKilnTimer;
             this.cngTimer = this.item.cngTimer;
-            this.productsText = this.item.productsText;
+            this.produced = this.item.produced;
             this.malfunctionsText = this.item.malfunctionsText;
             this.otherActivities = this.item.otherActivities;
         }
@@ -285,7 +292,7 @@ export default {
             this.dryerKilnTimer = null;
             this.reducerKilnTimer = null;
             this.cngTimer = null;
-            this.productsText = null;
+            this.produced = null;
             this.malfunctionsText = null;
             this.otherActivities = null;
         },
@@ -298,7 +305,7 @@ export default {
                 dryerKilnTimer: Number(this.dryerKilnTimer),
                 reducerKilnTimer: Number(this.reducerKilnTimer),
                 cngTimer: Number(this.cngTimer),
-                productsText: this.productsText,
+                produced: this.$refs.addProduct.items,
                 malfunctionsText: this.malfunctionsText,
                 otherActivities: this.otherActivities,
             };
@@ -328,39 +335,48 @@ export default {
                     return "";
             }
         },
+        ...mapState(["dbProducts", "dbProductPackagings"]),
     },
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .container {
     width: 100%;
     height: 100%;
     height: fit-content;
     padding-top: 20px;
-    padding-inline: 10px;
+    padding-inline: 20px;
     padding-bottom: 50px;
 }
 .selections {
     display: flex;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-between;
 }
 .timers {
     display: flex;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-between;
 }
 .notes {
     display: flex;
-    align-items: center;
-    justify-content: space-around;
+    align-items: flex-start;
+    justify-content: space-between;
 }
 .inputs {
+    width: 30%;
     max-width: 30%;
-    margin-inline: 10px;
+}
+.production {
+    display: flex;
+    min-height: 100%;
+    width: 30%;
 }
 @media screen and (max-width: 600px) {
+    .container {
+        padding-inline: 10px;
+    }
     .selections {
         flex-direction: column;
     }
@@ -373,6 +389,11 @@ export default {
     .inputs {
         width: 100%;
         max-width: 100%;
+    }
+    .production {
+        width: 100%;
+        max-width: 100%;
+        margin-bottom: 1.5rem;
     }
 }
 </style>
