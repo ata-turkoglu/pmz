@@ -70,8 +70,10 @@
                 v-for="(item, index) in items"
                 :key="index"
             >
-                <b>{{ item.amount }}</b> adet/
-                <b>{{ getProductDefinition(item.size) }}</b> /
+                <b>{{ item.amount }}</b
+                >&nbsp adet &nbsp / &nbsp
+                <b>{{ getProductDefinition(item.size) }}</b
+                >&nbsp /&nbsp
                 {{ getPackaging(item.package) }}
                 <v-icon
                     icon="mdi-minus-circle-outline"
@@ -200,7 +202,7 @@ export default {
         };
 
         onMounted(() => {
-            if (props.receivedProduced.length > 0) {
+            if (props.receivedProduced != null) {
                 props.receivedProduced.forEach((itm) => {
                     items.value.push({
                         product: getProductGroup(itm.product),
@@ -251,6 +253,7 @@ export default {
         align-items: flex-start;
         justify-content: flex-start;
         padding: 0 0 1rem 1rem;
+        font-size: 0.95rem;
         span {
             display: flex;
             align-items: center;
