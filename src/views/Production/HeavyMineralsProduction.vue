@@ -25,7 +25,6 @@
             :group-by="groupBy"
             class="elevation-1 mb-10"
             density="compact"
-            :expanded="true"
         >
             <template
                 v-slot:group-header="{
