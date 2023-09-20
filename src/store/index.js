@@ -6,6 +6,7 @@ import heavyMineralsChartData from "./modules/HeavyMinerals/chartData";
 import heavyMineralsRawMaterials from "./modules/HeavyMinerals/rawMaterials";
 import heavyMineralsAnalysis from "./modules/HeavyMinerals/analysis";
 import heavyMineralsProcess from "./modules/HeavyMinerals/process";
+import heavyMineralsProduction from "./modules/HeavyMinerals/production";
 import quartzProduction from "./modules/Quartz/production";
 
 moment.locale("tr");
@@ -107,6 +108,12 @@ export default createStore({
         },
         getDbProductPackagings: (state) => {
             return state.dbProductPackagings;
+        },
+        getDbProduct: (state) => (id) => {
+            return state.dbProducts.find((itm) => itm.id == id);
+        },
+        getDbProductPackaging: (state) => (id) => {
+            return state.dbProductPackagings.find((itm) => itm.id == id);
         },
     },
     mutations: {
@@ -254,6 +261,7 @@ export default createStore({
         heavyMineralsAnalysis,
         heavyMineralsChartData,
         heavyMineralsProcess,
+        heavyMineralsProduction,
         heavyMineralsRawMaterials,
         quartzProduction,
     },

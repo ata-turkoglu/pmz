@@ -17,6 +17,7 @@ import ReducerProcess from "../views/Process/Reducer";
 import Analysis3060Mesh from "../views/Analysis/Production/HeavyMinerals/3060Mesh.vue";
 import Analysis80Mesh from "../views/Analysis/Production/HeavyMinerals/80Mesh.vue";
 import Analysis180Mesh from "../views/Analysis/Production/HeavyMinerals/180Mesh.vue";
+import HeavyMineralsProduction from "../views/Production/HeavyMineralsProduction.vue";
 
 const routes = [
     {
@@ -89,6 +90,11 @@ const routes = [
                         path: "analysis/180mesh",
                         name: "AnalysisHeavyMinerals180Mesh",
                         component: Analysis180Mesh,
+                    },
+                    {
+                        path: "production",
+                        name: "HeavyMineralsProduction",
+                        component: HeavyMineralsProduction,
                     },
                 ],
             },
