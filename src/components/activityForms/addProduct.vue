@@ -71,9 +71,8 @@
                 :key="index"
             >
                 <b>{{ item.amount }}</b
-                >&nbsp adet &nbsp / &nbsp
-                <b>{{ getProductDefinition(item.size) }}</b
-                >&nbsp /&nbsp
+                >&nbsp adet &nbsp <b>{{ getProductDefinition(item.size) }}</b
+                >&nbsp
                 {{ getPackaging(item.package) }}
                 <v-icon
                     icon="mdi-minus-circle-outline"
@@ -253,7 +252,7 @@ export default {
         align-items: flex-start;
         justify-content: flex-start;
         padding: 0 0 1rem 1rem;
-        font-size: 0.95rem;
+        font-size: 0.9rem;
         span {
             display: flex;
             align-items: center;
