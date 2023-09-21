@@ -25,6 +25,7 @@
             :group-by="groupBy"
             class="elevation-1 mb-10"
             density="compact"
+            :items-per-page="-1"
         >
             <template
                 v-slot:group-header="{
@@ -178,6 +179,11 @@ export default {
 .table-td {
     text-align: left;
     width: 100%;
+}
+.vdp-select {
+    color: #1565c0;
+    cursor: pointer;
+    font-weight: 600;
 }
 
 @media screen and (max-width: 600px) {

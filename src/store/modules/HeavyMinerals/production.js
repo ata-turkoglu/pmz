@@ -28,7 +28,19 @@ export default {
                     packaging: packaging.package_name,
                     totalWeight: (item.amount * packaging.weight) / 1000,
                 };
-                list.push(obj);
+                let found = list.find(
+                    (itm) =>
+                        itm.date == obj.date &&
+                        itm.productId == obj.productId &&
+                        itm.packagingId == obj.packagingId
+                );
+                if (found) {
+                    found.amount += obj.amount;
+                    found.totalWeight =
+                        (found.amount * packaging.weight) / 1000;
+                } else {
+                    list.push(obj);
+                }
             });
             state.productionDataByDateRange = list;
         },
