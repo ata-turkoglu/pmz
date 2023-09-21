@@ -10,7 +10,9 @@ import heavyMineralsProduction from "./modules/HeavyMinerals/production";
 import quartzProduction from "./modules/Quartz/production";
 
 moment.locale("tr");
-axios.defaults.baseURL = process.env.VUE_APP_BACKEND;
+axios.defaults.baseURL = process.env.production
+    ? process.env.VUE_APP_BACKEND
+    : process.env.VUE_APP_BACKEND_DEV;
 
 export default createStore({
     state: {
