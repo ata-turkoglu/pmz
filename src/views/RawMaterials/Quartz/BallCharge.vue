@@ -64,7 +64,11 @@
                 color="blue-darken-4"
                 width="100px"
                 @click="save"
-                :disabled="!checkValidation()"
+                :disabled="
+                    !checkValidation() ||
+                    store.state.quartzRawMaterials.buttons
+                        .ballMillChargeSaveButtonLoading
+                "
                 >Kaydet</v-btn
             >
         </v-row>
@@ -166,6 +170,7 @@ export default {
         };
 
         const save = () => {
+            store.state.quartzRawMaterials.buttons.ballMillChargeSaveButtonLoading = true;
             showListDisabled.value = true;
             let data = {
                 workday: moment(selectedDate.value).format("YYYY-MM-DD"),

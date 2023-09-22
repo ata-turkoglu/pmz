@@ -24,6 +24,7 @@ export default {
 
                 state.ballCharges.unshift(Object.assign({}, obj));
             }
+            state.buttons.ballMillChargeSaveButtonLoading = false;
         },
         SET_BALL_CHARGE_DATA(state, data) {
             data.forEach((item) => {
@@ -38,6 +39,7 @@ export default {
                 .post("/rawMaterials/ballCharge", data)
                 .then((result) => {
                     if (result.status == 200) {
+                        data.id = result.data[0].id;
                         commit("ADD_BALL_CHARGE_DATA", data);
                         return true;
                     } else {
