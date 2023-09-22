@@ -7,6 +7,7 @@ import HomeView from "../views/HomeView";
 import MainView from "../views/MainView.vue";
 import HeavyMinerals from "../views/Facilities/HeavyMinerals";
 import Quartz from "../views/Facilities/Quartz";
+import QuartzMillBallCharge from "../views/RawMaterials/Quartz/BallCharge.vue";
 import HeavyMineralsActivityFormList from "../views/ActivityForms/HeavyMinerals/HeavyMineralsActivityFormList.vue";
 import NewHeavyMineralsActivityForm from "../views/ActivityForms/HeavyMinerals/HeavyMineralsActivityForm.vue";
 import HeavyMineralsCharts from "../views/Charts/HeavyMineralsCharts";
@@ -107,6 +108,11 @@ const routes = [
                         path: "charts",
                         name: "QuartzCharts",
                         component: QuartzCharts,
+                    },
+                    {
+                        path: "raw/ball-charge",
+                        name: "QuartzMillBallCharge",
+                        component: QuartzMillBallCharge,
                     },
                 ],
                 redirect: { name: "QuartzCharts" },

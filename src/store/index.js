@@ -7,7 +7,9 @@ import heavyMineralsRawMaterials from "./modules/HeavyMinerals/rawMaterials";
 import heavyMineralsAnalysis from "./modules/HeavyMinerals/analysis";
 import heavyMineralsProcess from "./modules/HeavyMinerals/process";
 import heavyMineralsProduction from "./modules/HeavyMinerals/production";
+import quartz from "./modules/Quartz/quartz";
 import quartzProduction from "./modules/Quartz/production";
+import quartzRawMaterials from "./modules/Quartz/rawMaterials";
 
 moment.locale("tr");
 axios.defaults.baseURL = process.env.production
@@ -265,6 +267,8 @@ export default createStore({
         heavyMineralsProcess,
         heavyMineralsProduction,
         heavyMineralsRawMaterials,
+        quartz,
         quartzProduction,
+        quartzRawMaterials,
     },
 });
