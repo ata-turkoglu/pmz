@@ -9,16 +9,50 @@ export default {
         },
     },
     getters: {},
-    mutations: {},
+    mutations: {
+        ADD_BALL_CHARGE_DATA(state, data) {
+            if (state.ballCharges.length > 0) {
+                let obj = { ...data };
+                let foundLast = state.ballCharges
+                    .filter((itm) => itm.mill == data.mill)
+                    .sort((a, b) => b.id - a.id)[0];
+                obj.timer_diff = parseFloat(
+                    Math.abs(data.timer - foundLast.timer)
+                ).toFixed(1);
+                obj.timer_total =
+                    Number(foundLast.timer_total) + Number(obj.timer_diff);
+
+                state.ballCharges.unshift(Object.assign({}, obj));
+            }
+        },
+        SET_BALL_CHARGE_DATA(state, data) {
+            data.forEach((item) => {
+                item.workday = moment(item.workday).format("YYYY-MM-DD");
+            });
+            state.ballCharges = data;
+        },
+    },
     actions: {
         addBallChargeData({ commit }, data) {
-            return axios.post("/rawMaterials/ballCharge", data).then((res) => {
-                console.log(res);
-            });
+            return axios
+                .post("/rawMaterials/ballCharge", data)
+                .then((result) => {
+                    if (result.status == 200) {
+                        commit("ADD_BALL_CHARGE_DATA", data);
+                        return true;
+                    } else {
+                        return false;
+                    }
+                });
         },
         getBallChargeData({ commit }) {
-            return axios.get("/rawMaterials/getBallCharges").then((res) => {
-                console.log(res);
+            return axios.get("/rawMaterials/getBallCharges").then((result) => {
+                if (result.status == 200) {
+                    commit("SET_BALL_CHARGE_DATA", result.data);
+                    return true;
+                } else {
+                    return false;
+                }
             });
         },
     },

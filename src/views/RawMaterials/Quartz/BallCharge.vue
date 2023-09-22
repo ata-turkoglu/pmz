@@ -69,12 +69,49 @@
             >
         </v-row>
         <div class="charge-list">
-            <v-checkbox v-model="showList" label="Listeyi göster"></v-checkbox>
+            <v-checkbox
+                v-model="showList"
+                label="Listeyi göster"
+                :disabled="showListDisabled"
+            ></v-checkbox>
             <v-data-table
                 v-if="showList"
                 :headers="headers"
                 :items="store.state.quartzRawMaterials.ballCharges"
+                class="elevation-1"
+                :group-by="groupBy"
+                density="compact"
+                :items-per-page="-1"
             >
+                <template
+                    v-slot:group-header="{
+                        item,
+                        columns,
+                        toggleGroup,
+                        isGroupOpen,
+                    }"
+                >
+                    <tr>
+                        <td :colspan="columns.length" class="table-td">
+                            <b>{{ getMillName(item.value) }}</b>
+                            <v-btn
+                                size="small"
+                                variant="text"
+                                :icon="
+                                    isGroupOpen(item) ? 'mdi-minus' : 'mdi-plus'
+                                "
+                                @click="toggleGroup(item)"
+                            >
+                            </v-btn>
+                        </td>
+                    </tr>
+                </template>
+                <template v-slot:item.amount="{ item }">
+                    <span>
+                        <b>{{ item.raw.amount + " kg" }}</b>
+                    </span>
+                </template>
+                <template v-slot:bottom> </template>
             </v-data-table>
         </div>
     </div>
@@ -95,10 +132,28 @@ export default {
         const amount = ref(null);
         const notes = ref(null);
         const showList = ref(false);
+        const showListDisabled = ref(false);
 
-        const headers = [];
+        const headers = [
+            { title: "Tarih", align: "end", key: "workday" },
+            { title: "Çalışma Saati", align: "end", key: "timer" },
+            { title: "Fark", align: "end", key: "timer_diff" },
+            { title: "Miktar", align: "end", key: "amount" },
+            { title: "Notlar", align: "end", key: "notes" },
+        ];
+
+        const groupBy = ref([{ key: "mill" }]);
+
+        const getMillName = (id) => {
+            return store.state.quartz.ballMills.find((itm) => itm.id == id)
+                .name;
+        };
 
         const checkValidation = () => {
+            if (selectedDate.value == null) return false;
+            if (selectedMill.value == null) return false;
+            if (timer.value == null || timer.value == "") return false;
+            if (amount.value == null || amount.value == "") return false;
             return true;
         };
 
@@ -111,6 +166,7 @@ export default {
         };
 
         const save = () => {
+            showListDisabled.value = true;
             let data = {
                 workday: moment(selectedDate.value).format("YYYY-MM-DD"),
                 mill: selectedMill.value,
@@ -118,7 +174,11 @@ export default {
                 amount: amount.value,
                 notes: notes.value,
             };
-            store.dispatch("quartzRawMaterials/addBallChargeData", data);
+            store
+                .dispatch("quartzRawMaterials/addBallChargeData", data)
+                .then((state) => {
+                    showListDisabled.value = false;
+                });
         };
 
         watch(
@@ -140,11 +200,14 @@ export default {
             amount,
             notes,
             showList,
+            showListDisabled,
             headers,
             save,
             reset,
             checkValidation,
             store,
+            groupBy,
+            getMillName,
         };
     },
 };
@@ -167,6 +230,10 @@ export default {
         width: 30%;
         max-width: 30%;
     }
+}
+.table-td {
+    text-align: left;
+    width: 100%;
 }
 @media screen and (max-width: 600px) {
     .ballChargePage {
