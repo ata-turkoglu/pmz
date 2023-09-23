@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "@/plugins/axios";
 import store from "@/store";
 
 export default {

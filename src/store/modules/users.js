@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "@/plugins/axios";
 import jwt from "vue-jwt-decode";
 import router from "../../router/index";
 import store from "../index";

@@ -1,5 +1,5 @@
 import { createStore } from "vuex";
-import axios from "axios";
+import axios from "@/plugins/axios";
 import moment from "moment";
 import users from "./modules/users";
 import heavyMineralsChartData from "./modules/HeavyMinerals/chartData";
@@ -12,10 +12,6 @@ import quartzProduction from "./modules/Quartz/production";
 import quartzRawMaterials from "./modules/Quartz/rawMaterials";
 
 moment.locale("tr");
-axios.defaults.baseURL =
-    process.env.NODE_ENV == "development"
-        ? process.env.VUE_APP_BACKEND_DEV
-        : process.env.VUE_APP_BACKEND;
 
 export default createStore({
     state: {
