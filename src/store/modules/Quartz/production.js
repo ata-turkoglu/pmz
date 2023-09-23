@@ -51,7 +51,8 @@ export default {
                     return true;
                 })
                 .catch((error) => {
-                    console.log(error);
+                    store.state.commonErrorText = error;
+                    store.state.commonDialogs = true;
                     return false;
                 });
         },

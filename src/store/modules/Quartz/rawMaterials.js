@@ -49,17 +49,29 @@ export default {
                         store.state.commonDialogs = true;
                         return false;
                     }
+                })
+                .catch((error) => {
+                    store.state.commonErrorText = error;
+                    store.state.commonDialogs = true;
+                    return false;
                 });
         },
         getBallChargeData({ commit }) {
-            return axios.get("/rawMaterials/getBallCharges").then((result) => {
-                if (result.status == 200) {
-                    commit("SET_BALL_CHARGE_DATA", result.data);
-                    return true;
-                } else {
+            return axios
+                .get("/rawMaterials/getBallCharges")
+                .then((result) => {
+                    if (result.status == 200) {
+                        commit("SET_BALL_CHARGE_DATA", result.data);
+                        return true;
+                    } else {
+                        return false;
+                    }
+                })
+                .catch((error) => {
+                    store.state.commonErrorText = error;
+                    store.state.commonDialogs = true;
                     return false;
-                }
-            });
+                });
         },
     },
 };

@@ -1,4 +1,5 @@
 import axios from "axios";
+import store from "../../index";
 
 export default {
     namespaced: true,
@@ -26,6 +27,11 @@ export default {
                 .get("/process/getReducerFeedingData")
                 .then((result) => {
                     commit("SET_REDUCER_FEEDING_DATA", result.data);
+                })
+                .catch((error) => {
+                    store.state.commonErrorText = error;
+                    store.state.commonDialogs = true;
+                    return false;
                 });
         },
 
@@ -42,6 +48,11 @@ export default {
                         console.log(result);
                         return false;
                     }
+                })
+                .catch((error) => {
+                    store.state.commonErrorText = error;
+                    store.state.commonDialogs = true;
+                    return false;
                 });
         },
 
@@ -53,6 +64,11 @@ export default {
                         await commit("DELETE_REDUCER_FEEDING_DATA", id);
                         return true;
                     }
+                })
+                .catch((error) => {
+                    store.state.commonErrorText = error;
+                    store.state.commonDialogs = true;
+                    return false;
                 });
         },
     },

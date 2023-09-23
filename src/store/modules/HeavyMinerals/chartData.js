@@ -1,4 +1,5 @@
 import axios from "axios";
+import store from "@/store";
 
 export default {
     namespaced: true,
@@ -69,6 +70,11 @@ export default {
                         facility,
                     });
                     return true;
+                })
+                .catch((error) => {
+                    store.state.commonErrorText = error;
+                    store.state.commonDialogs = true;
+                    return false;
                 });
         },
         async getLastTotalData({ commit }, { facility }) {
@@ -84,6 +90,11 @@ export default {
                         facility,
                     });
                     return true;
+                })
+                .catch((error) => {
+                    store.state.commonErrorText = error;
+                    store.state.commonDialogs = true;
+                    return false;
                 });
         },
         async getPreviousTotalDataForEdit({ commit }, { facility }) {
@@ -99,6 +110,11 @@ export default {
                         facility,
                     });
                     return true;
+                })
+                .catch((error) => {
+                    store.state.commonErrorText = error;
+                    store.state.commonDialogs = true;
+                    return false;
                 });
         },
     },

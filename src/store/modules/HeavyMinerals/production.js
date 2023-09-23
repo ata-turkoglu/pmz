@@ -54,6 +54,11 @@ export default {
                 })
                 .then((result) => {
                     commit("SET_PRODUCTION_DATA", result.data);
+                })
+                .catch((error) => {
+                    store.state.commonErrorText = error;
+                    store.state.commonDialogs = true;
+                    return false;
                 });
         },
     },
