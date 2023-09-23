@@ -343,7 +343,8 @@ export default {
 <style lang="scss" scoped>
 .container {
     width: 100%;
-    height: fit-content;
+    height: 100%;
+    overflow: auto;
     padding-top: 20px;
     padding-inline: 20px;
     padding-bottom: 50px;

@@ -1,7 +1,7 @@
 <template>
     <div class="main-container">
-        <nav></nav>
-        <router-view />
+        <!-- <nav></nav> -->
+        <router-view style="width: 100%; height: 100%" />
         <v-dialog
             v-model="$store.state.commonDialogs.routePermissionDialog"
             width="auto"
@@ -42,11 +42,13 @@ export default {
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
     color: #2c3e50;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
 }
 .main-container {
     width: 100%;
     height: 100%;
-    height: 100vh;
 }
 nav {
     padding: 30px;

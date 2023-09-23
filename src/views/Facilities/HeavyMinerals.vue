@@ -160,8 +160,7 @@ export default {
 #heavyMineralsMain {
     width: 100%;
     height: 100%;
-    padding-block: 30px;
-    padding-inline: 30px;
+    padding: 30px;
 
     .panel-title {
         li {
@@ -178,13 +177,12 @@ export default {
     }
     .r-view {
         width: 100%;
-        max-width: 100%;
-        overflow: hidden;
+        height: 100%;
     }
 }
 @media screen and (max-width: 600px) {
     #heavyMineralsMain {
-        padding-inline: 10px;
+        padding: 10px 10px 30px 10px;
     }
 }
 </style>

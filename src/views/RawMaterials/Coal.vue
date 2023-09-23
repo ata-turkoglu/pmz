@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="coal_container">
         <div class="first mt-5">
             <v-text-field
                 class="inputs"
@@ -246,9 +246,10 @@ export default {
 </script>
 
 <style scoped>
-.container {
+.coal_container {
     width: 100%;
-    height: 100%;
+    height: fit-content;
+    overflow: auto;
     padding: 10px;
 }
 .first {

@@ -319,6 +319,8 @@ export default {
     min-height: 90vh;
     margin-top: 10px;
     padding: 10px;
+    height: 100%;
+    overflow: auto;
 }
 .selections {
     padding-block: 20px;
@@ -354,7 +356,7 @@ export default {
     .container {
         margin-inline: 0;
         padding-inline: 0;
-        min-height: 90vh;
+        min-height: unset;
         padding: 10px;
     }
     .selections {

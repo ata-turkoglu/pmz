@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="hm_production_container">
         <div class="first mt-5">
             <v-text-field
                 class="inputs"
@@ -384,9 +384,10 @@ export default {
 </script>
 
 <style scoped>
-.container {
+.hm_production_container {
     width: 100%;
-    height: 100%;
+    height: max-content;
+    overflow: auto;
     padding: 10px;
 }
 .first {
@@ -419,7 +420,6 @@ export default {
         flex-direction: column;
     }
     .inputs {
-        max-width: 100%;
         width: 100%;
     }
 }

@@ -74,6 +74,9 @@ export default {
     justify-content: flex-start;
     padding-block: 10px;
     min-height: 90vh;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
 }
 .form-list {
     min-width: "20%";
@@ -120,8 +123,9 @@ export default {
         width: 100%;
         max-width: 100%;
         max-height: 250px;
+        min-height: 30%;
         overflow: scroll;
-        margin-bottom: 30px;
+        margin-bottom: 20px;
         padding-inline: 10px;
     }
     .form-container {

@@ -1,6 +1,6 @@
 <template>
     <v-layout class="homeView">
-        <v-app-bar color="blue-darken-4" flat>
+        <v-app-bar color="blue-darken-4" flat height="65" :absolute="false">
             <template v-slot:prepend>
                 <v-app-bar-nav-icon
                     v-if="!mainState"
@@ -53,8 +53,8 @@
                 </v-menu>
             </template>
         </v-app-bar>
-        <v-main class="ma-0 pa-0">
-            <RouterView></RouterView>
+        <v-main class="ma-0 pa-0 vmain">
+            <RouterView style="width: 100%; height: 100%" />
         </v-main>
     </v-layout>
 </template>
@@ -97,8 +97,16 @@ export default {
 .homeView {
     width: 100%;
     height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 .menu-item {
     width: fit-content;
+}
+.vmain {
+    padding-top: 65px !important;
+    height: calc(100% - 65px);
+    height: -moz-calc(100% - 65px);
+    height: -webkit-calc(100% - 65px);
 }
 </style>
