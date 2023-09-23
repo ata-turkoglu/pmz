@@ -1,8 +1,6 @@
 import axios from "axios";
 import moment from "moment";
 
-axios.defaults.baseURL = process.env.VUE_APP_BACKEND;
-
 export default {
     namespaced: true,
     state: {

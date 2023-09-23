@@ -12,10 +12,10 @@ import quartzProduction from "./modules/Quartz/production";
 import quartzRawMaterials from "./modules/Quartz/rawMaterials";
 
 moment.locale("tr");
-/* axios.defaults.baseURL = process.env.production
-    ? process.env.VUE_APP_BACKEND
-    : process.env.VUE_APP_BACKEND_DEV; */
-axios.defaults.baseURL = process.env.VUE_APP_BACKEND;
+axios.defaults.baseURL =
+    process.env.NODE_ENV == "development"
+        ? process.env.VUE_APP_BACKEND_DEV
+        : process.env.VUE_APP_BACKEND;
 
 export default createStore({
     state: {

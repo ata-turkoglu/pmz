@@ -3,8 +3,6 @@ import jwt from "vue-jwt-decode";
 import router from "../../router/index";
 import store from "../index";
 
-axios.defaults.baseURL = process.env.VUE_APP_BACKEND;
-
 export default {
     namespaced: true,
     state: {
