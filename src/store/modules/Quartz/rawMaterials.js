@@ -1,5 +1,6 @@
 import axios from "axios";
 import moment from "moment";
+import store from "../../index";
 
 export default {
     namespaced: true,
@@ -44,6 +45,8 @@ export default {
                         commit("ADD_BALL_CHARGE_DATA", data);
                         return true;
                     } else {
+                        store.state.commonErrorText = result.statusText;
+                        store.state.commonDialogs = true;
                         return false;
                     }
                 });

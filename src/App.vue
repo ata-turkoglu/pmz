@@ -13,6 +13,17 @@
                 "
             />
         </v-dialog>
+        <v-dialog v-model="$store.state.commonDialogs.errorDialog" width="auto">
+            <ErrorDialog
+                :errorText="$store.state.commonErrorText"
+                @close="
+                    [
+                        ($store.state.commonDialogs.errorDialog = false),
+                        ($store.state.commonErrorText = null),
+                    ]
+                "
+            />
+        </v-dialog>
     </div>
 </template>
 

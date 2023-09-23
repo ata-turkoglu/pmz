@@ -54,7 +54,7 @@
             </template>
         </v-app-bar>
         <v-main class="ma-0 pa-0 vmain">
-            <RouterView style="width: 100%; height: 100%" />
+            <RouterView />
         </v-main>
     </v-layout>
 </template>
@@ -97,6 +97,7 @@ export default {
 .homeView {
     width: 100%;
     height: 100%;
+    overflow: auto;
     display: flex;
     flex-direction: column;
 }
