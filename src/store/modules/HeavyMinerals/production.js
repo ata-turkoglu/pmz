@@ -57,7 +57,7 @@ export default {
                 })
                 .catch((error) => {
                     store.state.commonErrorText = error;
-                    store.state.commonDialogs = true;
+                    store.state.commonDialogs.errorDialog = true;
                     return false;
                 });
         },

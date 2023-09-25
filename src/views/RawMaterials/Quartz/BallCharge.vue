@@ -182,6 +182,9 @@ export default {
             store
                 .dispatch("quartzRawMaterials/addBallChargeData", data)
                 .then((state) => {
+                    if (state) {
+                        store.state.commonDialogs.successDialog = true;
+                    }
                     showListDisabled.value = false;
                 });
         };

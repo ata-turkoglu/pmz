@@ -10,6 +10,7 @@ import heavyMineralsProduction from "./modules/HeavyMinerals/production";
 import quartz from "./modules/Quartz/quartz";
 import quartzProduction from "./modules/Quartz/production";
 import quartzRawMaterials from "./modules/Quartz/rawMaterials";
+import quartzWorkingHours from "./modules/Quartz/workingHours";
 
 moment.locale("tr");
 
@@ -267,5 +268,6 @@ export default createStore({
         quartz,
         quartzProduction,
         quartzRawMaterials,
+        quartzWorkingHours,
     },
 });

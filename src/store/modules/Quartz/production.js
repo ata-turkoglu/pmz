@@ -1,5 +1,6 @@
 import axios from "@/plugins/axios";
 import moment from "moment";
+import store from "@/store";
 
 export default {
     namespaced: true,
@@ -52,7 +53,7 @@ export default {
                 })
                 .catch((error) => {
                     store.state.commonErrorText = error;
-                    store.state.commonDialogs = true;
+                    store.state.commonDialogs.errorDialog = true;
                     return false;
                 });
         },

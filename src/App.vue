@@ -24,13 +24,23 @@
                 "
             />
         </v-dialog>
+        <v-dialog
+            v-model="$store.state.commonDialogs.successDialog"
+            width="auto"
+        >
+            <InfoDialog
+                :infoText="'Başarılı'"
+                @close="[($store.state.commonDialogs.successDialog = false)]"
+            />
+        </v-dialog>
     </div>
 </template>
 
 <script>
+import InfoDialog from "@/components/common/InfoDialog.vue";
 import ErrorDialog from "./components/common/ErrorDialog.vue";
 export default {
-    components: { ErrorDialog },
+    components: { ErrorDialog, InfoDialog },
     data: () => ({}),
     created() {
         //this.$store.dispatch("getAllFacilities");

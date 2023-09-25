@@ -23,6 +23,12 @@
                     to="/quartz/raw/ball-charge"
                     class="justify-start"
                 ></v-list-item>
+                <v-list-item
+                    title="Çalışma Saatleri"
+                    prepend-icon="mdi-timeline-plus-outline"
+                    to="/quartz/activity-form/new"
+                    class="justify-start"
+                ></v-list-item>
             </v-list-group>
         </v-list>
     </Navbar>
