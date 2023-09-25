@@ -1,36 +1,37 @@
 {
-  "name": "pmz",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build"
-  },
-  "dependencies": {
-    "@vuepic/vue-datepicker": "^4.0.1",
-    "axios": "^1.3.3",
-    "core-js": "^3.8.3",
-    "echarts": "^5.4.1",
-    "moment": "^2.29.4",
-    "vue": "^3.2.13",
-    "vue-jwt-decode": "^0.1.0",
-    "vue-router": "^4.0.3",
-    "vuetify": "^3.1.5",
-    "vuex": "^4.0.0"
-  },
-  "devDependencies": {
-    "@mdi/font": "^7.1.96",
-    "@vue/cli-plugin-babel": "~5.0.0",
-    "@vue/cli-plugin-router": "~5.0.0",
-    "@vue/cli-plugin-vuex": "~5.0.0",
-    "@vue/cli-service": "~5.0.0",
-    "sass": "^1.66.1",
-    "sass-loader": "^13.3.2"
-  },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not dead",
-    "not ie 11"
-  ]
+    "name": "pmz",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "serve": "vue-cli-service serve",
+        "build": "vue-cli-service build"
+    },
+    "dependencies": {
+        "@vuepic/vue-datepicker": "^4.0.1",
+        "axios": "^1.3.3",
+        "core-js": "^3.8.3",
+        "echarts": "^5.4.1",
+        "moment": "^2.29.4",
+        "vue": "^3.2.13",
+        "vue-jwt-decode": "^0.1.0",
+        "vue-router": "^4.0.3",
+        "vuetify": "^3.1.5",
+        "vuex": "^4.0.0",
+        "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.0/xlsx-0.20.0.tgz"
+    },
+    "devDependencies": {
+        "@mdi/font": "^7.1.96",
+        "@vue/cli-plugin-babel": "~5.0.0",
+        "@vue/cli-plugin-router": "~5.0.0",
+        "@vue/cli-plugin-vuex": "~5.0.0",
+        "@vue/cli-service": "~5.0.0",
+        "sass": "^1.66.1",
+        "sass-loader": "^13.3.2"
+    },
+    "browserslist": [
+        "> 1%",
+        "last 2 versions",
+        "not dead",
+        "not ie 11"
+    ]
 }
