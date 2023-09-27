@@ -181,7 +181,7 @@ export default {
         };
 
         const vdpInputFormat = (date) => {
-            return moment(date[0]).format("L");
+            return moment(date).format("L");
         };
 
         const selectDate = () => {

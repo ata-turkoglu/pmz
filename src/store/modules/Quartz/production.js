@@ -34,7 +34,7 @@ export default {
     actions: {
         async getProductionChartDataByDateRange(
             { commit },
-            { facility, startDate, endDate }
+            { facility, startDate, endDate, product }
         ) {
             return axios
                 .get("/chart-data/production", {
@@ -42,6 +42,7 @@ export default {
                         facility,
                         startDate,
                         endDate,
+                        product,
                     },
                 })
                 .then(async (result) => {

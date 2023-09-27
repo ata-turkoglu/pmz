@@ -1,6 +1,7 @@
 <template>
     <div class="container">
         <div class="selections">
+            <span style="display: flex; font-weight: 600">Tarih Seç:</span>
             <VueDatePicker
                 ref="vDatePickerQ"
                 class="datepicker"
@@ -10,12 +11,34 @@
                 :enable-time-picker="false"
                 position="left"
                 :format="vdpInputFormat"
-                placeholder="Tarih Seç"
             >
                 <template #action-select>
                     <p class="vdp-select" @click="selectDate">Seç</p>
                 </template>
             </VueDatePicker>
+            <span style="display: flex; margin-top: 15px; font-weight: 600"
+                >Ürün Seç:</span
+            >
+            <v-select
+                ref="productSelection"
+                class="datepicker"
+                variant="outlined"
+                density="compact"
+                :items="products"
+                v-model="selectedProduct"
+            >
+                <template v-slot:prepend-item>
+                    <v-list-item @click="selectAllProducts">
+                        Hepsi
+                    </v-list-item>
+                </template>
+            </v-select>
+            <v-btn
+                class="datepicker justify-self-start"
+                @click="getChart()"
+                :disabled="getChartButtonDisabled"
+                >Grafik</v-btn
+            >
             <div v-if="productionChartState" class="total-data mt-5 pa-3">
                 <div
                     class="total-section mr-16"
@@ -84,14 +107,52 @@ export default {
                 diffBigbag: null,
                 total: null,
             },
+            selectedProduct: "Hepsi",
+            products: [
+                "TURBO FİLTRE",
+                "Renkli filtre",
+                "45 M",
+                "63 M",
+                "75 M",
+                "150 M BIGBAG",
+                "150 M (PALET)25kg",
+                "0 - 200 M",
+                "0 - 300 M",
+                "100 - 300 M",
+                "0 - 400 M",
+                "100-500 M",
+                "0 - 600 M",
+                "300 - 700 M",
+                "0 - 1000 M",
+                "600 - 1000 M",
+                "600 - 1200 M",
+                "400 - 2500 M",
+                "1200 - 2500 M",
+                "1000 - 3000 M",
+                "2500 - 4000 M",
+                "3000 - 5000 M",
+                "5000 - 8000 M",
+                "25 - 60 MM",
+            ],
         };
     },
     computed: {
         ...mapGetters({
             chartData: "quartzProduction/getProductionChartDataByDate",
         }),
+        getChartButtonDisabled() {
+            return (
+                this.selectedDateRange == null ||
+                this.selectedDateRange == [] ||
+                this.selectedDateRange.length <= 0
+            );
+        },
     },
     methods: {
+        selectAllProducts() {
+            this.selectedProduct = "Hepsi";
+            this.$refs.productSelection.menu = false;
+        },
         selectDate() {
             this.$refs.vDatePickerQ.selectDate();
         },
@@ -174,20 +235,20 @@ export default {
                 if (found) {
                     obj.bigbagValue =
                         found.bigbag != null
-                            ? found.bigbag * packagingWeights.bigbag.toFixed()
+                            ? found.bigbag * packagingWeights.bigbag.toFixed(1)
                             : null;
                     obj.diffBigbagValue =
                         found.diffBigbag != null
                             ? found.diffBigbag *
-                              packagingWeights.bigbag.toFixed()
+                              packagingWeights.bigbag.toFixed(1)
                             : null;
                     obj.palletValue =
                         found.pallet != null
-                            ? found.pallet * packagingWeights.pallet.toFixed()
+                            ? found.pallet * packagingWeights.pallet.toFixed(1)
                             : null;
                     obj.ppValue =
                         found.pp != null
-                            ? found.pp * packagingWeights.pp.toFixed()
+                            ? found.pp * packagingWeights.pp.toFixed(1)
                             : null;
                     list.push(obj);
                 } else {
@@ -226,36 +287,38 @@ export default {
                     return list;
                 });
         },
-    },
-    watch: {
-        selectedDateRange: {
-            handler(val) {
-                if (val != [] || val.length <= 0 || val == null) {
-                    this.$store
-                        .dispatch(
-                            "quartzProduction/getProductionChartDataByDateRange",
-                            {
-                                facility: 5,
-                                startDate: moment(val[0]).format("YYYY-MM-DD"),
-                                endDate: moment(val[1]).format("YYYY-MM-DD"),
-                            }
-                        )
-                        .then(() => {
-                            this.setXAxis()
-                                .then((list) => {
-                                    return this.setDataByDateRange(list);
-                                })
-                                .then((data) => {
-                                    this.production_calculatedData = data;
-                                    return this.calculateTotal(data);
-                                })
-                                .then((data) => {
-                                    this.totalData = data;
-                                    this.productionChartState = true;
-                                });
+        getChart() {
+            this.$store
+                .dispatch(
+                    "quartzProduction/getProductionChartDataByDateRange",
+                    {
+                        facility: 5,
+                        startDate: moment(this.selectedDateRange[0]).format(
+                            "YYYY-MM-DD"
+                        ),
+                        endDate: moment(this.selectedDateRange[1]).format(
+                            "YYYY-MM-DD"
+                        ),
+                        product:
+                            this.selectedProduct == "Hepsi"
+                                ? null
+                                : this.selectedProduct,
+                    }
+                )
+                .then(() => {
+                    this.setXAxis()
+                        .then((list) => {
+                            return this.setDataByDateRange(list);
+                        })
+                        .then((data) => {
+                            this.production_calculatedData = data;
+                            return this.calculateTotal(data);
+                        })
+                        .then((data) => {
+                            this.totalData = data;
+                            this.productionChartState = true;
                         });
-                }
-            },
+                });
         },
     },
 };
@@ -267,10 +330,13 @@ export default {
     min-height: 90vh;
     margin-top: 10px;
     padding: 10px;
+    padding-bottom: 50px;
 }
 .selections {
     padding-block: 20px;
     padding-inline: 10px;
+    display: flex;
+    flex-direction: column;
 }
 .charts {
     width: 100%;
