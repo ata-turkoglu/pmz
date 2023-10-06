@@ -1,49 +1,71 @@
 <template>
-    <Navbar>
-        <v-list>
-            <v-list-item
-                prepend-icon="mdi-chart-line"
-                title="Grafikler"
-                class="nav-list-item"
-                to="/quartz/charts"
-            >
-            </v-list-item>
-            <v-list-group>
-                <template v-slot:activator="{ props }">
+    <div id="quartzMain">
+        <Navbar>
+            <v-list>
+                <v-list-item
+                    prepend-icon="mdi-text-box-outline"
+                    title="Stoklar"
+                    class="nav-list-item"
+                    to="/quartz"
+                >
+                </v-list-item>
+                <v-list-group>
+                    <template v-slot:activator="{ props }">
+                        <v-list-item
+                            v-bind="props"
+                            prepend-icon="mdi-chart-line"
+                            title="Grafikler"
+                            class="nav-list-item"
+                        ></v-list-item>
+                    </template>
                     <v-list-item
-                        v-bind="props"
-                        prepend-icon="mdi-clipboard-plus-outline"
-                        title="Veri Girişi"
+                        prepend-icon="mdi-sticker-plus-outline"
+                        title="Üretim"
                         class="nav-list-item"
+                        to="/quartz/charts"
+                    >
+                    </v-list-item>
+                </v-list-group>
+                <v-list-group>
+                    <template v-slot:activator="{ props }">
+                        <v-list-item
+                            v-bind="props"
+                            prepend-icon="mdi-clipboard-plus-outline"
+                            title="Veri Girişi"
+                            class="nav-list-item"
+                        ></v-list-item>
+                    </template>
+                    <v-list-item
+                        title="Bilya Şarj"
+                        prepend-icon="mdi-shape-circle-plus"
+                        to="/quartz/raw/ball-charge"
+                        class="justify-start"
                     ></v-list-item>
-                </template>
-                <v-list-item
-                    title="Bilya Şarj"
-                    prepend-icon="mdi-shape-circle-plus"
-                    to="/quartz/raw/ball-charge"
-                    class="justify-start"
-                ></v-list-item>
-                <v-list-item
-                    title="Çalışma Saatleri"
-                    prepend-icon="mdi-timeline-plus-outline"
-                    to="/quartz/activity-form/new"
-                    class="justify-start"
-                ></v-list-item>
-            </v-list-group>
-        </v-list>
-    </Navbar>
-    <RouterView></RouterView>
+                    <v-list-item
+                        title="Çalışma Saatleri"
+                        prepend-icon="mdi-timeline-plus-outline"
+                        to="/quartz/activity-form/new"
+                        class="justify-start"
+                    ></v-list-item>
+                </v-list-group>
+            </v-list>
+        </Navbar>
+        <QuartzStockTaking v-if="route.name == 'Quartz'" />
+        <RouterView v-else></RouterView>
+    </div>
 </template>
 <script>
 import Navbar from "@/components/Navbar.vue";
 import { onBeforeMount } from "vue";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
+import QuartzStockTaking from "../Stocktaking/QuartzStocktaking";
 export default {
-    components: { Navbar },
+    components: { Navbar, QuartzStockTaking },
     setup() {
         const store = useStore();
         const route = useRoute();
+        store.dispatch("quartzProduction/getLastStocktakingData");
         onBeforeMount(() => {
             store.state.drawer = true;
             store.state.appBarSelectedFacility = "/quartz";
@@ -52,3 +74,21 @@ export default {
     },
 };
 </script>
+
+<style scoped>
+#quartzMain {
+    width: 100%;
+    height: 100%;
+    padding: 30px;
+}
+.nav-list-item {
+    display: flex;
+    color: white;
+    cursor: pointer;
+}
+@media screen and (max-width: 600px) {
+    #quartzMain {
+        padding: 10px 10px 30px 10px;
+    }
+}
+</style>

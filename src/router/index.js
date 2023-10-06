@@ -12,7 +12,8 @@ import NewQuartzsActivityForm from "../views/ActivityForms/Quartz/QuartzActivity
 import HeavyMineralsActivityFormList from "../views/ActivityForms/HeavyMinerals/HeavyMineralsActivityFormList.vue";
 import NewHeavyMineralsActivityForm from "../views/ActivityForms/HeavyMinerals/HeavyMineralsActivityForm.vue";
 import HeavyMineralsCharts from "../views/Charts/HeavyMineralsCharts";
-import QuartzCharts from "../views/Charts/QuartzCharts";
+import QuartzProductionCharts from "../views/Charts/QuartzProductionCharts";
+import QuartzStockTaking from "../views/Stocktaking/QuartzStocktaking";
 import Coal from "../views/RawMaterials/Coal";
 import Settings from "../views/Settings/Settings";
 import ReducerProcess from "../views/Process/Reducer";
@@ -107,8 +108,8 @@ const routes = [
                 children: [
                     {
                         path: "charts",
-                        name: "QuartzCharts",
-                        component: QuartzCharts,
+                        name: "QuartzProductionCharts",
+                        component: QuartzProductionCharts,
                     },
                     {
                         path: "raw/ball-charge",
@@ -121,7 +122,6 @@ const routes = [
                         component: NewQuartzsActivityForm,
                     },
                 ],
-                redirect: { name: "QuartzCharts" },
             },
             {
                 path: "settings",

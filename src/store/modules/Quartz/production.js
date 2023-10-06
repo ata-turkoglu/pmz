@@ -6,6 +6,7 @@ export default {
     namespaced: true,
     state: {
         productionChartDataByDate: null,
+        lastProductionData: [],
     },
     getters: {
         getProductionChartDataByDate(state) {
@@ -29,6 +30,11 @@ export default {
                 };
             });
             state.productionChartDataByDate = list;
+        },
+        SET_LAST_DATA(state, data) {
+            new Promise(() => {
+                state.lastProductionData = [...data];
+            });
         },
     },
     actions: {
@@ -56,6 +62,18 @@ export default {
                     store.state.commonErrorText = error;
                     store.state.commonDialogs.errorDialog = true;
                     return false;
+                });
+        },
+        getLastStocktakingData({ commit }) {
+            return axios
+                .get("/production/lastStocktakingData")
+                .then(async (result) => {
+                    if (result.status == 200) {
+                        await commit("SET_LAST_DATA", result.data);
+                        return true;
+                    } else {
+                        return false;
+                    }
                 });
         },
     },

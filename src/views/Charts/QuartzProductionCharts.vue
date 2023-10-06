@@ -328,8 +328,6 @@ export default {
 .container {
     width: 100%;
     min-height: 90vh;
-    margin-top: 10px;
-    padding: 10px;
     padding-bottom: 50px;
 }
 .selections {
