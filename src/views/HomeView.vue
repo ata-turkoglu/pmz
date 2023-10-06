@@ -3,18 +3,24 @@
         <v-app-bar color="blue-darken-4" flat height="65" :absolute="false">
             <template v-slot:prepend>
                 <v-app-bar-nav-icon
-                    v-if="!mainState"
+                    v-if="!mainState && !settingState"
                     @click.stop="setDrawerState"
                     color="white"
                 />
+                <v-app-bar-nav-icon
+                    v-if="settingState"
+                    icon="mdi-home"
+                    @click.stop="$router.push('/')"
+                ></v-app-bar-nav-icon>
             </template>
             <div style="width: fit-content; min-width: 160px">
                 <v-app-bar-title
-                    v-if="mainState"
+                    v-if="mainState || settingState"
                     style="color: white; cursor: pointer"
                     @click="$router.push('/')"
-                    >Data is tool for enhancing intuition</v-app-bar-title
                 >
+                    Data is tool for enhancing intuition
+                </v-app-bar-title>
                 <v-select
                     variant="outlined"
                     density="compact"
@@ -28,8 +34,9 @@
                     <template v-slot:prepend-item>
                         <v-list-item
                             @click="$store.state.appBarSelectedFacility = null"
-                            >Ana Sayfa</v-list-item
                         >
+                            Ana Sayfa
+                        </v-list-item>
                     </template>
                 </v-select>
             </div>
@@ -66,6 +73,9 @@ export default {
     computed: {
         mainState() {
             return this.$store.state.appBarSelectedFacility == null;
+        },
+        settingState() {
+            return this.$route.name == "Settings";
         },
     },
     methods: {

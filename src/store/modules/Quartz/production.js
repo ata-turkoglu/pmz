@@ -76,5 +76,14 @@ export default {
                     }
                 });
         },
+        checkStocktakingMails() {
+            return axios.get("/utils/checkMails").then((result) => {
+                if (result.status == 200) {
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+        },
     },
 };

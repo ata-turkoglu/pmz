@@ -49,6 +49,9 @@
                     ></v-list-item>
                 </v-list-group>
             </v-list>
+            <template #append>
+                <v-list-item @click="checkMails"> Check Mails </v-list-item>
+            </template>
         </Navbar>
         <QuartzStockTaking v-if="route.name == 'Quartz'" />
         <RouterView v-else></RouterView>
@@ -66,11 +69,16 @@ export default {
         const store = useStore();
         const route = useRoute();
         store.dispatch("quartzProduction/getLastStocktakingData");
+
+        const checkMails = () => {
+            store.dispatch("quartzProduction/checkStocktakingMails");
+        };
+
         onBeforeMount(() => {
             store.state.drawer = true;
             store.state.appBarSelectedFacility = "/quartz";
         });
-        return { route };
+        return { route, checkMails };
     },
 };
 </script>

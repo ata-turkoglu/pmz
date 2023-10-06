@@ -39,34 +39,40 @@
                 :disabled="getChartButtonDisabled"
                 >Grafik</v-btn
             >
-            <div v-if="productionChartState" class="total-data mt-5 pa-3">
-                <div
-                    class="total-section mr-16"
-                    :class="$vuetify.display.smAndDown ? 'mb-5' : ''"
-                >
-                    <div>
-                        <span>Bigbag:</span>
-                        <span class="ml-2"> {{ totalData.bigbag }} ton </span>
-                    </div>
-                    <div>
-                        <span>Palet:</span>
-                        <span class="ml-2"> {{ totalData.pallet }} ton </span>
-                    </div>
-                    <div>
-                        <span>Torba:</span>
-                        <span class="ml-2"> {{ totalData.pp }} ton </span>
-                    </div>
-                    <div>
-                        <span>Farklı Bigbag:</span>
-                        <span class="ml-2">
-                            {{ totalData.diffBigbag }} ton
-                        </span>
-                    </div>
-                    <div>
-                        <span><b>Toplam:</b></span>
-                        <span class="ml-2">
-                            <b>{{ totalData.total }} ton</b>
-                        </span>
+            <div>
+                <div v-if="productionChartState" class="total-data mt-5 pa-3">
+                    <div
+                        class="total-section mr-16"
+                        :class="$vuetify.display.smAndDown ? 'mb-5' : ''"
+                    >
+                        <div>
+                            <span>Bigbag:</span>
+                            <span class="ml-2">
+                                {{ totalData.bigbag }} ton
+                            </span>
+                        </div>
+                        <div>
+                            <span>Palet:</span>
+                            <span class="ml-2">
+                                {{ totalData.pallet }} ton
+                            </span>
+                        </div>
+                        <div>
+                            <span>Torba:</span>
+                            <span class="ml-2"> {{ totalData.pp }} ton </span>
+                        </div>
+                        <div>
+                            <span>Farklı Bigbag:</span>
+                            <span class="ml-2">
+                                {{ totalData.diffBigbag }} ton
+                            </span>
+                        </div>
+                        <div>
+                            <span><b>Toplam:</b></span>
+                            <span class="ml-2">
+                                <b>{{ totalData.total }} ton</b>
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>
