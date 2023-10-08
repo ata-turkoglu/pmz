@@ -108,7 +108,7 @@ export default {
             TEMMUZ: 196,
             AĞUSTOS: 228,
             EYLÜL: 260,
-            EKİM: 292,
+            EKIM: 292,
             KASIM: 324,
             ARALIK: 356,
         };
@@ -156,23 +156,23 @@ export default {
                     data.value = {
                         date: moment(date).format("YYYY-MM-DD"),
                         crushing: {
-                            timer: ws[headers.crushing.timer + index].v,
-                            duration: ws[headers.crushing.duration + index].v,
+                            timer: ws[headers.crushing.timer + index]?.v,
+                            duration: ws[headers.crushing.duration + index]?.v,
                         },
                         mill1: {
-                            timer: ws[headers.mill1.timer + index].v,
-                            duration: ws[headers.mill1.duration + index].v,
+                            timer: ws[headers.mill1.timer + index]?.v,
+                            duration: ws[headers.mill1.duration + index]?.v,
                         },
                         mill2: {
-                            timer: ws[headers.mill2.timer + index].v,
-                            duration: ws[headers.mill2.duration + index].v,
+                            timer: ws[headers.mill2.timer + index]?.v,
+                            duration: ws[headers.mill2.duration + index]?.v,
                         },
                         screening: {
-                            timer: ws[headers.screening.timer + index].v,
-                            duration: ws[headers.screening.duration + index].v,
+                            timer: ws[headers.screening.timer + index]?.v,
+                            duration: ws[headers.screening.duration + index]?.v,
                         },
-                        crushed: ws[headers.crushed + index].v,
-                        washed: ws[headers.washed + index].v,
+                        crushed: ws[headers.crushed + index]?.v,
+                        washed: ws[headers.washed + index]?.v,
                     };
                     tableState.value = true;
                 };
@@ -283,6 +283,7 @@ td {
     border-top: 1px solid grey;
     border-left: 1px solid grey;
     padding-block: 20px;
+    text-align: center;
 }
 th {
     border-left: 1px solid grey;
