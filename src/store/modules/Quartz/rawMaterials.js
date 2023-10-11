@@ -73,5 +73,35 @@ export default {
                     return false;
                 });
         },
+        getLastPurchasedPackagingDate({ commit }, data) {
+            return axios
+                .post("/rawMaterials/getLastPackaging", data)
+                .then((result) => {
+                    if (result.status == 200) {
+                        return { state: true, data: result.data[0] };
+                    } else {
+                        return false;
+                    }
+                });
+        },
+        addConsumableData({ commit }, data) {
+            return axios
+                .post("/rawMaterials/addConsumable", data)
+                .then((result) => {
+                    if (result.status == 200) {
+                        store.state.commonDialogs.successDialog = true;
+                        return { state: true, data: result.data[0] };
+                    } else {
+                        store.state.commonErrorText = error;
+                        store.state.commonDialogs.errorDialog = true;
+                        return false;
+                    }
+                })
+                .catch((error) => {
+                    store.state.commonErrorText = error;
+                    store.state.commonDialogs.errorDialog = true;
+                    return false;
+                });
+        },
     },
 };

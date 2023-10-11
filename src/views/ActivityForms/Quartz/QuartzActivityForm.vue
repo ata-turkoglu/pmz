@@ -5,7 +5,7 @@
                 label="Excel Yükle"
                 variant="outlined"
                 accept=".xlsx"
-                style="min-width: 400px"
+                class="quartzActivityForm_content_file-input"
                 @change="fileAdded"
             ></v-file-input>
             <span v-if="lastDate != null">
@@ -259,12 +259,26 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
+    @media screen and (max-width: 600px) {
+        flex-direction: column;
+        min-width: 100%;
+        padding: 1rem;
+    }
 
     &_content {
+        width: 100%;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
+
+        &_file-input {
+            min-width: 400px;
+            @media screen and (max-width: 600px) {
+                min-width: unset;
+                width: 100%;
+            }
+        }
     }
 }
 .datepicker {
