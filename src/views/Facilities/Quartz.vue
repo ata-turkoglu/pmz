@@ -47,6 +47,12 @@
                         to="/quartz/activity-form/new"
                         class="justify-start"
                     ></v-list-item>
+                    <v-list-item
+                        title="Bigbag - Torba"
+                        prepend-icon="mdi-layers-plus"
+                        to="/quartz/raw/purchased-bags"
+                        class="justify-start"
+                    ></v-list-item>
                 </v-list-group>
             </v-list>
             <template #append>
