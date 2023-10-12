@@ -54,13 +54,18 @@ export default createStore({
                 disabled: true,
             },
             {
-                id: 6,
+                id: 7,
+                name: "Kuvars Eleme",
+                disabled: true,
+            },
+            {
+                id: 8,
                 name: "Kuvars Öğütme",
                 disabled: true,
             },
             {
-                id: 7,
-                name: "Taş Kırma",
+                id: 9,
+                name: "Silis",
                 disabled: true,
             },
         ],
