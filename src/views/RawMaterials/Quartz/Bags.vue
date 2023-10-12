@@ -1,6 +1,9 @@
 <template>
     <div class="quartzPurchasedBags">
         <div class="quartzPurchasedBags_content">
+            <span style="font-size: 1.3rem" class="mb-8">
+                <b>Bigbag - Torba</b>
+            </span>
             <v-file-input
                 label="Excel Yükle"
                 variant="outlined"
@@ -117,7 +120,7 @@ export default {
 
         store
             .dispatch("quartzRawMaterials/getLastPurchasedPackagingDate", {
-                facility: 5,
+                facility: [2, 5, 9],
                 materials: ["BİGBAG", "PP TORBA 25 KG", "KRAFT TORBA"],
             })
             .then((result) => {
@@ -163,7 +166,11 @@ export default {
                     }
 
                     data.value = {
-                        facility: 5,
+                        facility:
+                            ws[headers.facility + rowIndex]?.v.toLowerCase() ==
+                            "kuvars"
+                                ? 5
+                                : 9,
                         invoice_date: ws[headers.invoice_date + rowIndex]?.w,
                         supplier: ws[headers.supplier + rowIndex]?.v,
                         material: ws[headers.material + rowIndex]?.v,
@@ -224,7 +231,7 @@ export default {
                             .dispatch(
                                 "quartzRawMaterials/getLastPurchasedPackagingDate",
                                 {
-                                    facility: 5,
+                                    facility: [2, 5, 9],
                                     materials: [
                                         "BİGBAG",
                                         "PP TORBA 25 KG",
@@ -247,7 +254,6 @@ export default {
         };
 
         const reset = () => {
-            store.dispatch("quartzWorkingHours/getLastWorkingHoursData");
             selectedDate.value = null;
             tableState.value = false;
             data.value = null;
