@@ -30,8 +30,8 @@
                     <template v-slot:activator="{ props }">
                         <v-list-item
                             v-bind="props"
-                            prepend-icon="mdi-clipboard-plus-outline"
-                            title="Veri Girişi"
+                            prepend-icon="mdi-state-machine"
+                            title="Proses Giriş"
                             class="nav-list-item"
                         ></v-list-item>
                     </template>
@@ -41,6 +41,16 @@
                         to="/quartz/raw/ball-charge"
                         class="justify-start"
                     ></v-list-item>
+                </v-list-group>
+                <v-list-group>
+                    <template v-slot:activator="{ props }">
+                        <v-list-item
+                            v-bind="props"
+                            prepend-icon="mdi-clipboard-plus-outline"
+                            title="Veri Girişi"
+                            class="nav-list-item"
+                        ></v-list-item>
+                    </template>
                     <v-list-item
                         title="Çalışma Saatleri"
                         prepend-icon="mdi-timeline-plus-outline"
@@ -51,6 +61,18 @@
                         title="Bigbag - Torba"
                         prepend-icon="mdi-layers-plus"
                         to="/quartz/raw/purchased-bags"
+                        class="justify-start"
+                    ></v-list-item>
+                    <v-list-item
+                        title="Palet"
+                        prepend-icon="mdi-playlist-plus"
+                        to="/quartz/raw/purchased-pallets"
+                        class="justify-start"
+                    ></v-list-item>
+                    <v-list-item
+                        title="Alumina Bilya-Tuğla"
+                        prepend-icon="mdi-shape-plus"
+                        to="/quartz/raw/purchased-ball-brick"
                         class="justify-start"
                     ></v-list-item>
                 </v-list-group>
