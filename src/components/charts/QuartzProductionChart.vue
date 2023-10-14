@@ -19,7 +19,8 @@ export default {
             },
             legend: {
                 z: 1,
-                data: ["Bigbag", "Palet", "Torba", "Farklı Bigbag"],
+                data: ["Bigbag", "Silobas", "Palet", "Torba", "Farklı Bigbag"],
+                type: "scroll",
             },
             grid: {
                 left: "3%",
@@ -68,6 +69,16 @@ export default {
                     data: [],
                 },
                 {
+                    name: "Silobas",
+                    type: "bar",
+                    stack: "Production",
+                    emphasis: {
+                        focus: "series",
+                    },
+                    color: "#35A29F",
+                    data: [],
+                },
+                {
                     name: "Palet",
                     type: "bar",
                     stack: "Production",
@@ -84,7 +95,7 @@ export default {
                     emphasis: {
                         focus: "series",
                     },
-                    color: "#35A29F",
+                    color: "#EADBC8",
                     data: [],
                 },
                 {
@@ -116,6 +127,9 @@ export default {
             this.chartOption.series.find(
                 (itm) => itm.name == "Farklı Bigbag"
             ).data = this.chartData.map((itm) => itm.diffBigbagValue);
+
+            this.chartOption.series.find((itm) => itm.name == "Silobas").data =
+                this.chartData.map((itm) => itm.silobasValue);
         },
         setChart() {
             let chartDom = document.getElementById("chart3");
