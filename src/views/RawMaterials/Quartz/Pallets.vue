@@ -110,21 +110,24 @@ export default {
             facility: "L",
         };
 
-        store
-            .dispatch("quartzRawMaterials/getLastPurchasedPackagingDate", {
-                facility: [2, 5, 9],
-                materials: ["TAHTA PALET"],
-            })
-            .then((result) => {
-                if (result.state) {
-                    lastDate.value = moment(
-                        result.data.invoice_date,
-                        "YYYY-MM-DD"
-                    )
-                        .locale("tr")
-                        .format("D MMM YYYY");
-                }
-            });
+        const getLastDate = () => {
+            store
+                .dispatch("quartzRawMaterials/getLastPurchasedPackagingDate", {
+                    facility: [2, 5, 9],
+                    materials: ["TAHTA PALET"],
+                })
+                .then((result) => {
+                    if (result.state) {
+                        lastDate.value = result.data?.invoice_date
+                            ? moment(result.data.invoice_date, "YYYY-MM-DD")
+                                  .locale("tr")
+                                  .format("D MMM YYYY")
+                            : null;
+                    }
+                });
+        };
+
+        getLastDate();
 
         const fileAdded = (e) => {
             excelFile.value = e.target.files[0];
@@ -160,7 +163,8 @@ export default {
                     data.value = {
                         facility:
                             ws[headers.facility + rowIndex]?.v.toLowerCase() ==
-                            "kuvars"
+                                "kuvars" ||
+                            ws[headers.facility + rowIndex]?.v == null
                                 ? 5
                                 : 9,
                         invoice_date: ws[headers.invoice_date + rowIndex]?.w,
@@ -190,12 +194,12 @@ export default {
         };
 
         const minDate = computed(() => {
-            return (
-                moment(lastDate.value, "D MMM YYYY")
-                    .add(1, "day")
-                    .locale("tr")
-                    .format() || null
-            );
+            return lastDate.value
+                ? moment(lastDate.value, "D MMM YYYY")
+                      .add(1, "day")
+                      .locale("tr")
+                      .format()
+                : null;
         });
 
         watch(
@@ -212,24 +216,7 @@ export default {
                 .then((res) => {
                     reset();
                     if (res.state) {
-                        store
-                            .dispatch(
-                                "quartzRawMaterials/getLastPurchasedPackagingDate",
-                                {
-                                    facility: [2, 5, 9],
-                                    materials: ["TAHTA PALET"],
-                                }
-                            )
-                            .then((result) => {
-                                if (result.state) {
-                                    lastDate.value = moment(
-                                        result.data.invoice_date,
-                                        "YYYY-MM-DD"
-                                    )
-                                        .locale("tr")
-                                        .format("D MMM YYYY");
-                                }
-                            });
+                        getLastDate();
                     }
                 });
         };

@@ -1,6 +1,7 @@
 <template>
     <div class="container">
         <div class="selections">
+            <h3 class="mb-5">ÜRETİM</h3>
             <span style="display: flex; font-weight: 600">Tarih Seç:</span>
             <VueDatePicker
                 ref="vDatePickerQ"
@@ -49,6 +50,12 @@
                             <span>Bigbag:</span>
                             <span class="ml-2">
                                 {{ totalData.bigbag }} ton
+                            </span>
+                        </div>
+                        <div>
+                            <span>Silobas:</span>
+                            <span class="ml-2">
+                                {{ totalData.silobas }} ton
                             </span>
                         </div>
                         <div>
@@ -108,6 +115,7 @@ export default {
             presetRanges: [],
             totalData: {
                 bigbag: null,
+                silobas: null,
                 pallet: null,
                 pp: null,
                 diffBigbag: null,
@@ -122,6 +130,7 @@ export default {
                 "75 M",
                 "150 M BIGBAG",
                 "150 M (PALET)25kg",
+                "150 M SİLOBAS",
                 "0 - 200 M",
                 "0 - 300 M",
                 "100 - 300 M",
@@ -237,6 +246,7 @@ export default {
                     diffBigbagValue: null,
                     palletValue: null,
                     ppValue: null,
+                    silobasValue: null,
                 };
                 if (found) {
                     obj.bigbagValue =
@@ -256,6 +266,11 @@ export default {
                         found.pp != null
                             ? found.pp * packagingWeights.pp.toFixed(1)
                             : null;
+                    obj.silobasValue =
+                        found.silobas != null
+                            ? found.silobas *
+                              packagingWeights.silobas.toFixed(1)
+                            : null;
                     list.push(obj);
                 } else {
                     list.push(obj);
@@ -267,12 +282,14 @@ export default {
             return new Promise((resolve) => {
                 let reducerObj = {
                     bigbag: [],
+                    silobas: [],
                     pallet: [],
                     pp: [],
                     diffBigbag: [],
                 };
                 data.forEach((item) => {
                     reducerObj.bigbag.push(item.bigbagValue);
+                    reducerObj.silobas.push(item.silobasValue);
                     reducerObj.pallet.push(item.palletValue);
                     reducerObj.pp.push(item.ppValue);
                     reducerObj.diffBigbag.push(item.diffBigbagValue);
@@ -283,6 +300,7 @@ export default {
                 .then((list) => {
                     return {
                         bigbag: list.bigbag.reduce((a, b) => a + b, 0),
+                        silobas: list.silobas.reduce((a, b) => a + b, 0),
                         pallet: list.pallet.reduce((a, b) => a + b, 0),
                         pp: list.pp.reduce((a, b) => a + b, 0),
                         diffBigbag: list.diffBigbag.reduce((a, b) => a + b, 0),

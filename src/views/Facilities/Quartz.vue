@@ -22,7 +22,14 @@
                         prepend-icon="mdi-sticker-plus-outline"
                         title="Üretim"
                         class="nav-list-item"
-                        to="/quartz/charts"
+                        to="/quartz/charts/produced"
+                    >
+                    </v-list-item>
+                    <v-list-item
+                        prepend-icon="mdi-truck-delivery-outline"
+                        title="Sevk"
+                        class="nav-list-item"
+                        to="/quartz/charts/dispatch"
                     >
                     </v-list-item>
                 </v-list-group>
