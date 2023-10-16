@@ -30,6 +30,12 @@
                         title="Sevk"
                         class="nav-list-item"
                         to="/quartz/charts/dispatch"
+                    ></v-list-item>
+                    <v-list-item
+                        prepend-icon="mdi-minus-circle-multiple-outline"
+                        title="Bilya Tüketimi"
+                        class="nav-list-item"
+                        to="/quartz/charts/ball-consumption"
                     >
                     </v-list-item>
                 </v-list-group>

@@ -14,6 +14,7 @@ import NewHeavyMineralsActivityForm from "../views/ActivityForms/HeavyMinerals/H
 import HeavyMineralsCharts from "../views/Charts/HeavyMineralsCharts";
 import QuartzProductionCharts from "../views/Charts/QuartzProductionCharts";
 import QuartzDispatchedCharts from "../views/Charts/QuartzDispatchedCharts";
+import QuartzBallConsumptionChart from "../views/Charts/QuartzBallConsumptionChart";
 import QuartzStockTaking from "../views/Stocktaking/QuartzStocktaking";
 import QuartzPurchaseBags from "../views/RawMaterials/Quartz/Bags";
 import QuartzPurchasePallets from "../views/RawMaterials/Quartz/Pallets";
@@ -119,6 +120,11 @@ const routes = [
                         path: "charts/dispatch",
                         name: "QuartzDispatchedCharts",
                         component: QuartzDispatchedCharts,
+                    },
+                    {
+                        path: "charts/ball-consumption",
+                        name: "QuartzBallConsumptionChart",
+                        component: QuartzBallConsumptionChart,
                     },
                     {
                         path: "raw/ball-charge",
