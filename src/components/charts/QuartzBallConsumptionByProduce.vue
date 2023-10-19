@@ -1,6 +1,6 @@
 <template>
     <div class="chart-container">
-        <span class="title">Üretim</span>
+        <span class="title">Bilye Kullanımı</span>
         <div id="ballConsumptionByProduceChart"></div>
     </div>
 </template>

@@ -23,49 +23,74 @@
                 :disabled="getChartButtonDisabled"
                 >Grafik</v-btn
             >
-            <!-- <div>
+            <div>
                 <div v-if="productionChartState" class="total-data mt-5 pa-3">
                     <div
                         class="total-section mr-16"
                         :class="$vuetify.display.smAndDown ? 'mb-5' : ''"
                     >
                         <div>
-                            <span>Bigbag:</span>
+                            <span>Toplam Üretim:</span>
                             <span class="ml-2">
-                                {{ totalData.bigbag }} ton
+                                {{ totalData.produced.toFixed(2) }} ton
                             </span>
                         </div>
+                        <hr style="width: 100%" class="my-2" />
                         <div>
-                            <span>Silobas:</span>
+                            <span>Değirmen 1 Toplam Tüketim:</span>
                             <span class="ml-2">
-                                {{ totalData.silobas }} ton
+                                {{ totalData.consumed_mill1.toFixed(2) }} kg
                             </span>
                         </div>
+                        <hr style="width: 100%" class="my-2" />
                         <div>
-                            <span>Palet:</span>
+                            <span>Değirmen 2 Toplam Tüketim:</span>
                             <span class="ml-2">
-                                {{ totalData.pallet }} ton
+                                {{ totalData.consumed_mill2.toFixed(2) }} kg
                             </span>
                         </div>
+                        <hr style="width: 100%" class="my-2" />
                         <div>
-                            <span>Torba:</span>
-                            <span class="ml-2"> {{ totalData.pp }} ton </span>
-                        </div>
-                        <div>
-                            <span>Farklı Bigbag:</span>
+                            <span>Toplam Tüketim:</span>
                             <span class="ml-2">
-                                {{ totalData.diffBigbag }} ton
+                                {{ totalData.consumed.toFixed(2) }} kg
                             </span>
                         </div>
+                        <hr style="width: 100%" class="my-2" />
                         <div>
-                            <span><b>Toplam:</b></span>
+                            <span>Ton Başına Ortalama Tüketim:</span>
                             <span class="ml-2">
-                                <b>{{ totalData.total }} ton</b>
+                                {{
+                                    totalData.avarageConsumptionByProduced.toFixed(
+                                        2
+                                    )
+                                }}
+                                kg/ton
+                            </span>
+                        </div>
+                        <hr style="width: 100%" class="my-2" />
+                        <div>
+                            <span>Bilye Fiyatı:</span>
+                            <span class="ml-2">
+                                {{ totalData.ballPrice.toFixed(2) }} TL -
+                                {{ this.totalData.ballPriceForeign }}
+                            </span>
+                        </div>
+                        <hr style="width: 100%" class="my-2" />
+                        <div>
+                            <span><b>Ton Başına Maliyet:</b></span>
+                            <span class="ml-2">
+                                <b
+                                    >{{
+                                        totalData.costByProduced.toFixed(2)
+                                    }}
+                                    TL/ton</b
+                                >
                             </span>
                         </div>
                     </div>
                 </div>
-            </div> -->
+            </div>
         </div>
         <div class="charts">
             <QuartzBallConsumptionByProduce
@@ -97,12 +122,14 @@ export default {
             selectedDateRange: null,
             presetRanges: [],
             totalData: {
-                bigbag: null,
-                silobas: null,
-                pallet: null,
-                pp: null,
-                diffBigbag: null,
-                total: null,
+                produced: null,
+                consumed: null,
+                consumed_mill1: null,
+                consumed_mill2: null,
+                avarageConsumptionByProduced: null,
+                ballPrice: null,
+                ballPriceForeign: null,
+                costByProduced: null,
             },
         };
     },
@@ -222,38 +249,44 @@ export default {
             });
             return list;
         },
-        async calculateTotal(data) {
-            return new Promise((resolve) => {
-                let reducerObj = {
-                    bigbag: [],
-                    silobas: [],
-                    pallet: [],
-                    pp: [],
-                    diffBigbag: [],
-                };
-                data.forEach((item) => {
-                    reducerObj.bigbag.push(item.bigbagValue);
-                    reducerObj.silobas.push(item.silobasValue);
-                    reducerObj.pallet.push(item.palletValue);
-                    reducerObj.pp.push(item.ppValue);
-                    reducerObj.diffBigbag.push(item.diffBigbagValue);
-                });
+        async calculateTotal() {
+            let totalProducedByDateRange = 0;
+            let totalWorkHourByDateRange = 0;
+            let totalConsumptionByDateRange_mill1 = 0;
+            let totalConsumptionByDateRange_mill2 = 0;
+            let totalConsumptionByDateRange = 0;
+            await this.chartData.forEach((item) => {
+                totalProducedByDateRange += item.totalProduced;
+                totalWorkHourByDateRange +=
+                    parseFloat(item.mill1_diff) + parseFloat(item.mill2_diff);
+                totalConsumptionByDateRange += parseFloat(
+                    item.totalDailyBallConsumption
+                );
+                totalConsumptionByDateRange_mill1 +=
+                    item.dailyBallConsumption_mill1;
+                totalConsumptionByDateRange_mill2 +=
+                    item.dailyBallConsumption_mill2;
+            });
 
-                resolve(reducerObj);
-            })
-                .then((list) => {
-                    return {
-                        bigbag: list.bigbag.reduce((a, b) => a + b, 0),
-                        silobas: list.silobas.reduce((a, b) => a + b, 0),
-                        pallet: list.pallet.reduce((a, b) => a + b, 0),
-                        pp: list.pp.reduce((a, b) => a + b, 0),
-                        diffBigbag: list.diffBigbag.reduce((a, b) => a + b, 0),
-                    };
-                })
-                .then((list) => {
-                    list.total = Object.values(list).reduce((a, b) => a + b, 0);
-                    return list;
-                });
+            this.totalData.produced = totalProducedByDateRange;
+            this.totalData.consumed_mill1 = totalConsumptionByDateRange_mill1;
+            this.totalData.consumed_mill2 = totalConsumptionByDateRange_mill2;
+            this.totalData.consumed = totalConsumptionByDateRange;
+            this.totalData.avarageConsumptionByProduced =
+                totalConsumptionByDateRange / totalProducedByDateRange;
+            this.totalData.ballPrice = parseFloat(
+                this.$store.state.quartzProduction.purchasedBallMills[0]
+                    .unit_price
+            );
+            this.totalData.costByProduced =
+                this.totalData.avarageConsumptionByProduced *
+                this.totalData.ballPrice;
+            this.totalData.ballPriceForeign =
+                this.$store.state.quartzProduction.purchasedBallMills[0]
+                    .foreign_unit_price +
+                " " +
+                this.$store.state.quartzProduction.purchasedBallMills[0]
+                    .currency_unit;
         },
         getChart() {
             this.$store
@@ -266,13 +299,17 @@ export default {
                     ),
                 })
                 .then(() => {
+                    console.log(
+                        "ballPurchased",
+                        this.$store.state.quartzProduction.purchasedBallMills
+                    );
                     this.setXAxis()
                         .then((list) => {
                             return this.setDataByDateRange(list);
                         })
                         .then((data) => {
                             this.production_calculatedData = data;
-                            //return this.calculateTotal(data);
+                            return this.calculateTotal();
                         })
                         .then((data) => {
                             //this.totalData = data;

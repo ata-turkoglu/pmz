@@ -10,6 +10,7 @@ const setBallConsumptionData = async (data) => {
         ballCharges,
         millsWorkingHours,
         producedByMills,
+        purchasedBallMills,
     } = data;
     let dateRange = [];
     let mill1Charges = [];
@@ -130,7 +131,7 @@ const setBallConsumptionData = async (data) => {
                 day.workday = moment(day.workday).format("YYYY-MM-DD");
                 delete day.producedData;
             });
-            return workingHours;
+            return { workingHours, purchasedBallMills };
         });
 };
 
@@ -141,6 +142,7 @@ export default {
         dispatchedChartDataByDate: null,
         lastProductionData: [],
         ballConsumptionDataByDate: [],
+        purchasedBallMills: [],
     },
     getters: {
         getProductionChartDataByDate(state) {
@@ -196,7 +198,8 @@ export default {
             });
         },
         SET_BALL_CONSUMPTION(state, data) {
-            state.ballConsumptionDataByDate = data;
+            state.ballConsumptionDataByDate = data.workingHours;
+            state.purchasedBallMills = data.purchasedBallMills;
         },
     },
     actions: {
