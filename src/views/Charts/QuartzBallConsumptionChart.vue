@@ -72,8 +72,7 @@
                         <div>
                             <span>Bilye Fiyatı:</span>
                             <span class="ml-2">
-                                {{ totalData.ballPrice.toFixed(2) }} TL -
-                                {{ this.totalData.ballPriceForeign }}
+                                {{ this.totalData.ballPriceForeign }} $
                             </span>
                         </div>
                         <hr style="width: 100%" class="my-2" />
@@ -84,7 +83,7 @@
                                     >{{
                                         totalData.costByProduced.toFixed(2)
                                     }}
-                                    TL/ton</b
+                                    $/ton</b
                                 >
                             </span>
                         </div>
@@ -220,7 +219,6 @@ export default {
         },
         setDataByDateRange(dateList) {
             let list = [];
-            console.log("chartData", this.chartData);
             dateList.forEach((dateItem) => {
                 let found = this.chartData.find(
                     (itm) => itm.workday == dateItem
@@ -235,6 +233,7 @@ export default {
                     totalDailyBallConsumption: null,
                     totalProduced: null,
                     produced: [
+                        { product_name: "TURBO FİLTRE", totalAmount: null },
                         { product_name: "45 M", totalAmount: null },
                         { product_name: "63 M", totalAmount: null },
                         { product_name: "75 M", totalAmount: null },
@@ -278,15 +277,11 @@ export default {
                 this.$store.state.quartzProduction.purchasedBallMills[0]
                     .unit_price
             );
+            this.totalData.ballPriceForeign =
+                this.$store.state.quartzProduction.purchasedBallMills[0].foreign_unit_price;
             this.totalData.costByProduced =
                 this.totalData.avarageConsumptionByProduced *
-                this.totalData.ballPrice;
-            this.totalData.ballPriceForeign =
-                this.$store.state.quartzProduction.purchasedBallMills[0]
-                    .foreign_unit_price +
-                " " +
-                this.$store.state.quartzProduction.purchasedBallMills[0]
-                    .currency_unit;
+                this.totalData.ballPriceForeign;
         },
         getChart() {
             this.$store
@@ -299,10 +294,6 @@ export default {
                     ),
                 })
                 .then(() => {
-                    console.log(
-                        "ballPurchased",
-                        this.$store.state.quartzProduction.purchasedBallMills
-                    );
                     this.setXAxis()
                         .then((list) => {
                             return this.setDataByDateRange(list);

@@ -28,7 +28,6 @@ const setBallConsumptionData = async (data) => {
                 mill2Charges.push(item);
             }
         });
-        console.log("ballCharges", ballCharges);
         resolve();
     })
         .then(async () => {
@@ -68,7 +67,6 @@ const setBallConsumptionData = async (data) => {
                     (itm) => itm.workday == item.workday
                 );
             });
-            console.log("millsWorkingHours", [...millsWorkingHours]);
             return millsWorkingHours;
         })
         .then((workingHours) => {
@@ -87,6 +85,12 @@ const setBallConsumptionData = async (data) => {
                                 packagingWeights.silobas;
                     });
                     day.produced = [];
+                    day.produced.push({
+                        product_name: "TURBO FİLTRE",
+                        totalAmount: day.producedData.find(
+                            (itm) => itm.product_name == "TURBO FİLTRE"
+                        ).totalAmount,
+                    });
                     day.produced.push({
                         product_name: "45 M",
                         totalAmount: day.producedData.find(
@@ -282,7 +286,6 @@ export default {
                     params: data,
                 })
                 .then(async (result) => {
-                    console.log(result);
                     if (result.status == 200) {
                         const newData = await setBallConsumptionData({
                             ...data,

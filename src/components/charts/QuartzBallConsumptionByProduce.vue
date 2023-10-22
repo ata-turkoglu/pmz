@@ -19,7 +19,14 @@ export default {
             },
             legend: {
                 z: 1,
-                data: ["150 M", "75 M", "63 M", "45 M", "Bilye"],
+                data: [
+                    "150 M",
+                    "75 M",
+                    "63 M",
+                    "45 M",
+                    "TURBO FİLTRE",
+                    "Bilye",
+                ],
                 type: "scroll",
             },
             grid: {
@@ -115,50 +122,79 @@ export default {
                     data: [],
                 },
                 {
+                    name: "TURBO FİLTRE",
+                    type: "bar",
+                    stack: "Production",
+                    emphasis: {
+                        focus: "series",
+                    },
+                    color: "#f2e8cf",
+                    data: [],
+                },
+                {
                     name: "Bilye",
-                    type: "line",
+                    type: "effectScatter",
                     stack: "Consumption",
                     color: "red",
                     yAxisIndex: 1,
+                    symbolSize: 10,
+                    smooth: true,
                     data: [],
+                    markLine: {
+                        lineStyle: { width: 3 },
+                        data: [{ type: "median", name: "Ortalama" }],
+                        label: {
+                            fontSize: 16,
+                            color: "red",
+                            backgroundColor: "white",
+                        },
+                    },
+                    rippleEffect: { brushType: "stroke" },
                 },
             ],
         },
     }),
     methods: {
         setIncomingData() {
-            console.log("last", this.chartData);
             this.chartOption.xAxis.data = this.xAxis;
 
             this.chartOption.series.find((itm) => itm.name == "150 M").data =
                 this.chartData.map(
                     (itm) =>
                         itm.produced?.find((itm) => itm.product_name == "150 M")
-                            .totalAmount || 0
+                            .totalAmount || null
                 );
 
             this.chartOption.series.find((itm) => itm.name == "75 M").data =
                 this.chartData.map(
                     (itm) =>
                         itm.produced?.find((itm) => itm.product_name == "75 M")
-                            .totalAmount || 0
+                            .totalAmount || null
                 );
 
             this.chartOption.series.find((itm) => itm.name == "63 M").data =
                 this.chartData.map(
                     (itm) =>
                         itm.produced?.find((itm) => itm.product_name == "63 M")
-                            .totalAmount || 0
+                            .totalAmount || null
                 );
 
             this.chartOption.series.find((itm) => itm.name == "45 M").data =
                 this.chartData.map(
                     (itm) =>
                         itm.produced?.find((itm) => itm.product_name == "45 M")
-                            .totalAmount || 0
+                            .totalAmount || null
                 );
+            this.chartOption.series.find(
+                (itm) => itm.name == "TURBO FİLTRE"
+            ).data = this.chartData.map(
+                (itm) =>
+                    itm.produced?.find(
+                        (itm) => itm.product_name == "TURBO FİLTRE"
+                    ).totalAmount || null
+            );
             this.chartOption.series.find((itm) => itm.name == "Bilye").data =
-                this.chartData.map((itm) => itm.consumptionByProduced || 0);
+                this.chartData.map((itm) => itm.consumptionByProduced || null);
         },
         setChart() {
             let chartDom = document.getElementById(
