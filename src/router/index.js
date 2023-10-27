@@ -26,6 +26,8 @@ import Analysis3060Mesh from "../views/Analysis/Production/HeavyMinerals/3060Mes
 import Analysis80Mesh from "../views/Analysis/Production/HeavyMinerals/80Mesh.vue";
 import Analysis180Mesh from "../views/Analysis/Production/HeavyMinerals/180Mesh.vue";
 import HeavyMineralsProduction from "../views/Production/HeavyMineralsProduction.vue";
+import ElectricityBill from "../views/RawMaterials/ElectricityBill.vue";
+import GasolineBill from "../views/RawMaterials/GasolineBill.vue";
 
 const routes = [
     {
@@ -150,6 +152,16 @@ const routes = [
                         path: "activity-form/new",
                         name: "NewQuartzsActivityForm",
                         component: NewQuartzsActivityForm,
+                    },
+                    {
+                        path: "raw/electricity-bill",
+                        name: "ElectricityBill",
+                        component: ElectricityBill,
+                    },
+                    {
+                        path: "raw/gasoline-bill",
+                        name: "GasolineBill",
+                        component: GasolineBill,
                     },
                 ],
             },

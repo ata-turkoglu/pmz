@@ -88,6 +88,18 @@
                         to="/quartz/raw/purchased-ball-brick"
                         class="justify-start"
                     ></v-list-item>
+                    <v-list-item
+                        title="Elektrik Faturası"
+                        prepend-icon="mdi-lightning-bolt-outline"
+                        to="/quartz/raw/electricity-bill"
+                        class="justify-start"
+                    ></v-list-item>
+                    <v-list-item
+                        title="Yakıt Faturası"
+                        prepend-icon="mdi-gas-station"
+                        to="/quartz/raw/gasoline-bill"
+                        class="justify-start"
+                    ></v-list-item>
                 </v-list-group>
             </v-list>
             <template #append>
