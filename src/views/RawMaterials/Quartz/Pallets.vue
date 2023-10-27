@@ -25,6 +25,7 @@
                 position="left"
                 :format="vdpInputFormat"
                 placeholder="Tarih Seç"
+                locale="tr"
             >
                 <template #action-select>
                     <p class="vdp-select" @click="selectDate">Seç</p>
