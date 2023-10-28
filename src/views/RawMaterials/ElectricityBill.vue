@@ -64,7 +64,7 @@
                         <td>{{ data.night }}</td>
                         <td>{{ data.amount }}</td>
                         <td>{{ data.unit_price }}</td>
-                        <td>{{ data.sum }}</td>
+                        <td>{{ data.usage_fee }}</td>
                         <td>{{ data.distrubtion_fee }}</td>
                         <td>{{ data.total_price }}</td>
                         <td>{{ data.tax }}</td>
@@ -113,7 +113,7 @@ export default {
             night: "F",
             amount: "F",
             unit_price: "G",
-            sum: "H",
+            usage_fee: "H",
             distrubtion_fee: "H",
             total_price: "I",
             tax: "K",
@@ -123,20 +123,15 @@ export default {
         const months = [2, 6, 10, 14, 18, 22, 26, 30, 34, 38, 42, 46];
 
         const getLastDate = () => {
-            store
-                .dispatch("quartzRawMaterials/getLastPurchasedPackagingDate", {
-                    facility: [5],
-                    materials: ["Alumina Bilya", "Alumina Tuğla"],
-                })
-                .then((result) => {
-                    if (result.state) {
-                        lastDate.value = result.data?.invoice_date
-                            ? moment(result.data.invoice_date, "YYYY-MM-DD")
-                                  .locale("tr")
-                                  .format("D MMM YYYY")
-                            : null;
-                    }
-                });
+            store.dispatch("bills/getLastElectricityData").then((result) => {
+                if (result.state) {
+                    lastDate.value = result.data?.invoice_date
+                        ? moment(result.data.invoice_date, "YYYY-MM-DD")
+                              .locale("tr")
+                              .format("MMMM YYYY")
+                        : null;
+                }
+            });
         };
 
         getLastDate();
@@ -161,7 +156,7 @@ export default {
                     ndate.set({
                         year: selectedDate.value.year,
                         month: selectedDate.value.month,
-                        date: 1,
+                        date: 15,
                     });
 
                     data.value = {
@@ -176,7 +171,8 @@ export default {
                         ),
                         unit_price:
                             ws[headers.unit_price + monthRow]?.v.toFixed(3),
-                        sum: ws[headers.sum + monthRow]?.v.toFixed(3),
+                        usage_fee:
+                            ws[headers.usage_fee + monthRow]?.v.toFixed(3),
                         distrubtion_fee:
                             ws[
                                 headers.distrubtion_fee + (monthRow + 3)
@@ -203,8 +199,8 @@ export default {
 
         const minDate = computed(() => {
             return lastDate.value
-                ? moment(lastDate.value, "D MMM YYYY")
-                      .add(1, "day")
+                ? moment(lastDate.value, "MMMM YYYY")
+                      .add(1, "month")
                       .locale("tr")
                       .format()
                 : null;
@@ -219,13 +215,10 @@ export default {
 
         const sendData = () => {
             store
-                .dispatch(
-                    "quartzRawMaterials/addElectricityBillData",
-                    data.value
-                )
+                .dispatch("bills/addElectricityBillData", data.value)
                 .then((res) => {
                     reset();
-                    if (res.state) {
+                    if (res) {
                         getLastDate();
                     }
                 });

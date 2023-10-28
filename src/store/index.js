@@ -2,6 +2,7 @@ import { createStore } from "vuex";
 import axios from "@/plugins/axios";
 import moment from "moment";
 import users from "./modules/users";
+import bills from "./modules/bills";
 import heavyMineralsChartData from "./modules/HeavyMinerals/chartData";
 import heavyMineralsRawMaterials from "./modules/HeavyMinerals/rawMaterials";
 import heavyMineralsAnalysis from "./modules/HeavyMinerals/analysis";
@@ -265,6 +266,7 @@ export default createStore({
     },
     modules: {
         users,
+        bills,
         heavyMineralsAnalysis,
         heavyMineralsChartData,
         heavyMineralsProcess,
