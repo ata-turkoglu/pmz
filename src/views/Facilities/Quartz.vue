@@ -55,6 +55,12 @@
                         class="justify-start"
                     ></v-list-item>
                 </v-list-group>
+                <v-list-item
+                    title="Maliyet Hesaplama"
+                    prepend-icon="mdi-calculator-variant"
+                    to="/quartz/cost-calculation"
+                    class="justify-start"
+                ></v-list-item>
                 <v-list-group>
                     <template v-slot:activator="{ props }">
                         <v-list-item
@@ -97,7 +103,7 @@
                     <v-list-item
                         title="Yakıt Faturası"
                         prepend-icon="mdi-gas-station"
-                        to="/quartz/raw/gasoline-bill"
+                        to="/quartz/raw/fuel-bill"
                         class="justify-start"
                     ></v-list-item>
                 </v-list-group>

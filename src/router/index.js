@@ -19,6 +19,7 @@ import QuartzStockTaking from "../views/Stocktaking/QuartzStocktaking";
 import QuartzPurchaseBags from "../views/RawMaterials/Quartz/Bags";
 import QuartzPurchasePallets from "../views/RawMaterials/Quartz/Pallets";
 import QuartzPurchaseBallBrick from "../views/RawMaterials/Quartz/AluminaBallBrick";
+import QuartzCostCalculation from "../views/Production/QuartzCostCalculation";
 import Coal from "../views/RawMaterials/Coal";
 import Settings from "../views/Settings/Settings";
 import ReducerProcess from "../views/Process/Reducer";
@@ -27,7 +28,7 @@ import Analysis80Mesh from "../views/Analysis/Production/HeavyMinerals/80Mesh.vu
 import Analysis180Mesh from "../views/Analysis/Production/HeavyMinerals/180Mesh.vue";
 import HeavyMineralsProduction from "../views/Production/HeavyMineralsProduction.vue";
 import ElectricityBill from "../views/RawMaterials/ElectricityBill.vue";
-import GasolineBill from "../views/RawMaterials/GasolineBill.vue";
+import FuelBill from "../views/RawMaterials/FuelBill.vue";
 
 const routes = [
     {
@@ -159,9 +160,14 @@ const routes = [
                         component: ElectricityBill,
                     },
                     {
-                        path: "raw/gasoline-bill",
-                        name: "GasolineBill",
-                        component: GasolineBill,
+                        path: "raw/fuel-bill",
+                        name: "FuelBill",
+                        component: FuelBill,
+                    },
+                    {
+                        path: "cost-calculation",
+                        name: "QuartzCostCalculation",
+                        component: QuartzCostCalculation,
                     },
                 ],
             },
