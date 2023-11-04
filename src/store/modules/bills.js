@@ -30,5 +30,34 @@ export default {
                     }
                 });
         },
+        async addFuelBillData({ commit }, data) {
+            let newData = { ...data };
+            delete newData.date;
+            return axios
+                .post("/bills/addFuelBillData", newData)
+                .then(async (result) => {
+                    if (result.status == 200) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                });
+        },
+        async getFuelDataByDateRange({ commit }, { startDate, endDate }) {
+            return axios
+                .get("/bills/fuelDataByDateRange", {
+                    params: {
+                        startDate,
+                        endDate,
+                    },
+                })
+                .then(async (result) => {
+                    if (result.status == 200) {
+                        return { state: true, data: result.data[0] };
+                    } else {
+                        return false;
+                    }
+                });
+        },
     },
 };
