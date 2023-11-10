@@ -9,8 +9,16 @@ export default {
         buttons: {
             ballMillChargeSaveButtonLoading: false,
         },
+        currentYearConsumables: [],
     },
-    getters: {},
+    getters: {
+        getTotalConsumableCostByCurrentYear: (state) => {
+            return state.currentYearConsumables.reduce(
+                (acc, curr) => acc + parseFloat(curr.total_price_vat),
+                0
+            );
+        },
+    },
     mutations: {
         ADD_BALL_CHARGE_DATA(state, data) {
             if (state.ballCharges.length > 0) {
@@ -33,6 +41,9 @@ export default {
                 item.workday = moment(item.workday).format("YYYY-MM-DD");
             });
             state.ballCharges = data;
+        },
+        SET_CURRENT_YEAR_CONSUMABLES(state, data) {
+            state.currentYearConsumables = [...data];
         },
     },
     actions: {
@@ -102,6 +113,20 @@ export default {
                     store.state.commonDialogs.errorDialog = true;
                     return false;
                 });
+        },
+        getPurchasedConsumablesByYear({ commit, state }, year) {
+            if (state.currentYearConsumables.length <= 0) {
+                return axios
+                    .get("/rawMaterials/purchasedConsumablesByYear", {
+                        params: { year },
+                    })
+                    .then((result) => {
+                        if (result.status == 200) {
+                            commit("SET_CURRENT_YEAR_CONSUMABLES", result.data);
+                        }
+                        console.log("getPurchasedConsumablesByYear", result);
+                    });
+            }
         },
     },
 };
