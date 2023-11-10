@@ -167,7 +167,7 @@ export default {
         const store = useStore();
 
         const activeInputs = ref(true);
-        const fuelDistributorCheck = ref(true);
+        const fuelDistributorCheck = ref(false);
         const fuelAmount = ref(null);
         const amountDuration = ref(null);
         const fuelData = ref(null);

@@ -1,11 +1,6 @@
 <template>
     <div class="costCalculation">
-        <div class="distributors">
-            <ElectricityDistribution :width="'30%'" @result="electricityCost" />
-            <FuelDistribution :width="'30%'" @result="fuelCost" />
-            <MaintenanceDistribution :width="'30%'" @result="maintenanceCost" />
-        </div>
-        <div class="mt-10 d-flex">
+        <div class="mb-10 d-flex">
             <v-text-field
                 variant="outlined"
                 density="compact"
@@ -22,6 +17,11 @@
                 :items="['Ay', '6 Ay', 'Yıl']"
                 hide-details
             ></v-combobox>
+        </div>
+        <div class="distributors">
+            <ElectricityDistribution :width="'30%'" @result="electricityCost" />
+            <FuelDistribution :width="'30%'" @result="fuelCost" />
+            <MaintenanceDistribution :width="'30%'" @result="maintenanceCost" />
         </div>
     </div>
 </template>
