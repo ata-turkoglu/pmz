@@ -33,6 +33,9 @@
                     :disabled="!activeInputs"
                 ></v-combobox>
             </div>
+            <span class="costInfo"
+                >-{{ currentYearConsumables.toLocaleString("tr") }} TL</span
+            >
             <v-slider
                 class="slider"
                 v-model="maintenanceQuartzRatio"
@@ -40,6 +43,7 @@
                 :max="100"
                 :step="1"
                 color="blue-darken-4"
+                :disabled="true"
             >
                 <template v-slot:append>
                     <span style="width: 50px">
@@ -160,12 +164,12 @@ export default {
         const store = useStore();
 
         const activeInputs = ref(true);
-        const maintenanceDistributorCheck = ref(true);
+        const maintenanceDistributorCheck = ref(false);
         const costAmount = ref(null);
         const amountDuration = ref(null);
 
         const maintenanceData = ref(null);
-        const maintenanceQuartzRatio = ref(null);
+        const maintenanceQuartzRatio = ref(100);
         const maintenanceQuartzSubRatio = reactive({
             washing: null,
             crushing: null,
@@ -173,22 +177,23 @@ export default {
             grinding: null,
         });
 
-        /* store
-            .dispatch("bills/getFuelDataByDateRange", {
-                startDate: "2023-01-01",
-                endDate: "2023-10-29",
-            })
-            .then((result) => {
-                if (result.state) {
-                    maintenanceData.value = result.data;
-                    console.log("maintenanceData", maintenanceData.value);
-                }
-            }); */
+        const currentYear = new Date().getFullYear();
+        store.dispatch(
+            "quartzRawMaterials/getPurchasedConsumablesByYear",
+            currentYear
+        );
+
+        const currentYearConsumables = computed(() => {
+            return store.getters[
+                "quartzRawMaterials/getTotalConsumableCostByCurrentYear"
+            ];
+        });
 
         const maintenanceQuartzCost = computed(() => {
             if (costAmount.value) {
                 return (
-                    (parseFloat(costAmount.value) *
+                    ((parseFloat(costAmount.value) -
+                        currentYearConsumables.value) *
                         maintenanceQuartzRatio.value) /
                     100
                 );
@@ -281,6 +286,7 @@ export default {
             costAmount,
             amountDuration,
             maintenanceDistributorCheck,
+            currentYearConsumables,
         };
     },
 };
@@ -318,6 +324,13 @@ export default {
             label {
                 width: 80px;
             }
+        }
+        .costInfo {
+            display: block;
+            text-align: right;
+            font-size: 0.7rem;
+            margin-right: 15%;
+            margin-bottom: 5px;
         }
     }
 }
