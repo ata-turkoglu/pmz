@@ -13,7 +13,7 @@
                 <input
                     class="activationCheck mr-5"
                     type="checkbox"
-                    v-model="activeInputs"
+                    v-model="manuelEntryActive"
                 />
                 <v-text-field
                     class="mr-5"
@@ -24,7 +24,7 @@
                     type="number"
                     hide-details
                     v-model="costAmount"
-                    :disabled="!activeInputs"
+                    :disabled="!manuelEntryActive"
                 ></v-text-field>
                 <v-combobox
                     style="max-width: 30% !important"
@@ -34,7 +34,7 @@
                     variant="outlined"
                     hide-details
                     v-model="amountDuration"
-                    :disabled="!activeInputs"
+                    :disabled="!manuelEntryActive"
                 ></v-combobox>
             </div>
             <v-slider
@@ -167,8 +167,8 @@ export default {
     setup(props, { emit }) {
         const store = useStore();
 
-        const activeInputs = ref(false);
-        const electricityDistributorCheck = ref(true);
+        const manuelEntryActive = ref(true);
+        const electricityDistributorCheck = ref(false);
         const costAmount = ref(null);
         const amountDuration = ref(null);
 
@@ -189,14 +189,26 @@ export default {
         });
 
         const quartzUsageCost = computed(() => {
-            if (electrcityData.value?.tax_and_total) {
-                return (
-                    (parseFloat(electrcityData.value.tax_and_total) *
-                        electrcityBillQuartzRatio.value) /
-                    100
-                );
+            if (manuelEntryActive) {
+                if (costAmount.value) {
+                    return (
+                        (parseFloat(costAmount.value) *
+                            electrcityBillQuartzRatio.value) /
+                        100
+                    );
+                } else {
+                    return 0;
+                }
             } else {
-                return 0;
+                if (electrcityData.value?.tax_and_total) {
+                    return (
+                        (parseFloat(electrcityData.value.tax_and_total) *
+                            electrcityBillQuartzRatio.value) /
+                        100
+                    );
+                } else {
+                    return 0;
+                }
             }
         });
 
@@ -250,9 +262,10 @@ export default {
         watch(
             () => costAmount.value,
             (val) => {
-                if (amountDuration.value != null) {
+                if (amountDuration.value != null && quartzUsageCost.value) {
                     emit("result", {
-                        value: val,
+                        total: parseFloat(val),
+                        portion: quartzUsageCost.value,
                         duration: amountDuration.value,
                     });
                 }
@@ -262,10 +275,24 @@ export default {
         watch(
             () => amountDuration.value,
             (val) => {
-                if (costAmount.value != null) {
+                if (costAmount.value != null && quartzUsageCost.value != null) {
                     emit("result", {
-                        value: costAmount.value,
+                        total: parseFloat(costAmount.value),
+                        portion: quartzUsageCost.value,
                         duration: val,
+                    });
+                }
+            }
+        );
+
+        watch(
+            () => quartzUsageCost.value,
+            (val) => {
+                if (costAmount.value != null && amountDuration.value != null) {
+                    emit("result", {
+                        total: parseFloat(costAmount.value),
+                        portion: val,
+                        duration: amountDuration.value,
                     });
                 }
             }
@@ -279,7 +306,7 @@ export default {
             crushingUsageCost,
             screeningUsageCost,
             grindingUsageCost,
-            activeInputs,
+            manuelEntryActive,
             costAmount,
             amountDuration,
             electricityDistributorCheck,
