@@ -256,6 +256,7 @@ export default {
                 if (amountDuration.value != null) {
                     emit("result", {
                         value: val,
+                        portion: val,
                         duration: amountDuration.value,
                     });
                 }
@@ -268,6 +269,7 @@ export default {
                 if (costAmount.value != null) {
                     emit("result", {
                         value: costAmount.value,
+                        portion: costAmount.value,
                         duration: val,
                     });
                 }

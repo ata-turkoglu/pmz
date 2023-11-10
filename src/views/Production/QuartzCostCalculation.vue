@@ -46,9 +46,13 @@ export default {
             console.log("electricityCost", e);
         };
 
-        const fuelCost = () => {};
+        const fuelCost = (e) => {
+            console.log("fuelCost", e);
+        };
 
-        const maintenanceCost = () => {};
+        const maintenanceCost = (e) => {
+            console.log("maintenanceCost", e);
+        };
 
         return {
             electricityCost,

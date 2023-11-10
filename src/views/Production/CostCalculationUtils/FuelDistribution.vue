@@ -13,7 +13,7 @@
                 <input
                     class="activationCheck mr-5"
                     type="checkbox"
-                    v-model="activeInputs"
+                    v-model="manuelEntryActive"
                 />
                 <v-text-field
                     class="mr-5"
@@ -25,7 +25,7 @@
                     hide-details
                     v-model="fuelAmount"
                     min="0"
-                    :disabled="!activeInputs"
+                    :disabled="!manuelEntryActive"
                 ></v-text-field>
                 <v-combobox
                     style="max-width: 30% !important"
@@ -35,7 +35,7 @@
                     variant="outlined"
                     hide-details
                     v-model="amountDuration"
-                    :disabled="!activeInputs"
+                    :disabled="!manuelEntryActive"
                 ></v-combobox>
             </div>
             <v-slider
@@ -166,7 +166,7 @@ export default {
     setup(props, { emit }) {
         const store = useStore();
 
-        const activeInputs = ref(true);
+        const manuelEntryActive = ref(true);
         const fuelDistributorCheck = ref(false);
         const fuelAmount = ref(null);
         const amountDuration = ref(null);
@@ -199,7 +199,15 @@ export default {
         });
 
         const quartzUsageCost = computed(() => {
-            if (activeInputs) {
+            if (manuelEntryActive) {
+                if (fuelAmount.value) {
+                    return (
+                        (parseFloat(fuelAmount.value) * fuelQuartzRatio.value) /
+                        100
+                    );
+                } else {
+                    return 0;
+                }
                 return (fuelTotalCost.value * fuelQuartzRatio.value) / 100;
             } else {
                 if (fuelData.value?.total_price_vat) {
@@ -257,9 +265,10 @@ export default {
         watch(
             () => fuelAmount.value,
             (val) => {
-                if (amountDuration.value != null) {
+                if (amountDuration.value != null && quartzUsageCost.value) {
                     emit("result", {
                         value: val,
+                        portion: quartzUsageCost.value,
                         duration: amountDuration.value,
                     });
                 }
@@ -269,10 +278,24 @@ export default {
         watch(
             () => amountDuration.value,
             (val) => {
-                if (fuelAmount.value != null) {
+                if (fuelAmount.value != null && quartzUsageCost.value != null) {
                     emit("result", {
                         value: fuelAmount.value,
+                        portion: quartzUsageCost.value,
                         duration: val,
+                    });
+                }
+            }
+        );
+
+        watch(
+            () => quartzUsageCost.value,
+            (val) => {
+                if (fuelAmount.value != null && amountDuration.value != null) {
+                    emit("result", {
+                        total: parseFloat(fuelAmount.value),
+                        portion: val,
+                        duration: amountDuration.value,
                     });
                 }
             }
@@ -286,7 +309,7 @@ export default {
             crushingUsageCost,
             screeningUsageCost,
             grindingUsageCost,
-            activeInputs,
+            manuelEntryActive,
             fuelAmount,
             amountDuration,
             fuelDistributorCheck,
