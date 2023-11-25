@@ -274,11 +274,11 @@ export default {
             this.totalData.avarageConsumptionByProduced =
                 totalConsumptionByDateRange / totalProducedByDateRange;
             this.totalData.ballPrice = parseFloat(
-                this.$store.state.quartzProduction.purchasedBallMills[0]
+                this.$store.state.quartzProduction.purchasedMillBalls[0]
                     .unit_price
             );
             this.totalData.ballPriceForeign =
-                this.$store.state.quartzProduction.purchasedBallMills[0].foreign_unit_price;
+                this.$store.state.quartzProduction.purchasedMillBalls[0].foreign_unit_price;
             this.totalData.costByProduced =
                 this.totalData.avarageConsumptionByProduced *
                 this.totalData.ballPriceForeign;

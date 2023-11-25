@@ -30,12 +30,9 @@
                     variant="outlined"
                     hide-details
                     v-model="amountDuration"
-                    :disabled="!activeInputs"
+                    :disabled="true || !activeInputs"
                 ></v-combobox>
             </div>
-            <span class="costInfo"
-                >-{{ currentYearConsumables.toLocaleString("tr") }} TL</span
-            >
             <v-slider
                 class="slider"
                 v-model="maintenanceQuartzRatio"
@@ -51,8 +48,13 @@
                     </span>
                 </template>
             </v-slider>
-            <div class="text-caption mb-5 ml-1">
-                {{ maintenanceQuartzCost.toLocaleString("tr") + " TL" }}
+            <div class="text-caption mb-5 ml-1 info">
+                <span>
+                    {{ maintenanceQuartzCost.toLocaleString("tr") + " TL" }}
+                </span>
+                <span class="costInfo">
+                    -{{ currentYearConsumables.toLocaleString("tr") }} TL
+                </span>
             </div>
         </div>
         <div class="sliderContainer">
@@ -159,13 +161,14 @@ import moment from "moment";
 import { computed, ref, reactive, watch } from "vue";
 import { useStore } from "vuex";
 export default {
-    props: ["width"],
+    props: ["width", "duration"],
     setup(props, { emit }) {
         const store = useStore();
 
         const activeInputs = ref(true);
         const maintenanceDistributorCheck = ref(false);
-        const costAmount = ref(null);
+        //const costAmount = ref(null);
+        const costAmount = ref(10000000);
         const amountDuration = ref(null);
 
         const maintenanceData = ref(null);
@@ -203,7 +206,7 @@ export default {
         });
 
         const washingUsageCost = computed(() => {
-            if (maintenanceQuartzCost) {
+            if (maintenanceQuartzCost.value) {
                 return (
                     (maintenanceQuartzCost.value *
                         maintenanceQuartzSubRatio.washing) /
@@ -215,7 +218,7 @@ export default {
         });
 
         const crushingUsageCost = computed(() => {
-            if (maintenanceQuartzCost) {
+            if (maintenanceQuartzCost.value) {
                 return (
                     (maintenanceQuartzCost.value *
                         maintenanceQuartzSubRatio.crushing) /
@@ -227,7 +230,7 @@ export default {
         });
 
         const screeningUsageCost = computed(() => {
-            if (maintenanceQuartzCost) {
+            if (maintenanceQuartzCost.value) {
                 return (
                     (maintenanceQuartzCost.value *
                         maintenanceQuartzSubRatio.screening) /
@@ -239,7 +242,7 @@ export default {
         });
 
         const grindingUsageCost = computed(() => {
-            if (maintenanceQuartzCost) {
+            if (maintenanceQuartzCost.value) {
                 return (
                     (maintenanceQuartzCost.value *
                         maintenanceQuartzSubRatio.grinding) /
@@ -255,8 +258,8 @@ export default {
             (val) => {
                 if (amountDuration.value != null) {
                     emit("result", {
-                        value: val,
-                        portion: val,
+                        value: parseFloat(maintenanceQuartzCost.value),
+                        portion: parseFloat(maintenanceQuartzCost.value),
                         duration: amountDuration.value,
                     });
                 }
@@ -268,11 +271,18 @@ export default {
             (val) => {
                 if (costAmount.value != null) {
                     emit("result", {
-                        value: costAmount.value,
-                        portion: costAmount.value,
+                        value: parseFloat(maintenanceQuartzCost.value),
+                        portion: parseFloat(maintenanceQuartzCost.value),
                         duration: val,
                     });
                 }
+            }
+        );
+
+        watch(
+            () => props.duration,
+            (val) => {
+                amountDuration.value = val;
             }
         );
 
@@ -327,12 +337,14 @@ export default {
                 width: 80px;
             }
         }
-        .costInfo {
-            display: block;
-            text-align: right;
-            font-size: 0.7rem;
-            margin-right: 15%;
-            margin-bottom: 5px;
+
+        .info {
+            display: flex;
+            justify-content: space-between;
+            .costInfo {
+                font-size: 0.7rem;
+                margin-right: 15%;
+            }
         }
     }
 }

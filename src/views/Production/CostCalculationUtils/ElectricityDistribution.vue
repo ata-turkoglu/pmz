@@ -34,7 +34,7 @@
                     variant="outlined"
                     hide-details
                     v-model="amountDuration"
-                    :disabled="!manuelEntryActive"
+                    :disabled="true || !manuelEntryActive"
                 ></v-combobox>
             </div>
             <v-slider
@@ -159,17 +159,18 @@
 </template>
 
 <script>
-import moment from "moment";
+import moment, { duration } from "moment";
 import { computed, ref, reactive, watch } from "vue";
 import { useStore } from "vuex";
 export default {
-    props: ["width"],
+    props: ["width", "duration"],
     setup(props, { emit }) {
         const store = useStore();
 
         const manuelEntryActive = ref(true);
         const electricityDistributorCheck = ref(false);
-        const costAmount = ref(null);
+        //const costAmount = ref(null);
+        const costAmount = ref(28000000);
         const amountDuration = ref(null);
 
         const electrcityData = ref(null);
@@ -184,7 +185,6 @@ export default {
         store.dispatch("bills/getLastElectricityData").then((result) => {
             if (result.state) {
                 electrcityData.value = result.data;
-                console.log("electrcityData", electrcityData.value);
             }
         });
 
@@ -295,6 +295,13 @@ export default {
                         duration: amountDuration.value,
                     });
                 }
+            }
+        );
+
+        watch(
+            () => props.duration,
+            (val) => {
+                amountDuration.value = val;
             }
         );
 
