@@ -35,7 +35,7 @@
                     variant="outlined"
                     hide-details
                     v-model="amountDuration"
-                    :disabled="!manuelEntryActive"
+                    :disabled="true || !manuelEntryActive"
                 ></v-combobox>
             </div>
             <v-slider
@@ -162,13 +162,14 @@ import moment from "moment";
 import { computed, ref, reactive, watch } from "vue";
 import { useStore } from "vuex";
 export default {
-    props: ["width"],
+    props: ["width", "duration"],
     setup(props, { emit }) {
         const store = useStore();
 
         const manuelEntryActive = ref(true);
         const fuelDistributorCheck = ref(false);
-        const fuelAmount = ref(null);
+        //const fuelAmount = ref(null);
+        const fuelAmount = ref(11000000);
         const amountDuration = ref(null);
         const fuelData = ref(null);
         const fuelQuartzRatio = ref(null);
@@ -187,7 +188,6 @@ export default {
             .then((result) => {
                 if (result.state) {
                     fuelData.value = result.data;
-                    console.log("fuelData", fuelData.value);
                 }
             });
 
@@ -298,6 +298,13 @@ export default {
                         duration: amountDuration.value,
                     });
                 }
+            }
+        );
+
+        watch(
+            () => props.duration,
+            (val) => {
+                amountDuration.value = val;
             }
         );
 
