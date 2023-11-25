@@ -18,6 +18,26 @@ export default {
                 0
             );
         },
+        getLastBigbagData: (state) => {
+            return state.currentYearConsumables.find(
+                (itm) => itm.material == "BİGBAG"
+            );
+        },
+        getLastPalletData: (state) => {
+            return state.currentYearConsumables.find(
+                (itm) => itm.material == "TAHTA PALET"
+            );
+        },
+        getLastCraftBagData: (state) => {
+            return state.currentYearConsumables.find(
+                (itm) => itm.material == "KRAFT TORBA"
+            );
+        },
+        getLastPPBagData: (state) => {
+            return state.currentYearConsumables.find(
+                (itm) => itm.material == "PP TORBA 25 KG"
+            );
+        },
     },
     mutations: {
         ADD_BALL_CHARGE_DATA(state, data) {
