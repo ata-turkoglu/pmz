@@ -1,6 +1,10 @@
 <template>
     <div class="costCalculation">
-        <div class="mb-10 d-flex">
+        <div
+            class="mb-10 d-flex"
+            :style="display.xs ? 'flex-direction:column' : ''"
+        >
+            {{}}
             <v-text-field
                 variant="outlined"
                 density="compact"
@@ -9,10 +13,11 @@
                 v-model="producted"
                 hide-details
                 type="number"
+                class="mr-5 mb-5"
             ></v-text-field>
             <v-combobox
                 label="Süre"
-                class="ml-5 mr-5"
+                class="mr-5 mb-5"
                 style="width: 100px"
                 variant="outlined"
                 density="compact"
@@ -23,7 +28,7 @@
             <v-text-field
                 variant="outlined"
                 density="compact"
-                class="mr-5"
+                class="mr-5 mb-5"
                 style="width: 100px"
                 label="Euro"
                 v-model="currency.euro"
@@ -33,7 +38,7 @@
             <v-text-field
                 variant="outlined"
                 density="compact"
-                class="mr-5"
+                class="mr-5 mb-5"
                 style="width: 100px"
                 label="Dolar"
                 v-model="currency.dollar"
@@ -41,7 +46,10 @@
                 type="number"
             ></v-text-field>
         </div>
-        <div class="mb-10 d-flex">
+        <div
+            class="mb-10 d-flex"
+            :style="display.xs ? 'flex-direction:column' : ''"
+        >
             <v-text-field
                 variant="outlined"
                 density="compact"
@@ -50,7 +58,7 @@
                 v-model="rawMaterialPrice"
                 hide-details
                 type="number"
-                class="mr-5"
+                class="mr-5 mb-5"
             ></v-text-field>
             <v-text-field
                 variant="outlined"
@@ -60,35 +68,54 @@
                 v-model="lossRate"
                 hide-details
                 type="number"
+                class="mr-5 mb-5"
             ></v-text-field>
         </div>
-        <div class="distributors">
+        <div
+            class="distributors"
+            :style="display.xs ? 'flex-direction:column' : ''"
+        >
             <ElectricityDistribution
                 :width="'30%'"
                 :duration="productionDuration"
                 @result="setElectricityCost"
+                class="mb-10"
             />
             <FuelDistribution
                 :width="'30%'"
                 :duration="productionDuration"
                 @result="fuelCost"
+                class="mb-10"
             />
             <MaintenanceDistribution
                 :width="'30%'"
                 :duration="productionDuration"
                 @result="maintenanceCost"
+                class="mb-10"
             />
         </div>
         <div class="my-8">
             <span>
-                <b>
-                    {{ costPerProduction.toFixed(2).toLocaleString("tr") }}
-                    TL/ton
-                </b>
+                <b> Üretim Maliyeti: </b>
+                {{ costPerProduction.toFixed(2).toLocaleString("tr") }}
+                TL/ton
+            </span>
+            <br />
+            <span>
+                <b>Bilye: </b>
+                {{
+                    millBallCost != null
+                        ? millBallCost.toFixed(2).toLocaleString("tr")
+                        : 0
+                }}
+                TL/ton
             </span>
         </div>
-        <div class="productCostByPackaging">
-            <div class="productTypes">
+        <div
+            class="productCostByPackaging"
+            :style="display.xs ? 'flex-direction:column' : ''"
+        >
+            <div class="productTypes" :style="display.xs ? 'width:100%' : ''">
                 <span><h2>Eleme</h2></span>
                 <div class="p-type">
                     <h3>Bigbag</h3>
@@ -179,8 +206,8 @@
                     </div>
                 </div>
             </div>
-            <div class="productTypes">
-                <span><h2>Öğütme</h2></span>
+            <div class="productTypes" :style="display.xs ? 'width:100%' : ''">
+                <span style="width: fit-content"><h2>Öğütme</h2></span>
                 <div class="p-type">
                     <h3>Silobas</h3>
                     <div class="imgContainer">
@@ -321,6 +348,7 @@ import ElectricityDistribution from "./CostCalculationUtils/ElectricityDistribut
 import FuelDistribution from "./CostCalculationUtils/FuelDistribution.vue";
 import MaintenanceDistribution from "./CostCalculationUtils/MaintenanceDistribution.vue";
 import { packagingWeights } from "@/utils/helpers/quartz";
+import { useDisplay } from "vuetify/lib/framework.mjs";
 export default {
     components: {
         ElectricityDistribution,
@@ -330,6 +358,8 @@ export default {
     setup() {
         const store = useStore();
 
+        const display = ref(useDisplay());
+
         const currency = reactive({
             /* euro: null,
             dollar: null, */
@@ -337,9 +367,11 @@ export default {
             dollar: 28,
         });
 
+        const millBallCost = ref(null);
+
         //const producted = ref(null);
         const producted = ref(50000);
-        const productionDuration = ref("Yıl");
+        const productionDuration = ref(null);
 
         const rawMaterialPrice = ref(420);
         const lossRate = ref(3);
@@ -418,9 +450,44 @@ export default {
         const operatingExpenses = computed(() => {
             return {
                 screening: costPerProduction.value || 0,
-                grinding: costPerProduction.value || 0,
+                grinding: costPerProduction.value + millBallCost.value || 0,
             };
         });
+
+        store
+            .dispatch("quartzProduction/getBallConsumptionByDateRange", {
+                startDate: "2023-01-01",
+                endDate: "2023-12-31",
+            })
+            .then(async (state) => {
+                if (state) {
+                    millBallCost.value = await calculateTotal();
+                }
+            });
+
+        const calculateTotal = async () => {
+            let totalProducedByDateRange = 0;
+            let totalConsumptionByDateRange = 0;
+            await store.getters[
+                "quartzProduction/getBallConsumptionDataByDate"
+            ].forEach((item) => {
+                totalProducedByDateRange += item.totalProduced;
+                totalConsumptionByDateRange += parseFloat(
+                    item.totalDailyBallConsumption
+                );
+            });
+            const avarageConsumptionByProduced =
+                totalConsumptionByDateRange / totalProducedByDateRange;
+            const ballPriceForeign = parseFloat(
+                store.state.quartzProduction.purchasedMillBalls[0]
+                    .foreign_unit_price
+            );
+            const costByProduced =
+                avarageConsumptionByProduced *
+                ballPriceForeign *
+                currency.dollar;
+            return parseFloat(costByProduced);
+        };
 
         return {
             setElectricityCost,
@@ -437,6 +504,8 @@ export default {
             rawMaterialPrice,
             lossRate,
             rawMaterialCost,
+            millBallCost,
+            display,
         };
     },
 };
