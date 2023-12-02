@@ -45,6 +45,16 @@
                 hide-details
                 type="number"
             ></v-text-field>
+            <v-text-field
+                variant="outlined"
+                density="compact"
+                style="width: 200px"
+                label="Kuvars Personel Gideri (TL)"
+                v-model="personnelExpenses"
+                hide-details
+                type="number"
+                class="mr-5 mb-5"
+            ></v-text-field>
         </div>
         <div
             class="mb-10 d-flex"
@@ -98,6 +108,12 @@
             <span>
                 <b> Üretim Maliyeti: </b>
                 {{ costPerProduction.toFixed(2).toLocaleString("tr") }}
+                TL/ton
+            </span>
+            <br />
+            <span>
+                <b> Personel Gideri: </b>
+                {{ personnelExpensesPerTon.toFixed(2).toLocaleString("tr") }}
                 TL/ton
             </span>
             <br />
@@ -370,8 +386,10 @@ export default {
         const millBallCost = ref(null);
 
         //const producted = ref(null);
-        const producted = ref(50000);
+        const producted = ref(40000);
         const productionDuration = ref(null);
+
+        const personnelExpenses = ref(6000000);
 
         const rawMaterialPrice = ref(420);
         const lossRate = ref(3);
@@ -394,8 +412,17 @@ export default {
             costs.maintenance = e.portion;
         };
 
+        const personnelExpensesPerTon = computed(() => {
+            return personnelExpenses.value / producted.value;
+        });
+
         const totalMainCost = computed(() => {
-            return costs.electricity + costs.fuel + costs.maintenance || 0;
+            return (
+                costs.electricity +
+                    costs.fuel +
+                    costs.maintenance +
+                    personnelExpensesPerTon.value || 0
+            );
         });
 
         const costPerProduction = computed(() => {
@@ -506,6 +533,8 @@ export default {
             rawMaterialCost,
             millBallCost,
             display,
+            personnelExpenses,
+            personnelExpensesPerTon,
         };
     },
 };
