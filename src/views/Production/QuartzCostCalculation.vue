@@ -4,7 +4,6 @@
             class="mb-10 d-flex"
             :style="display.xs ? 'flex-direction:column' : ''"
         >
-            {{}}
             <v-text-field
                 variant="outlined"
                 density="compact"
@@ -133,6 +132,16 @@
         >
             <div class="productTypes" :style="display.xs ? 'width:100%' : ''">
                 <span><h2>Eleme</h2></span>
+                <v-text-field
+                    variant="outlined"
+                    density="compact"
+                    style="width: 200px"
+                    label="Ek Maliyetler(TL)"
+                    v-model="extraScreeningCost"
+                    hide-details
+                    type="number"
+                    class="mt-5 mb-5"
+                ></v-text-field>
                 <div class="p-type">
                     <h3>Bigbag</h3>
                     <div class="imgContainer">
@@ -224,6 +233,16 @@
             </div>
             <div class="productTypes" :style="display.xs ? 'width:100%' : ''">
                 <span style="width: fit-content"><h2>Öğütme</h2></span>
+                <v-text-field
+                    variant="outlined"
+                    density="compact"
+                    style="width: 200px"
+                    label="Ek Maliyetler(TL)"
+                    v-model="extraGrindingCost"
+                    hide-details
+                    type="number"
+                    class="mt-5 mb-5"
+                ></v-text-field>
                 <div class="p-type">
                     <h3>Silobas</h3>
                     <div class="imgContainer">
@@ -253,7 +272,7 @@
                             {{
                                 (
                                     rawMaterialCost +
-                                    operatingExpenses.screening +
+                                    operatingExpenses.grinding +
                                     0
                                 )
                                     .toFixed(2)
@@ -297,7 +316,7 @@
                             {{
                                 (
                                     rawMaterialCost +
-                                    operatingExpenses.screening +
+                                    operatingExpenses.grinding +
                                     bigbagPackagingCostPerTon
                                 )
                                     .toFixed(2)
@@ -341,7 +360,7 @@
                             {{
                                 (
                                     rawMaterialCost +
-                                    operatingExpenses.screening +
+                                    operatingExpenses.grinding +
                                     craftBagPackegingCostPerTon
                                 )
                                     .toFixed(2)
@@ -390,6 +409,8 @@ export default {
         const productionDuration = ref(null);
 
         const personnelExpenses = ref(6000000);
+        const extraScreeningCost = ref(0);
+        const extraGrindingCost = ref(0);
 
         const rawMaterialPrice = ref(420);
         const lossRate = ref(3);
@@ -413,7 +434,7 @@ export default {
         };
 
         const personnelExpensesPerTon = computed(() => {
-            return personnelExpenses.value / producted.value;
+            return personnelExpenses.value / parseFloat(producted.value);
         });
 
         const totalMainCost = computed(() => {
@@ -476,8 +497,17 @@ export default {
 
         const operatingExpenses = computed(() => {
             return {
-                screening: costPerProduction.value || 0,
-                grinding: costPerProduction.value + millBallCost.value || 0,
+                screening:
+                    extraScreeningCost.value == ""
+                        ? costPerProduction.value
+                        : costPerProduction.value +
+                          parseFloat(extraScreeningCost.value),
+                grinding:
+                    extraGrindingCost.value == ""
+                        ? costPerProduction.value + millBallCost.value
+                        : costPerProduction.value +
+                          millBallCost.value +
+                          parseFloat(extraGrindingCost.value),
             };
         });
 
@@ -535,6 +565,8 @@ export default {
             display,
             personnelExpenses,
             personnelExpensesPerTon,
+            extraScreeningCost,
+            extraGrindingCost,
         };
     },
 };
